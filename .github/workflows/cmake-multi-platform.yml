@@ -31,7 +31,7 @@ jobs:
           - os: ubuntu-latest
             cpp_compiler: clang++
           - os: macos-latest
-            cpp_compiler: g++
+            cpp_compiler: clang++
 
     steps:
     - uses: actions/checkout@v4
