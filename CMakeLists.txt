@@ -49,11 +49,11 @@ install(FILES "${PROJECT_SOURCE_DIR}/cmake/${PROJECT_NAME}Config.cmake"
     "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
     DESTINATION lib/cmake/${PROJECT_NAME})
 
-if (!${ENABLE_TESTS})
+if (NOT ENABLE_TESTS)
     return()
-else()
-    enable_testing()
 endif()
+
+enable_testing()
 
 find_package(Catch2 3 REQUIRED)
 
