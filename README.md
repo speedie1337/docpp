@@ -26,4 +26,4 @@ This project is licensed under the GNU Lesser General Public License v3.0 - see 
 
 ## Code of Conduct
 
-None. Just don't blow up my house.
+None. Just don't blow up my house. And, don't ask me to rewrite it in Rust.
