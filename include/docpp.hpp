@@ -487,7 +487,12 @@ namespace docpp {
                 CSSElement() = default;
 
                 /**
-                 * @brief Push a property to the element
+                 * @brief Prepend a property to the element
+                 * @param property The property to push
+                 */
+                void push_front(const CSSProperty& property);
+                /**
+                 * @brief Append a property to the element
                  * @param property The property to push
                  */
                 void push_back(const CSSProperty& property);
@@ -565,6 +570,12 @@ namespace docpp {
                  * @return int The index of the element
                  */
                 int find(const CSSElement& element);
+                /**
+                 * @brief Find an element in the stylesheet
+                 * @param str The element to find, either the tag or the stylesheet itself
+                 * @return int The index of the element
+                 */
+                int find(const std::string& str);
                 /**
                  * @brief Get the size of the stylesheet
                  * @return int The size of the stylesheet

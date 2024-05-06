@@ -154,6 +154,10 @@ SCENARIO("Test HTML", "[HTML]") {
         css.swap(css.find(element), css.find(element2));
 
         REQUIRE(css.get() == "p {color: red;font-size: 16px;font-family: Arial;}div {color: blue;font-size: 12px;font-family: Arial;}");
+
+        element.push_front(docpp::CSS::CSSProperty("font-weight", "bold"));
+
+        REQUIRE(element.get() == "p {font-weight: bold;color: red;font-size: 16px;font-family: Arial;}");
     };
 
     auto test10 = []() {

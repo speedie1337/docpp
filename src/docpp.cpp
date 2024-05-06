@@ -442,6 +442,10 @@ void docpp::CSS::CSSElement::set(const std::pair<std::string, std::vector<CSSPro
     this->element = element;
 }
 
+void docpp::CSS::CSSElement::push_front(const CSSProperty& property) {
+    this->element.second.insert(this->element.second.begin(), property);
+}
+
 void docpp::CSS::CSSElement::push_back(const CSSProperty& property) {
     this->element.second.push_back(property);
 }
@@ -520,6 +524,16 @@ void docpp::CSS::CSSStylesheet::erase(const int index) {
 int docpp::CSS::CSSStylesheet::find(const CSSElement& element) {
     for (int i{0}; i < this->elements.size(); i++) {
         if (this->elements.at(i).get() == element.get()) {
+            return i;
+        }
+    }
+
+    return docpp::CSS::CSSStylesheet::npos;
+}
+
+int docpp::CSS::CSSStylesheet::find(const std::string& str) {
+    for (int i{0}; i < this->elements.size(); i++) {
+        if (!this->elements.at(i).get().compare(str) || !this->elements.at(i).getTag().compare(str)) {
             return i;
         }
     }
