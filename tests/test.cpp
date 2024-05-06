@@ -192,7 +192,29 @@ SCENARIO("Test HTML", "[HTML]") {
         REQUIRE(section.get() == "<html><p>Test 0</p><p>Test 1</p><p>Test 2</p><p>Test 3</p></html>");
     };
 
-    std::vector<void (*)()> tests{test1, test2, test3, test4, test5, test6, test7, test8, test9, test10, test11, test12};
+    auto test13 = []() {
+        docpp::HTML::HTMLSection section = docpp::HTML::HTMLSection(docpp::HTML::SECTION_HTML, {});
+
+        section.push_back(docpp::HTML::HTMLElement("p", {}, "Test 1"));
+        section.push_back(docpp::HTML::HTMLElement("p", {}, "Test 2"));
+        section.push_back(docpp::HTML::HTMLElement("p", {}, "Test 3"));
+        section.push_back(docpp::HTML::HTMLElement("p", {}, "Test 4"));
+        section.push_back(docpp::HTML::HTMLElement("p", {}, "Test 5"));
+        section.push_back(docpp::HTML::HTMLElement("p", {}, "Test 6"));
+
+        const int pos{section.find("<p>Test 2</p>")};
+
+        REQUIRE(pos != docpp::HTML::HTMLSection::npos);
+
+        const int pos2{section.find("<p>Test 6</p>")};
+
+        section.erase(pos);
+        section.erase(pos2);
+
+        REQUIRE(section.get() == "<html><p>Test 1</p><p>Test 3</p><p>Test 4</p><p>Test 5</p></html>");
+    };
+
+    std::vector<void (*)()> tests{test1, test2, test3, test4, test5, test6, test7, test8, test9, test10, test11, test12, test13};
 
     for (const auto& test : tests) {
         test();

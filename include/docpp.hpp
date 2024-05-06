@@ -257,6 +257,12 @@ namespace docpp {
                  */
                 int find(const HTMLSection& section);
                 /**
+                 * @brief Find an element or section in the section
+                 * @param str The element or section to find
+                 * @return int The index of the element or section
+                 */
+                int find(const std::string& str);
+                /**
                  * @brief Insert an element into the section
                  * @param index The index to insert the element
                  * @param element The element to insert

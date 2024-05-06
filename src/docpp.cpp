@@ -267,6 +267,26 @@ int docpp::HTML::HTMLSection::find(const HTMLSection& section) {
     return docpp::HTML::HTMLSection::npos;
 }
 
+int docpp::HTML::HTMLSection::find(const std::string& str) {
+    const auto elements = this->getHTMLElements();
+
+    for (int i{0}; i < elements.size(); i++) {
+        if (!elements.at(i).get().compare(str)) {
+            return i;
+        }
+    }
+
+    const auto sections = this->getHTMLSections();
+
+    for (int i{0}; i < sections.size(); i++) {
+        if (!sections.at(i).get().compare(str)) {
+            return i;
+        }
+    }
+
+    return docpp::HTML::HTMLSection::npos;
+}
+
 int docpp::HTML::HTMLSection::size() const {
     return this->index;
 }
