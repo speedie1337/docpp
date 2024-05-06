@@ -186,6 +186,10 @@ namespace docpp {
                  * @brief Construct a new HTMLElementProperties object
                  */
                 HTMLElementProperties() = default;
+                HTMLElementProperties operator=(const HTMLElementProperties& properties);
+                HTMLElementProperties operator=(const std::vector<HTMLProperty>& properties);
+                HTMLElementProperties operator=(const HTMLProperty& property);
+                void operator+=(const HTMLProperty& property);
         };
 
         /**
@@ -240,6 +244,8 @@ namespace docpp {
                  * @return std::string The data of the element
                  */
                 std::string getData() const;
+                HTMLElement operator=(const HTMLElement& element);
+                void operator+=(const std::string& data);
         };
 
         /**
@@ -408,6 +414,10 @@ namespace docpp {
                  */
                 std::string get(const int formatting = FORMATTING_NONE) const;
 
+                HTMLSection operator=(const HTMLSection& section);
+                void operator+=(const HTMLElement& element);
+                void operator+=(const HTMLSection& section);
+                HTMLElement operator[](const int& index) const;
         };
 
         /**
@@ -430,6 +440,12 @@ namespace docpp {
                  * @return std::string The document
                  */
                 std::string get(const int formatting = FORMATTING_NONE) const;
+
+                /**
+                 * @brief Get the section
+                 * @return HTMLSection The section
+                 */
+                HTMLSection& getSection();
 
                 /**
                  * @brief Get the doctype of the document
@@ -456,6 +472,9 @@ namespace docpp {
                  * @param document The document to set
                  */
                 HTMLDocument(const HTMLSection& document, const std::string& doctype = "<!DOCTYPE html>");
+
+                HTMLDocument operator=(const HTMLDocument& document);
+                HTMLDocument operator=(const HTMLSection& section);
         };
     } // namespace HTML
 
@@ -524,6 +543,9 @@ namespace docpp {
                  * @param value The value of the property
                  */
                 void set(const std::string& key, const std::string& value);
+
+                CSSProperty operator=(const CSSProperty& property);
+                CSSProperty operator=(const std::pair<std::string, std::string>& property);
         };
 
         class CSSElement {
@@ -630,6 +652,11 @@ namespace docpp {
                  * @return std::vector<CSSProperty> The properties of the element
                  */
                 std::vector<CSSProperty> getProperties() const;
+
+                CSSElement operator=(const CSSElement& element);
+                CSSElement operator=(const std::pair<std::string, std::vector<CSSProperty>>& element);
+                void operator+=(const CSSProperty& property);
+                CSSProperty operator[](const int& index) const;
         };
 
         /**
@@ -723,6 +750,10 @@ namespace docpp {
                  * @return std::string The stylesheet
                  */
                 std::string get(const int formatting = FORMATTING_NONE) const;
+
+                CSSStylesheet operator=(const CSSStylesheet& stylesheet);
+                void operator+=(const CSSElement& element);
+                CSSElement operator[](const int& index) const;
         };
     }
 }

@@ -4,7 +4,7 @@
 #include <catch2/catch_test_macros.hpp>
 
 /**
- * @brief Test cases for the DuvaHTML namespace.
+ * @brief Test cases for the docpp namespace.
  */
 SCENARIO("Test HTML", "[HTML]") {
     auto test1 = []() {
@@ -266,7 +266,42 @@ SCENARIO("Test HTML", "[HTML]") {
         REQUIRE(docpp::HTML::HTMLElement("p", prop, {}).get() == "<p id=\"test_id\"></p>");
     };
 
-    std::vector<void (*)()> tests{test1, test2, test3, test4, test5, test6, test7, test8, test9, test10, test11, test12, test13, test14, test15};
+    auto test16 = []() {
+        docpp::HTML::HTMLDocument doc = docpp::HTML::HTMLSection({});
+
+        doc.getSection().push_back(docpp::HTML::HTMLElement("p", {}, "Test 1"));
+        doc.getSection().push_back(docpp::HTML::HTMLElement("p", {}, "Test 2"));
+        doc.getSection().push_back(docpp::HTML::HTMLElement("p", {}, "Test 3"));
+
+        doc.getSection() = docpp::HTML::HTMLSection(docpp::HTML::SECTION_HTML, {});
+
+        doc.getSection().push_back(docpp::HTML::HTMLElement("p", {}, "Test 4"));
+        doc.getSection().push_back(docpp::HTML::HTMLElement("p", {}, "Test 5"));
+        doc.getSection().push_back(docpp::HTML::HTMLElement("p", {}, "Test 6"));
+
+        doc.getSection() += docpp::HTML::HTMLElement("p", {}, "Test 7");
+
+        REQUIRE(doc.get() == "<!DOCTYPE html><html><p>Test 4</p><p>Test 5</p><p>Test 6</p><p>Test 7</p></html>");
+    };
+
+    std::vector<void (*)()> tests{
+        test1,
+        test2,
+        test3,
+        test4,
+        test5,
+        test6,
+        test7,
+        test8,
+        test9,
+        test10,
+        test11,
+        test12,
+        test13,
+        test14,
+        test15,
+        test16,
+    };
 
     for (const auto& test : tests) {
         test();

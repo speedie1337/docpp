@@ -59,6 +59,25 @@ docpp::HTML::HTMLElementProperties::HTMLElementProperties(const docpp::HTML::HTM
     this->push_back(property);
 }
 
+docpp::HTML::HTMLElementProperties docpp::HTML::HTMLElementProperties::operator=(const docpp::HTML::HTMLProperty& property) {
+    this->properties = {property};
+    return *this;
+}
+
+docpp::HTML::HTMLElementProperties docpp::HTML::HTMLElementProperties::operator=(const docpp::HTML::HTMLElementProperties& properties) {
+    this->set(properties.getProperties());
+    return *this;
+}
+
+docpp::HTML::HTMLElementProperties docpp::HTML::HTMLElementProperties::operator=(const std::vector<docpp::HTML::HTMLProperty>& properties) {
+    this->set(properties);
+    return *this;
+}
+
+void docpp::HTML::HTMLElementProperties::operator+=(const docpp::HTML::HTMLProperty& property) {
+    this->push_back(property);
+}
+
 std::vector<docpp::HTML::HTMLProperty> docpp::HTML::HTMLElementProperties::getProperties() const {
     return this->properties;
 }
@@ -149,6 +168,15 @@ docpp::HTML::HTMLElement::HTMLElement(const std::string& tag, const HTMLElementP
     this->set(tag, properties, data, type);
 }
 
+docpp::HTML::HTMLElement docpp::HTML::HTMLElement::operator=(const docpp::HTML::HTMLElement& element) {
+    this->set(element.getTag(), element.properties, element.getData(), element.type);
+    return *this;
+}
+
+void docpp::HTML::HTMLElement::operator+=(const std::string& data) {
+    this->data += data;
+}
+
 void docpp::HTML::HTMLElement::set(const std::string& tag, const HTMLElementProperties& properties, const std::string& data, const int type) {
     this->tag = tag;
     this->data = data;
@@ -196,6 +224,28 @@ std::string docpp::HTML::HTMLElement::getData() const {
 docpp::HTML::HTMLSection::HTMLSection(const std::string& tag, const HTMLElementProperties& properties) {
     this->tag = tag;
     this->properties = properties;
+}
+
+docpp::HTML::HTMLSection docpp::HTML::HTMLSection::operator=(const docpp::HTML::HTMLSection& section) {
+    this->tag = section.tag;
+    this->properties = section.properties;
+    this->elements = section.elements;
+    this->sections = section.sections;
+    this->index = section.index;
+
+    return *this;
+}
+
+void docpp::HTML::HTMLSection::operator+=(const docpp::HTML::HTMLElement& element) {
+    this->push_back(element);
+}
+
+void docpp::HTML::HTMLSection::operator+=(const docpp::HTML::HTMLSection& section) {
+    this->push_back(section);
+}
+
+docpp::HTML::HTMLElement docpp::HTML::HTMLSection::operator[](const int& index) const {
+    return this->at(index);
 }
 
 docpp::HTML::HTMLSection::HTMLSection(const int tag, const HTMLElementProperties& properties) {
@@ -463,12 +513,27 @@ std::string docpp::HTML::HTMLDocument::get(const int formatting) const {
     return this->doctype + (formatting == FORMATTING_PRETTY ? "\n" : "") + this->document.get(formatting);
 }
 
+docpp::HTML::HTMLSection& docpp::HTML::HTMLDocument::getSection() {
+    return this->document;
+}
+
 void docpp::HTML::HTMLDocument::set(const docpp::HTML::HTMLSection& document) {
     this->document = document;
 }
 
 void docpp::HTML::HTMLDocument::setDoctype(const std::string& doctype) {
     this->doctype = doctype;
+}
+
+docpp::HTML::HTMLDocument docpp::HTML::HTMLDocument::operator=(const docpp::HTML::HTMLDocument& document) {
+    this->set(document.get());
+    this->setDoctype(document.getDoctype());
+    return *this;
+}
+
+docpp::HTML::HTMLDocument docpp::HTML::HTMLDocument::operator=(const docpp::HTML::HTMLSection& section) {
+    this->set(section);
+    return *this;
 }
 
 docpp::HTML::HTMLDocument::HTMLDocument(const docpp::HTML::HTMLSection& document, const std::string& doctype) {
@@ -516,12 +581,35 @@ void docpp::CSS::CSSProperty::set(const std::string& key, const std::string& val
     this->property = std::make_pair(key, value);
 }
 
+docpp::CSS::CSSProperty docpp::CSS::CSSProperty::operator=(const docpp::CSS::CSSProperty& property) {
+    this->set(property.get());
+    return *this;
+}
+
+docpp::CSS::CSSProperty docpp::CSS::CSSProperty::operator=(const std::pair<std::string, std::string>& property) {
+    this->set(property);
+    return *this;
+}
+
 docpp::CSS::CSSElement::CSSElement(const std::string& tag, const std::vector<CSSProperty>& properties) {
     this->set(tag, properties);
 }
 
 docpp::CSS::CSSElement::CSSElement(const std::pair<std::string, std::vector<CSSProperty>>& element) {
     this->set(element);
+}
+
+docpp::CSS::CSSElement docpp::CSS::CSSElement::operator=(const docpp::CSS::CSSElement& element) {
+    this->set({element.getTag(), element.getProperties()});
+    return *this;
+}
+
+void docpp::CSS::CSSElement::operator+=(const CSSProperty& property) {
+    this->push_back(property);
+}
+
+docpp::CSS::CSSProperty docpp::CSS::CSSElement::operator[](const int& index) const {
+    return this->at(index);
 }
 
 void docpp::CSS::CSSElement::set(const std::string& tag, const std::vector<CSSProperty>& properties) {
@@ -670,6 +758,19 @@ void docpp::CSS::CSSStylesheet::erase(const int index) {
     }
 
     this->elements.erase(this->elements.begin() + index);
+}
+
+docpp::CSS::CSSStylesheet docpp::CSS::CSSStylesheet::operator=(const docpp::CSS::CSSStylesheet& stylesheet) {
+    this->set(stylesheet.getElements());
+    return *this;
+}
+
+void docpp::CSS::CSSStylesheet::operator+=(const CSSElement& element) {
+    this->push_back(element);
+}
+
+docpp::CSS::CSSElement docpp::CSS::CSSStylesheet::operator[](const int& index) const {
+    return this->at(index);
 }
 
 docpp::CSS::CSSElement docpp::CSS::CSSStylesheet::at(const int index) const {
