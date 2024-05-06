@@ -59,7 +59,7 @@ docpp::HTML::HTMLElementProperties::HTMLElementProperties(const docpp::HTML::HTM
     this->push_back(property);
 }
 
-std::vector<docpp::HTML::HTMLProperty> docpp::HTML::HTMLElementProperties::get() const {
+std::vector<docpp::HTML::HTMLProperty> docpp::HTML::HTMLElementProperties::getProperties() const {
     return this->properties;
 }
 
@@ -67,8 +67,66 @@ void docpp::HTML::HTMLElementProperties::set(const std::vector<docpp::HTML::HTML
     this->properties = properties;
 }
 
+void docpp::HTML::HTMLElementProperties::erase(const int index) {
+    if (index < 0 || index >= this->properties.size()) {
+        throw std::out_of_range("Index out of range");
+    }
+
+    this->properties.erase(this->properties.begin() + index);
+}
+
+void docpp::HTML::HTMLElementProperties::push_front(const docpp::HTML::HTMLProperty& property) {
+    this->properties.insert(this->properties.begin(), property);
+}
+
 void docpp::HTML::HTMLElementProperties::push_back(const docpp::HTML::HTMLProperty& property) {
     this->properties.push_back(property);
+}
+
+int docpp::HTML::HTMLElementProperties::find(const docpp::HTML::HTMLProperty& property) {
+    for (int i{0}; i < this->properties.size(); i++) {
+        if (!this->properties.at(i).getKey().compare(property.getKey())) {
+            return i;
+        } else if (!this->properties.at(i).getValue().compare(property.getValue())) {
+            return i;
+        } else if (this->properties.at(i).getValue().find(property.getValue()) != std::string::npos) {
+            return i;
+        } else if (this->properties.at(i).getKey().find(property.getKey()) != std::string::npos) {
+            return i;
+        } else if (this->properties.at(i).get() == property.get()) {
+            return i;
+        }
+    }
+
+    return docpp::HTML::HTMLElementProperties::npos;
+}
+
+int docpp::HTML::HTMLElementProperties::find(const std::string& str) {
+    for (int i{0}; i < this->properties.size(); i++) {
+        if (!this->properties.at(i).getKey().compare(str) || !this->properties.at(i).getValue().compare(str)) {
+            return i;
+        } else if (this->properties.at(i).getKey().find(str) != std::string::npos || this->properties.at(i).getValue().find(str) != std::string::npos) {
+            return i;
+        }
+    }
+
+    return docpp::HTML::HTMLElementProperties::npos;
+}
+
+int docpp::HTML::HTMLElementProperties::size() const {
+    return this->properties.size();
+}
+
+void docpp::HTML::HTMLElementProperties::swap(const int index1, const int index2) {
+    if (index1 < 0 || index1 >= this->properties.size() || index2 < 0 || index2 >= this->properties.size()) {
+        throw std::out_of_range("Index out of range");
+    }
+
+    std::swap(this->properties[index1], this->properties[index2]);
+}
+
+void docpp::HTML::HTMLElementProperties::swap(const docpp::HTML::HTMLProperty& property1, const docpp::HTML::HTMLProperty& property2) {
+    this->swap(this->find(property1), this->find(property2));
 }
 
 docpp::HTML::HTMLElement::HTMLElement(const std::string& tag, const HTMLElementProperties& properties, const std::string& data, const int type) {
@@ -87,7 +145,7 @@ std::string docpp::HTML::HTMLElement::get(const int formatting) const {
 
     ret += "<" + this->tag;
 
-    for (const auto& it : this->properties.get()) {
+    for (const auto& it : this->properties.getProperties()) {
         if (!it.getKey().compare("")) continue;
         if (!it.getValue().compare("")) continue;
 
@@ -292,7 +350,7 @@ int docpp::HTML::HTMLSection::size() const {
     return this->index;
 }
 
-std::vector<docpp::HTML::HTMLElement> docpp::HTML::HTMLSection::getHTMLElements() {
+std::vector<docpp::HTML::HTMLElement> docpp::HTML::HTMLSection::getHTMLElements() const {
     std::vector<docpp::HTML::HTMLElement> ret{};
     ret.reserve(this->index);
     for (int i{0}; i < this->index; i++) {
@@ -303,7 +361,7 @@ std::vector<docpp::HTML::HTMLElement> docpp::HTML::HTMLSection::getHTMLElements(
     return std::move(ret);
 }
 
-std::vector<docpp::HTML::HTMLSection> docpp::HTML::HTMLSection::getHTMLSections() {
+std::vector<docpp::HTML::HTMLSection> docpp::HTML::HTMLSection::getHTMLSections() const {
     std::vector<docpp::HTML::HTMLSection> ret{};
     ret.reserve(this->index);
 
@@ -321,7 +379,7 @@ std::string docpp::HTML::HTMLSection::get(const int formatting) const {
 
     ret += "<" + this->tag;
 
-    for (const auto& it : this->properties.get()) {
+    for (const auto& it : this->properties.getProperties()) {
         if (!it.getKey().compare("")) continue;
         if (!it.getValue().compare("")) continue;
 

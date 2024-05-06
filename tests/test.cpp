@@ -238,7 +238,32 @@ SCENARIO("Test HTML", "[HTML]") {
         REQUIRE(element.get() == "p {color: red;font-size: 16px;font-family: Arial;}");
     };
 
-    std::vector<void (*)()> tests{test1, test2, test3, test4, test5, test6, test7, test8, test9, test10, test11, test12, test13, test14};
+    auto test15 = []() {
+        docpp::HTML::HTMLElementProperties prop{};
+
+        prop.push_back(docpp::HTML::HTMLProperty(std::pair<std::string, std::string>("id", "test_id")));
+        prop.push_back(docpp::HTML::HTMLProperty(std::pair<std::string, std::string>("class", "class1 class2 class3")));
+
+        REQUIRE(docpp::HTML::HTMLElement("p", prop, {}).get() == "<p id=\"test_id\" class=\"class1 class2 class3\"></p>");
+
+        const int pos = prop.find("class");
+
+        REQUIRE(pos != docpp::HTML::HTMLElementProperties::npos);
+
+        const int pos2 = prop.find("class2");
+
+        REQUIRE(pos2 != docpp::HTML::HTMLElementProperties::npos);
+
+        const int pos3 = prop.find("class4");
+
+        REQUIRE(pos3 == docpp::HTML::HTMLElementProperties::npos);
+
+        prop.erase(pos);
+
+        REQUIRE(docpp::HTML::HTMLElement("p", prop, {}).get() == "<p id=\"test_id\"></p>");
+    };
+
+    std::vector<void (*)()> tests{test1, test2, test3, test4, test5, test6, test7, test8, test9, test10, test11, test12, test13, test14, test15};
 
     for (const auto& test : tests) {
         test();

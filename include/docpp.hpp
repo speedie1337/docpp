@@ -110,14 +110,53 @@ namespace docpp {
                  * @brief Get the properties of the element
                  * @return std::vector<HTMLProperty> The properties of the element
                  */
-                std::vector<HTMLProperty> get() const;
+                std::vector<HTMLProperty> getProperties() const;
                 /**
                  * @brief Set the properties of the element
                  * @param properties The properties to set
                  */
                 void set(const std::vector<HTMLProperty>& properties);
                 /**
-                 * @brief Add a property to the element
+                 * @brief Erase a property from the element
+                 * @param index The index of the property to erase
+                 */
+                void erase(const int index);
+                /**
+                 * @brief Find a property in the element
+                 * @param property The property to find
+                 * @return int The index of the property
+                 */
+                int find(const HTMLProperty& property);
+                /**
+                 * @brief Find a property in the element
+                 * @param str The property to find
+                 * @return int The index of the property
+                 */
+                int find(const std::string& str);
+                /**
+                 * @brief Swap two properties in the element
+                 * @param index1 The index of the first property
+                 * @param index2 The index of the second property
+                 */
+                void swap(const int index1, const int index2);
+                /**
+                 * @brief Swap two properties in the element
+                 * @param property1 The first property
+                 * @param property2 The second property
+                 */
+                void swap(const HTMLProperty& property1, const HTMLProperty& property2);
+                /**
+                 * @brief Get the size of the element
+                 * @return int The size of the element
+                 */
+                int size() const;
+                /**
+                 * @brief Prepend a property to the element
+                 * @param property The property to add
+                 */
+                void push_front(const HTMLProperty& property);
+                /**
+                 * @brief Append a property to the element
                  * @param property The property to add
                  */
                 void push_back(const HTMLProperty& property);
@@ -332,12 +371,12 @@ namespace docpp {
                  * @brief Get the elements of the section
                  * @return std::vector<HTMLElement> The elements of the section
                  */
-                std::vector<HTMLElement> getHTMLElements();
+                std::vector<HTMLElement> getHTMLElements() const;
                 /**
                  * @brief Get the sections of the section
                  * @return std::vector<HTMLSection> The sections of the section
                  */
-                std::vector<HTMLSection> getHTMLSections();
+                std::vector<HTMLSection> getHTMLSections() const;
 
                 /**
                  * @brief Dump the entire section.
