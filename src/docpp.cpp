@@ -252,7 +252,7 @@ int docpp::HTML::HTMLSection::find(const HTMLElement& element) {
         }
     }
 
-    throw std::out_of_range("Element not found");
+    return docpp::HTML::HTMLSection::npos;
 }
 
 int docpp::HTML::HTMLSection::find(const HTMLSection& section) {
@@ -264,7 +264,7 @@ int docpp::HTML::HTMLSection::find(const HTMLSection& section) {
         }
     }
 
-    throw std::out_of_range("Section not found");
+    return docpp::HTML::HTMLSection::npos;
 }
 
 int docpp::HTML::HTMLSection::size() const {
@@ -504,7 +504,7 @@ int docpp::CSS::CSSStylesheet::find(const CSSElement& element) {
         }
     }
 
-    throw std::out_of_range("Element not found");
+    return docpp::CSS::CSSStylesheet::npos;
 }
 
 int docpp::CSS::CSSStylesheet::size() const {

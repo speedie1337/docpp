@@ -44,6 +44,11 @@ namespace docpp {
             protected:
             public:
                 /**
+                 * @brief The npos value
+                 */
+                static const int npos = -1;
+
+                /**
                  * @brief Construct a new HTMLProperty object
                  * @param key The key of the property
                  * @param value The value of the property
@@ -97,6 +102,11 @@ namespace docpp {
             protected:
             public:
                 /**
+                 * @brief The npos value
+                 */
+                static const int npos = -1;
+
+                /**
                  * @brief Get the properties of the element
                  * @return std::vector<HTMLProperty> The properties of the element
                  */
@@ -138,6 +148,11 @@ namespace docpp {
                 HTMLElementProperties properties{};
             protected:
             public:
+                /**
+                 * @brief The npos value
+                 */
+                static const int npos = -1;
+
                 /**
                  * @brief Construct a new HTMLElement object
                  * @param tag The tag of the element
@@ -189,6 +204,11 @@ namespace docpp {
                 std::unordered_map<int, HTMLSection> sections{};
             protected:
             public:
+                /**
+                 * @brief The npos value
+                 */
+                static const int npos = -1;
+
                 /**
                  * @brief Prepend an element to the section
                  * @param element The element to add
@@ -331,6 +351,11 @@ namespace docpp {
             protected:
             public:
                 /**
+                 * @brief The npos value
+                 */
+                static const int npos = -1;
+
+                /**
                  * @brief Get the document
                  * @param std::string The type to return
                  * @return std::string The document
@@ -376,6 +401,11 @@ namespace docpp {
                 std::pair<std::string, std::string> property{};
             protected:
             public:
+                /**
+                 * @brief The npos value
+                 */
+                static const int npos = -1;
+
                 /**
                  * @brief Construct a new CSSProperty object
                  * @param key The key of the property
@@ -433,6 +463,11 @@ namespace docpp {
             protected:
             public:
                 /**
+                 * @brief The npos value
+                 */
+                static const int npos = -1;
+
+                /**
                  * @brief Construct a new CSSElement object
                  * @param tag The tag of the element
                  * @param properties The properties of the element
@@ -485,6 +520,11 @@ namespace docpp {
                 std::vector<CSSElement> elements{};
             protected:
             public:
+                /**
+                 * @brief The npos value
+                 */
+                static const int npos = -1;
+
                 /**
                  * @brief Construct a new CSSStylesheet object
                  * @param elements The elements to set
