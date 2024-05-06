@@ -252,6 +252,9 @@ SCENARIO("Test HTML", "[HTML]") {
 
         const int pos2 = prop.find("class2");
 
+        REQUIRE(prop.at(pos2).getKey() == "class");
+        REQUIRE(prop.at(pos2).getValue() == "class1 class2 class3");
+
         REQUIRE(pos2 != docpp::HTML::HTMLElementProperties::npos);
 
         const int pos3 = prop.find("class4");

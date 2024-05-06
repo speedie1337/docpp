@@ -63,8 +63,24 @@ std::vector<docpp::HTML::HTMLProperty> docpp::HTML::HTMLElementProperties::getPr
     return this->properties;
 }
 
+docpp::HTML::HTMLProperty docpp::HTML::HTMLElementProperties::at(const int index) const {
+    if (index < 0 || index >= this->properties.size()) {
+        throw std::out_of_range("Index out of range");
+    }
+
+    return this->properties.at(index);
+}
+
 void docpp::HTML::HTMLElementProperties::set(const std::vector<docpp::HTML::HTMLProperty>& properties) {
     this->properties = properties;
+}
+
+void docpp::HTML::HTMLElementProperties::insert(const int index, const docpp::HTML::HTMLProperty& property) {
+    if (index < 0 || index >= this->properties.size()) {
+        throw std::out_of_range("Index out of range");
+    }
+
+    this->properties.insert(this->properties.begin() + index, property);
 }
 
 void docpp::HTML::HTMLElementProperties::erase(const int index) {
@@ -302,6 +318,22 @@ void docpp::HTML::HTMLSection::insert(const int index, const HTMLSection& sectio
     this->index = std::max(this->index, index) + 1;
 }
 
+docpp::HTML::HTMLElement docpp::HTML::HTMLSection::at(const int index) const {
+    if (this->elements.find(index) != this->elements.end()) {
+        return this->elements.at(index);
+    }
+
+    throw std::out_of_range("Index out of range");
+}
+
+docpp::HTML::HTMLSection docpp::HTML::HTMLSection::at_section(const int index) const {
+    if (this->sections.find(index) != this->sections.end()) {
+        return this->sections.at(index);
+    }
+
+    throw std::out_of_range("Index out of range");
+}
+
 int docpp::HTML::HTMLSection::find(const HTMLElement& element) {
     for (int i{0}; i < this->size(); i++) {
         const auto it = this->getHTMLElements().at(i);
@@ -525,6 +557,14 @@ void docpp::CSS::CSSElement::erase(const int index) {
     this->element.second.erase(this->element.second.begin() + index);
 }
 
+docpp::CSS::CSSProperty docpp::CSS::CSSElement::at(const int index) const {
+    if (index < 0 || index >= this->element.second.size()) {
+        throw std::out_of_range("Index out of range");
+    }
+
+    return this->element.second.at(index);
+}
+
 int docpp::CSS::CSSElement::find(const CSSProperty& property) {
     for (int i{0}; i < this->element.second.size(); i++) {
         if (this->element.second.at(i).get() == property.get()) {
@@ -630,6 +670,14 @@ void docpp::CSS::CSSStylesheet::erase(const int index) {
     }
 
     this->elements.erase(this->elements.begin() + index);
+}
+
+docpp::CSS::CSSElement docpp::CSS::CSSStylesheet::at(const int index) const {
+    if (index < 0 || index >= this->elements.size()) {
+        throw std::out_of_range("Index out of range");
+    }
+
+    return this->elements.at(index);
 }
 
 int docpp::CSS::CSSStylesheet::find(const CSSElement& element) {

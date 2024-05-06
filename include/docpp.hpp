@@ -117,6 +117,18 @@ namespace docpp {
                  */
                 void set(const std::vector<HTMLProperty>& properties);
                 /**
+                 * @brief Get the property at an index
+                 * @param index The index of the property
+                 * @return HTMLProperty The property at the index
+                 */
+                HTMLProperty at(const int index) const;
+                /**
+                 * @brief Insert a property into the element
+                 * @param index The index to insert the property
+                 * @param property The property to insert
+                 */
+                void insert(const int index, const HTMLProperty& property);
+                /**
                  * @brief Erase a property from the element
                  * @param index The index of the property to erase
                  */
@@ -268,6 +280,18 @@ namespace docpp {
                  * @param section The section to add
                  */
                 void push_back(const HTMLSection& section);
+                /**
+                 * @brief Get the element at an index. To get a section, use at_section()
+                 * @param index The index of the element
+                 * @return HTMLElement The element at the index
+                 */
+                HTMLElement at(const int index) const;
+                /**
+                 * @brief Get the section at an index. To get an element, use at()
+                 * @param index The index of the section
+                 * @return HTMLSection The section at the index
+                 */
+                HTMLSection at_section(const int index) const;
                 /**
                  * @brief Erase an element from the section. Note that this will NOT change the size/index.
                  * @param index The index of the element to erase
@@ -553,6 +577,12 @@ namespace docpp {
                  */
                 int find(const CSSProperty& property);
                 /**
+                 * @brief Get the property at an index
+                 * @param index The index of the property
+                 * @return CSSProperty The property at the index
+                 */
+                CSSProperty at(const int index) const;
+                /**
                  * @brief Find a property in the element
                  * @param str The property to find
                  * @return int The index of the property
@@ -655,6 +685,12 @@ namespace docpp {
                  * @return int The index of the element
                  */
                 int find(const std::string& str);
+                /**
+                 * @brief Get the element at an index
+                 * @param index The index of the element
+                 * @return CSSElement The element at the index
+                 */
+                CSSElement at(const int index) const;
                 /**
                  * @brief Get the size of the stylesheet
                  * @return int The size of the stylesheet
