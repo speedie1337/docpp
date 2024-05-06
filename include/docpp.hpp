@@ -497,6 +497,46 @@ namespace docpp {
                  */
                 void push_back(const CSSProperty& property);
                 /**
+                 * @brief Insert a property into the element
+                 * @param index The index to insert the property
+                 * @param property The property to insert
+                 */
+                void insert(const int index, const CSSProperty& property);
+                /**
+                 * @brief Erase a property from the element
+                 * @param index The index of the property to erase
+                 */
+                void erase(const int index);
+                /**
+                 * @brief Find a property in the element
+                 * @param property The property to find
+                 * @return int The index of the property
+                 */
+                int find(const CSSProperty& property);
+                /**
+                 * @brief Find a property in the element
+                 * @param str The property to find
+                 * @return int The index of the property
+                 */
+                int find(const std::string& str);
+                /**
+                 * @brief Swap two properties in the element
+                 * @param index1 The index of the first property
+                 * @param index2 The index of the second property
+                 */
+                void swap(const int index1, const int index2);
+                /**
+                 * @brief Swap two properties in the element
+                 * @param property1 The first property
+                 * @param property2 The second property
+                 */
+                void swap(const CSSProperty& property1, const CSSProperty& property2);
+                /**
+                 * @brief Get the size of the element
+                 * @return int The size of the element
+                 */
+                int size() const;
+                /**
                  * @brief Set the properties of the element
                  * @param properties The properties to set
                  */

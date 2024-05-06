@@ -218,7 +218,27 @@ SCENARIO("Test HTML", "[HTML]") {
         REQUIRE(section.get() == "<html><p>Test 1</p><p>Test 3</p><p>Test 4</p><p>Test 5</p></html>");
     };
 
-    std::vector<void (*)()> tests{test1, test2, test3, test4, test5, test6, test7, test8, test9, test10, test11, test12, test13};
+    auto test14 = []() {
+        docpp::CSS::CSSElement element{"p", {{"color", "red"}, {"font-size", "16px"}, {"font-family", "Arial"}}};
+
+        const int red = element.find("color");
+
+        REQUIRE(red != docpp::CSS::CSSElement::npos);
+
+        const int blue = element.find("blue");
+
+        REQUIRE(blue == docpp::CSS::CSSElement::npos);
+
+        element.erase(red);
+
+        REQUIRE(element.get() == "p {font-size: 16px;font-family: Arial;}");
+
+        element.insert(red, docpp::CSS::CSSProperty("color", "red"));
+
+        REQUIRE(element.get() == "p {color: red;font-size: 16px;font-family: Arial;}");
+    };
+
+    std::vector<void (*)()> tests{test1, test2, test3, test4, test5, test6, test7, test8, test9, test10, test11, test12, test13, test14};
 
     for (const auto& test : tests) {
         test();

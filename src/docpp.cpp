@@ -189,6 +189,7 @@ void docpp::HTML::HTMLSection::push_back(const HTMLSection& section) {
 
 void docpp::HTML::HTMLSection::erase(const int index) {
     bool erased{false};
+
     if (this->elements.find(index) != this->elements.end()) {
         this->elements.erase(index);
         erased = true;
@@ -448,6 +449,58 @@ void docpp::CSS::CSSElement::push_front(const CSSProperty& property) {
 
 void docpp::CSS::CSSElement::push_back(const CSSProperty& property) {
     this->element.second.push_back(property);
+}
+
+void docpp::CSS::CSSElement::insert(const int index, const CSSProperty& property) {
+    if (index < 0 || index >= this->element.second.size()) {
+        throw std::out_of_range("Index out of range");
+    }
+
+    this->element.second.insert(this->element.second.begin() + index, property);
+}
+
+void docpp::CSS::CSSElement::erase(const int index) {
+    if (index < 0 || index >= this->element.second.size()) {
+        throw std::out_of_range("Index out of range");
+    }
+
+    this->element.second.erase(this->element.second.begin() + index);
+}
+
+int docpp::CSS::CSSElement::find(const CSSProperty& property) {
+    for (int i{0}; i < this->element.second.size(); i++) {
+        if (this->element.second.at(i).get() == property.get()) {
+            return i;
+        }
+    }
+
+    return docpp::CSS::CSSElement::npos;
+}
+
+int docpp::CSS::CSSElement::find(const std::string& str) {
+    for (int i{0}; i < this->element.second.size(); i++) {
+        if (!this->element.second.at(i).getKey().compare(str) || !this->element.second.at(i).getValue().compare(str)) {
+            return i;
+        }
+    }
+
+    return docpp::CSS::CSSElement::npos;
+}
+
+int docpp::CSS::CSSElement::size() const {
+    return this->element.second.size();
+}
+
+void docpp::CSS::CSSElement::swap(const int index1, const int index2) {
+    if (index1 < 0 || index1 >= this->element.second.size() || index2 < 0 || index2 >= this->element.second.size()) {
+        throw std::out_of_range("Index out of range");
+    }
+
+    std::swap(this->element.second[index1], this->element.second[index2]);
+}
+
+void docpp::CSS::CSSElement::swap(const CSSProperty& property1, const CSSProperty& property2) {
+    this->swap(this->find(property1), this->find(property2));
 }
 
 std::string docpp::CSS::CSSElement::get(const int formatting) const {
