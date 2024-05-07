@@ -148,6 +148,14 @@ int docpp::HTML::HTMLElementProperties::find(const std::string& str) {
     return docpp::HTML::HTMLElementProperties::npos;
 }
 
+docpp::HTML::HTMLProperty docpp::HTML::HTMLElementProperties::front() const {
+    return this->properties.front();
+}
+
+docpp::HTML::HTMLProperty docpp::HTML::HTMLElementProperties::back() const {
+    return this->properties.back();
+}
+
 int docpp::HTML::HTMLElementProperties::size() const {
     return this->properties.size();
 }
@@ -432,6 +440,38 @@ int docpp::HTML::HTMLSection::find(const std::string& str) {
     return docpp::HTML::HTMLSection::npos;
 }
 
+docpp::HTML::HTMLElement docpp::HTML::HTMLSection::front() const {
+    if (this->elements.find(0) != this->elements.end()) {
+        return this->elements.at(0);
+    }
+
+    throw std::out_of_range("Index out of range");
+}
+
+docpp::HTML::HTMLSection docpp::HTML::HTMLSection::front_section() const {
+    if (this->sections.find(0) != this->sections.end()) {
+        return this->sections.at(0);
+    }
+
+    throw std::out_of_range("Index out of range");
+}
+
+docpp::HTML::HTMLElement docpp::HTML::HTMLSection::back() const {
+    if (this->elements.find(this->index - 1) != this->elements.end()) {
+        return this->elements.at(this->index - 1);
+    }
+
+    throw std::out_of_range("Index out of range");
+}
+
+docpp::HTML::HTMLSection docpp::HTML::HTMLSection::back_section() const {
+    if (this->sections.find(this->index - 1) != this->sections.end()) {
+        return this->sections.at(this->index - 1);
+    }
+
+    throw std::out_of_range("Index out of range");
+}
+
 int docpp::HTML::HTMLSection::size() const {
     return this->index;
 }
@@ -700,6 +740,14 @@ int docpp::CSS::CSSElement::find(const std::string& str) {
     return docpp::CSS::CSSElement::npos;
 }
 
+docpp::CSS::CSSProperty docpp::CSS::CSSElement::front() const {
+    return this->element.second.front();
+}
+
+docpp::CSS::CSSProperty docpp::CSS::CSSElement::back() const {
+    return this->element.second.back();
+}
+
 int docpp::CSS::CSSElement::size() const {
     return this->element.second.size();
 }
@@ -836,6 +884,14 @@ int docpp::CSS::CSSStylesheet::find(const std::string& str) {
 
 int docpp::CSS::CSSStylesheet::size() const {
     return this->elements.size();
+}
+
+docpp::CSS::CSSElement docpp::CSS::CSSStylesheet::front() const {
+    return this->elements.front();
+}
+
+docpp::CSS::CSSElement docpp::CSS::CSSStylesheet::back() const {
+    return this->elements.back();
 }
 
 void docpp::CSS::CSSStylesheet::swap(const int index1, const int index2) {

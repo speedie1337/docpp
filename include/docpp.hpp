@@ -162,6 +162,16 @@ namespace docpp {
                  */
                 void swap(const HTMLProperty& property1, const HTMLProperty& property2);
                 /**
+                 * @brief Get the first property of the element
+                 * @return HTMLProperty The first property of the element
+                 */
+                HTMLProperty front() const;
+                /**
+                 * @brief Get the last property of the element
+                 * @return HTMLProperty The last property of the element
+                 */
+                HTMLProperty back() const;
+                /**
                  * @brief Get the size of the element
                  * @return int The size of the element
                  */
@@ -347,6 +357,26 @@ namespace docpp {
                  * @param section The section to insert
                  */
                 void insert(const int index, const HTMLSection& section);
+                /**
+                 * @brief Get the first element of the section
+                 * @return HTMLElement The first element of the section
+                 */
+                HTMLElement front() const;
+                /**
+                 * @brief Get the last element of the section
+                 * @return HTMLElement The last element of the section
+                 */
+                HTMLElement back() const;
+                /**
+                 * @brief Get the first section of the section
+                 * @return HTMLSection The first section of the section
+                 */
+                HTMLSection front_section() const;
+                /**
+                 * @brief Get the last section of the section
+                 * @return HTMLSection The last section of the section
+                 */
+                HTMLSection back_section() const;
                 /**
                  * @brief Get the size of the section
                  * @return int The size of the section
@@ -628,6 +658,16 @@ namespace docpp {
                  */
                 void swap(const CSSProperty& property1, const CSSProperty& property2);
                 /**
+                 * @brief Get the first property of the element
+                 * @return CSSProperty The first property of the element
+                 */
+                CSSProperty front() const;
+                /**
+                 * @brief Get the last property of the element
+                 * @return CSSProperty The last property of the element
+                 */
+                CSSProperty back() const;
+                /**
                  * @brief Get the size of the element
                  * @return int The size of the element
                  */
@@ -728,6 +768,16 @@ namespace docpp {
                  * @return int The size of the stylesheet
                  */
                 int size() const;
+                /**
+                 * @brief Get the first element of the stylesheet
+                 * @return CSSElement The first element of the stylesheet
+                 */
+                CSSElement front() const;
+                /**
+                 * @brief Get the last element of the stylesheet
+                 * @return CSSElement The last element of the stylesheet
+                 */
+                CSSElement back() const;
                 /**
                  * @brief Swap two elements in the stylesheet
                  * @param index1 The index of the first element
