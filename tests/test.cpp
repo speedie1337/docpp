@@ -296,6 +296,16 @@ SCENARIO("Test HTML", "[HTML]") {
         REQUIRE(doc.get(docpp::HTML::FORMATTING_PRETTY) == "<!DOCTYPE html>\n<html>\n\t<p>Test 1</p>\n\t<p>Test 2</p>\n\t<p>Test 3</p>\n</html>");
     };
 
+    auto test18 = []() {
+        docpp::HTML::HTMLSection section = docpp::HTML::HTMLSection(docpp::HTML::SECTION_EMPTY, {});
+
+        section.push_back(docpp::HTML::HTMLElement("p", {}, "Test 1"));
+        section.push_back(docpp::HTML::HTMLElement("p", {}, "Test 2"));
+        section.push_back(docpp::HTML::HTMLElement("p", {}, "Test 3"));
+
+        REQUIRE(section.get() == "<p>Test 1</p><p>Test 2</p><p>Test 3</p>");
+    };
+
     std::vector<void (*)()> tests{
         test1,
         test2,
@@ -314,6 +324,7 @@ SCENARIO("Test HTML", "[HTML]") {
         test15,
         test16,
         test17,
+        test18,
     };
 
     for (const auto& test : tests) {

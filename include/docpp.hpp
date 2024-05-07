@@ -23,6 +23,7 @@
 namespace docpp {
     namespace HTML {
         enum {
+            SECTION_EMPTY,
             SECTION_HTML,
             SECTION_HEAD,
             SECTION_BODY,
@@ -31,6 +32,8 @@ namespace docpp {
             TYPE_SELF_CLOSING,
             TYPE_NON_SELF_CLOSING,
             TYPE_NON_CLOSED,
+            TYPE_TEXT,
+            TYPE_TEXT_TAB,
             FORMATTING_NONE,
             FORMATTING_PRETTY,
             FORMATTING_NEWLINE,

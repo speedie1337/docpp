@@ -187,6 +187,16 @@ void docpp::HTML::HTMLElement::set(const std::string& tag, const HTMLElementProp
 std::string docpp::HTML::HTMLElement::get(const int formatting, const int tabc) const {
     std::string ret{};
 
+    if (this->type == docpp::HTML::TYPE_TEXT) {
+        return this->data;
+    } else if (this->type == docpp::HTML::TYPE_TEXT_TAB) {
+        for (int i{0}; i < tabc; i++) {
+            ret += "\t";
+        }
+
+        return ret + this->data;
+    }
+
     if (formatting == docpp::HTML::FORMATTING_PRETTY) {
         for (int i{0}; i < tabc; i++) {
             ret += "\t";
@@ -255,19 +265,7 @@ docpp::HTML::HTMLElement docpp::HTML::HTMLSection::operator[](const int& index) 
 }
 
 docpp::HTML::HTMLSection::HTMLSection(const int tag, const HTMLElementProperties& properties) {
-    if (tag == docpp::HTML::SECTION_DIV) {
-        this->tag = "div";
-    } else if (tag == docpp::HTML::SECTION_BODY) {
-        this->tag = "body";
-    } else if (tag == docpp::HTML::SECTION_FOOTER) {
-        this->tag = "footer";
-    } else if (tag == docpp::HTML::SECTION_HEAD) {
-        this->tag = "head";
-    } else if (tag == docpp::HTML::SECTION_HTML) {
-        this->tag = "html";
-    }
-
-    this->properties = properties;
+    this->set(tag, properties);
 }
 
 void docpp::HTML::HTMLSection::set(const std::string& tag, const HTMLElementProperties& properties) {
@@ -464,33 +462,44 @@ std::vector<docpp::HTML::HTMLSection> docpp::HTML::HTMLSection::getHTMLSections(
 
 std::string docpp::HTML::HTMLSection::get(const int formatting, const int tabc) const {
     std::string ret{};
+    int tabcount{tabc};
+
+    if (!this->tag.compare("")) {
+        --tabcount; // i guess this means the section only contains elements and sections, and isn't a tag itself
+
+        if (tabcount < -1) {
+            tabcount = -1; // will be incremented by 1, so it will be 0
+        }
+    }
 
     if (formatting == docpp::HTML::FORMATTING_PRETTY) {
-        for (int i{0}; i < tabc; i++) {
+        for (int i{0}; i < tabcount; i++) {
             ret += "\t";
         }
     }
 
-    ret += "<" + this->tag;
+    if (this->tag.compare("")) {
+        ret += "<" + this->tag;
 
-    for (const auto& it : this->properties.getProperties()) {
-        if (!it.getKey().compare("")) continue;
-        if (!it.getValue().compare("")) continue;
+        for (const auto& it : this->properties.getProperties()) {
+            if (!it.getKey().compare("")) continue;
+            if (!it.getValue().compare("")) continue;
 
-        ret += " " + it.getKey() + "=\"" + it.getValue() + "\"";
-    }
+            ret += " " + it.getKey() + "=\"" + it.getValue() + "\"";
+        }
 
-    ret += ">";
+        ret += ">";
 
-    if (formatting == docpp::HTML::FORMATTING_PRETTY || formatting == docpp::HTML::FORMATTING_NEWLINE) {
-        ret += "\n";
+        if (formatting == docpp::HTML::FORMATTING_PRETTY || formatting == docpp::HTML::FORMATTING_NEWLINE) {
+            ret += "\n";
+        }
     }
 
     for (int i{0}; i < this->index; i++) {
         if (this->elements.find(i) != this->elements.end()) {
-            ret += this->elements.at(i).get(formatting, tabc + 1);
+            ret += this->elements.at(i).get(formatting, tabcount + 1);
         } else if (this->sections.find(i) != this->sections.end()) {
-            ret += this->sections.at(i).get(formatting, tabc + 1);
+            ret += this->sections.at(i).get(formatting, tabcount + 1);
 
             if (formatting == docpp::HTML::FORMATTING_PRETTY || formatting == docpp::HTML::FORMATTING_NEWLINE) {
                 ret += "\n";
@@ -499,12 +508,12 @@ std::string docpp::HTML::HTMLSection::get(const int formatting, const int tabc) 
     }
 
     if (formatting == docpp::HTML::FORMATTING_PRETTY) {
-        for (int i{0}; i < tabc; i++) {
+        for (int i{0}; i < tabcount; i++) {
             ret += "\t";
         }
     }
 
-    ret += "</" + this->tag + ">";
+    ret += this->tag.compare("") ? ("</" + this->tag + ">") : "";
 
     return std::move(ret);
 }

@@ -1,5 +1,11 @@
-// Compile with: g++ hello-world.cpp -o hello-world -ldocpp
-#include <iostream>
+/**
+ * @file hello-world.cpp
+ * @brief A simple Hello World program, demonstrating the use of docpp.
+ * @details This program creates a simple HTML document with a title, a meta description, a body with a div containing a header and a paragraph, and a footer with a paragraph. It also includes a CSS stylesheet that sets the background color of the body to black and the text color to white. It then writes the document to a file called hello-world.html.
+ * @license LGPL-3.0
+ *
+ * g++ -std=c++11 hello-world.cpp -o hello-world -ldocpp
+ */
 #include <fstream>
 #include <docpp/docpp.hpp>
 
@@ -78,7 +84,7 @@ int main() {
     stylesheet.push_back(bodyStyling);
 
     /* To get the stylesheet as an std::string object, call stylesheet.get(). It can then be used in an HTMLElement object. */
-    const std::string& css = stylesheet.get(); // body { background-color: black; color: white; }
+    const std::string& css = stylesheet.get(docpp::CSS::FORMATTING_PRETTY); // body { background-color: black; color: white; }
 
     headSection.push_back(docpp::HTML::HTMLElement("style", {}, css)); // <style>body { background-color: black; color: white; }</style>
 
@@ -113,8 +119,6 @@ int main() {
     file << doc.get(docpp::HTML::FORMATTING_PRETTY);
 
     file.close();
-
-    std::cout << doc.get() << "\n";
 
     /* And we're done! */
     return 0;
