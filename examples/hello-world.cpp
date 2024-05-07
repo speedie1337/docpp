@@ -82,11 +82,17 @@ int main() {
 
     headSection.push_back(docpp::HTML::HTMLElement("style", {}, css)); // <style>body { background-color: black; color: white; }</style>
 
-    /* Add a paragraph element to the body section. */
-    bodySection.push_back(docpp::HTML::HTMLElement("p", {}, "Hello, world!")); // <p>Hello, world!</p>
-
-    /* Likewise, add a paragraph element to the footer section. */
+    /* Add a paragraph element to the footer section. */
     footerSection.push_back(docpp::HTML::HTMLElement("p", {}, "This is the footer.")); // <p>This is the footer.</p>
+
+    docpp::HTML::HTMLSection divSection(docpp::HTML::SECTION_DIV, {{docpp::HTML::HTMLProperty("id", "main")}}); // <div id="main"></div>
+
+    /* Add a header element and a paragraph element to the div section. */
+    divSection.push_back(docpp::HTML::HTMLElement("h1", {}, "Hello world!")); // <h1>Hello world!</h1>
+    divSection.push_back(docpp::HTML::HTMLElement("p", {}, "This is a paragraph.")); // <p>This is a paragraph.</p>
+
+    /* Add the div section to the body section. */
+    bodySection.push_back(divSection);
 
     /* Now, let's add the header, body and footer section to the html section.
      * The order does matter, because an identifier is used internally. You can get this identifier by e.g. using find().
@@ -102,7 +108,7 @@ int main() {
     std::ofstream file("hello-world.html");
 
     /* Optionally, you can use the get() method with the docpp::HTML::FORMATTING_PRETTY argument to get a *slightly* more readable document.
-     * It still doesn't look hand-made, but it's readable at least. The same goes for the CSS document.
+     * The same goes for the CSS document. Or, you can use docpp::HTML::FORMATTING_NEWLINE to get a document with elements separated by newlines.
      */
     file << doc.get(docpp::HTML::FORMATTING_PRETTY);
 

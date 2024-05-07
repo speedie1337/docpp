@@ -184,8 +184,14 @@ void docpp::HTML::HTMLElement::set(const std::string& tag, const HTMLElementProp
     this->type = type;
 }
 
-std::string docpp::HTML::HTMLElement::get(const int formatting) const {
+std::string docpp::HTML::HTMLElement::get(const int formatting, const int tabc) const {
     std::string ret{};
+
+    if (formatting == docpp::HTML::FORMATTING_PRETTY) {
+        for (int i{0}; i < tabc; i++) {
+            ret += "\t";
+        }
+    }
 
     ret += "<" + this->tag;
 
@@ -206,7 +212,7 @@ std::string docpp::HTML::HTMLElement::get(const int formatting) const {
         ret += this->data + "/>";
     }
 
-    if (formatting == docpp::HTML::FORMATTING_PRETTY) {
+    if (formatting == docpp::HTML::FORMATTING_PRETTY || formatting == docpp::HTML::FORMATTING_NEWLINE) {
         ret += "\n";
     }
 
@@ -456,8 +462,14 @@ std::vector<docpp::HTML::HTMLSection> docpp::HTML::HTMLSection::getHTMLSections(
     return std::move(ret);
 }
 
-std::string docpp::HTML::HTMLSection::get(const int formatting) const {
+std::string docpp::HTML::HTMLSection::get(const int formatting, const int tabc) const {
     std::string ret{};
+
+    if (formatting == docpp::HTML::FORMATTING_PRETTY) {
+        for (int i{0}; i < tabc; i++) {
+            ret += "\t";
+        }
+    }
 
     ret += "<" + this->tag;
 
@@ -470,19 +482,25 @@ std::string docpp::HTML::HTMLSection::get(const int formatting) const {
 
     ret += ">";
 
-    if (formatting == docpp::HTML::FORMATTING_PRETTY) {
+    if (formatting == docpp::HTML::FORMATTING_PRETTY || formatting == docpp::HTML::FORMATTING_NEWLINE) {
         ret += "\n";
     }
 
     for (int i{0}; i < this->index; i++) {
         if (this->elements.find(i) != this->elements.end()) {
-            ret += this->elements.at(i).get(formatting);
+            ret += this->elements.at(i).get(formatting, tabc + 1);
         } else if (this->sections.find(i) != this->sections.end()) {
-            ret += this->sections.at(i).get(formatting);
+            ret += this->sections.at(i).get(formatting, tabc + 1);
 
-            if (formatting == docpp::HTML::FORMATTING_PRETTY) {
+            if (formatting == docpp::HTML::FORMATTING_PRETTY || formatting == docpp::HTML::FORMATTING_NEWLINE) {
                 ret += "\n";
             }
+        }
+    }
+
+    if (formatting == docpp::HTML::FORMATTING_PRETTY) {
+        for (int i{0}; i < tabc; i++) {
+            ret += "\t";
         }
     }
 
@@ -509,8 +527,8 @@ void docpp::HTML::HTMLSection::swap(const HTMLSection& section1, const HTMLSecti
     this->swap(this->find(section1), this->find(section2));
 }
 
-std::string docpp::HTML::HTMLDocument::get(const int formatting) const {
-    return this->doctype + (formatting == FORMATTING_PRETTY ? "\n" : "") + this->document.get(formatting);
+std::string docpp::HTML::HTMLDocument::get(const int formatting, const int tabc) const {
+    return this->doctype + (formatting == FORMATTING_PRETTY ? "\n" : formatting == FORMATTING_NEWLINE ? "\n" : "") + this->document.get(formatting, tabc);
 }
 
 docpp::HTML::HTMLSection& docpp::HTML::HTMLDocument::getSection() {
@@ -689,13 +707,13 @@ void docpp::CSS::CSSElement::swap(const CSSProperty& property1, const CSSPropert
     this->swap(this->find(property1), this->find(property2));
 }
 
-std::string docpp::CSS::CSSElement::get(const int formatting) const {
+std::string docpp::CSS::CSSElement::get(const int formatting, const int tabc) const {
     std::string ret{};
 
     if (this->element.first.compare("")) {
         ret += this->element.first + " {";
 
-        if (formatting == docpp::CSS::FORMATTING_PRETTY) {
+        if (formatting == docpp::CSS::FORMATTING_PRETTY || formatting == docpp::CSS::FORMATTING_NEWLINE) {
             ret += "\n";
         }
 
@@ -703,16 +721,22 @@ std::string docpp::CSS::CSSElement::get(const int formatting) const {
             if (!it.getKey().compare("")) continue;
             if (!it.getValue().compare("")) continue;
 
+            if (formatting == docpp::CSS::FORMATTING_PRETTY) {
+                for (int i{0}; i < tabc + 1; i++) {
+                    ret += "\t";
+                }
+            }
+
             ret += it.getKey() + ": " + it.getValue() + ";";
 
-            if (formatting == docpp::CSS::FORMATTING_PRETTY) {
+            if (formatting == docpp::CSS::FORMATTING_PRETTY || formatting == docpp::CSS::FORMATTING_NEWLINE) {
                 ret += "\n";
             }
         }
 
         ret += "}";
 
-        if (formatting == docpp::CSS::FORMATTING_PRETTY) {
+        if (formatting == docpp::CSS::FORMATTING_PRETTY || formatting == docpp::CSS::FORMATTING_NEWLINE) {
             ret += "\n";
         }
     }
@@ -821,11 +845,11 @@ std::vector<docpp::CSS::CSSElement> docpp::CSS::CSSStylesheet::getElements() con
     return this->elements;
 }
 
-std::string docpp::CSS::CSSStylesheet::get(const int formatting) const {
+std::string docpp::CSS::CSSStylesheet::get(const int formatting, const int tabc) const {
     std::string ret{};
 
     for (const auto& it : this->elements) {
-        ret += it.get(formatting);
+        ret += it.get(formatting, tabc);
     }
 
     return std::move(ret);

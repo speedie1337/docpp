@@ -33,6 +33,7 @@ namespace docpp {
             TYPE_NON_CLOSED,
             FORMATTING_NONE,
             FORMATTING_PRETTY,
+            FORMATTING_NEWLINE,
         };
 
         /**
@@ -231,7 +232,7 @@ namespace docpp {
                  * @brief Get the element in the form of an HTML tag.
                  * @return std::string The tag of the element
                  */
-                std::string get(const int formatting = FORMATTING_NONE) const;
+                std::string get(const int formatting = FORMATTING_NONE, const int tabc = 0) const;
 
                 /**
                  * @brief Get the tag of the element
@@ -412,7 +413,7 @@ namespace docpp {
                  * @brief Dump the entire section.
                  * @return std::string The section
                  */
-                std::string get(const int formatting = FORMATTING_NONE) const;
+                std::string get(const int formatting = FORMATTING_NONE, const int tabc = 0) const;
 
                 HTMLSection operator=(const HTMLSection& section);
                 void operator+=(const HTMLElement& element);
@@ -439,7 +440,7 @@ namespace docpp {
                  * @param std::string The type to return
                  * @return std::string The document
                  */
-                std::string get(const int formatting = FORMATTING_NONE) const;
+                std::string get(const int formatting = FORMATTING_NONE, const int tabc = 0) const;
 
                 /**
                  * @brief Get the section
@@ -482,6 +483,7 @@ namespace docpp {
         enum {
             FORMATTING_NONE,
             FORMATTING_PRETTY,
+            FORMATTING_NEWLINE,
         };
 
         class CSSProperty {
@@ -641,7 +643,7 @@ namespace docpp {
                  * @brief Get the element
                  * @return std::pair<std::string, std::vector<CSSProperty>> The element
                  */
-                std::string get(const int formatting = FORMATTING_NONE) const;
+                std::string get(const int formatting = FORMATTING_NONE, const int tabc = 0) const;
                 /**
                  * @brief Get the tag of the element
                  * @return std::string The tag of the element
@@ -749,7 +751,7 @@ namespace docpp {
                  * @brief Get the stylesheet
                  * @return std::string The stylesheet
                  */
-                std::string get(const int formatting = FORMATTING_NONE) const;
+                std::string get(const int formatting = FORMATTING_NONE, const int tabc = 0) const;
 
                 CSSStylesheet operator=(const CSSStylesheet& stylesheet);
                 void operator+=(const CSSElement& element);

@@ -41,7 +41,7 @@ SCENARIO("Test HTML", "[HTML]") {
         const std::string expected_html{"<!DOCTYPE html><html><head><title>Test Title</title></head><body><h1>Test Header</h1><p>Test Paragraph</p><p id=\"test_id\">Test Paragraph With ID</p><div><p>Test Paragraph In Div</p></div><p id=\"test_id\" class=\"class1 class2 class3\">Test Paragraph With ID And Class</p></body><footer></footer></html>"};
 
         REQUIRE(doc.get() == expected_html);
-        REQUIRE(doc.get(docpp::HTML::FORMATTING_PRETTY) == "<!DOCTYPE html>\n<html>\n<head>\n<title>Test Title</title>\n</head>\n<body>\n<h1>Test Header</h1>\n<p>Test Paragraph</p>\n<p id=\"test_id\">Test Paragraph With ID</p>\n<div>\n<p>Test Paragraph In Div</p>\n</div>\n<p id=\"test_id\" class=\"class1 class2 class3\">Test Paragraph With ID And Class</p>\n</body>\n<footer>\n</footer>\n</html>");
+        REQUIRE(doc.get(docpp::HTML::FORMATTING_NEWLINE) == "<!DOCTYPE html>\n<html>\n<head>\n<title>Test Title</title>\n</head>\n<body>\n<h1>Test Header</h1>\n<p>Test Paragraph</p>\n<p id=\"test_id\">Test Paragraph With ID</p>\n<div>\n<p>Test Paragraph In Div</p>\n</div>\n<p id=\"test_id\" class=\"class1 class2 class3\">Test Paragraph With ID And Class</p>\n</body>\n<footer>\n</footer>\n</html>");
     };
 
     auto test2 = []() {
@@ -54,7 +54,7 @@ SCENARIO("Test HTML", "[HTML]") {
         section.erase(docpp::HTML::HTMLElement("p", {}, "Test 2"));
 
         REQUIRE(section.get() == "<html><p>Test 1</p><p>Test 3</p></html>");
-        REQUIRE(section.get(docpp::HTML::FORMATTING_PRETTY) == "<html>\n<p>Test 1</p>\n<p>Test 3</p>\n</html>");
+        REQUIRE(section.get(docpp::HTML::FORMATTING_NEWLINE) == "<html>\n<p>Test 1</p>\n<p>Test 3</p>\n</html>");
     };
 
     auto test3 = []() {
@@ -68,7 +68,7 @@ SCENARIO("Test HTML", "[HTML]") {
         section.insert(pos, docpp::HTML::HTMLElement("p", {}, "Test 2.5"));
 
         REQUIRE(section.get() == "<html><p>Test 1</p><p>Test 2.5</p><p>Test 3</p></html>");
-        REQUIRE(section.get(docpp::HTML::FORMATTING_PRETTY) == "<html>\n<p>Test 1</p>\n<p>Test 2.5</p>\n<p>Test 3</p>\n</html>");
+        REQUIRE(section.get(docpp::HTML::FORMATTING_NEWLINE) == "<html>\n<p>Test 1</p>\n<p>Test 2.5</p>\n<p>Test 3</p>\n</html>");
     };
 
     auto test4 = []() {
@@ -83,7 +83,7 @@ SCENARIO("Test HTML", "[HTML]") {
         section.erase(pos);
 
         REQUIRE(section.get() == "<html><p>Test 1</p><p>Test 3</p></html>");
-        REQUIRE(section.get(docpp::HTML::FORMATTING_PRETTY) == "<html>\n<p>Test 1</p>\n<p>Test 3</p>\n</html>");
+        REQUIRE(section.get(docpp::HTML::FORMATTING_NEWLINE) == "<html>\n<p>Test 1</p>\n<p>Test 3</p>\n</html>");
     };
 
     auto test5 = []() {
@@ -103,7 +103,7 @@ SCENARIO("Test HTML", "[HTML]") {
         doc.set(section);
 
         REQUIRE(doc.get() == "<!DOCTYPE html><html><div><p>Test 1</p><div><p>Test 2</p></div></div></html>");
-        REQUIRE(doc.get(docpp::HTML::FORMATTING_PRETTY) == "<!DOCTYPE html>\n<html>\n<div>\n<p>Test 1</p>\n<div>\n<p>Test 2</p>\n</div>\n</div>\n</html>");
+        REQUIRE(doc.get(docpp::HTML::FORMATTING_NEWLINE) == "<!DOCTYPE html>\n<html>\n<div>\n<p>Test 1</p>\n<div>\n<p>Test 2</p>\n</div>\n</div>\n</html>");
     };
 
     auto test6 = []() {
@@ -113,7 +113,7 @@ SCENARIO("Test HTML", "[HTML]") {
         css.push_back(element);
 
         REQUIRE(css.get() == "p {color: red;font-size: 16px;font-family: Arial;}");
-        REQUIRE(css.get(docpp::CSS::FORMATTING_PRETTY) == "p {\ncolor: red;\nfont-size: 16px;\nfont-family: Arial;\n}\n");
+        REQUIRE(css.get(docpp::CSS::FORMATTING_NEWLINE) == "p {\ncolor: red;\nfont-size: 16px;\nfont-family: Arial;\n}\n");
     };
 
     auto test7 = []() {
@@ -284,6 +284,18 @@ SCENARIO("Test HTML", "[HTML]") {
         REQUIRE(doc.get() == "<!DOCTYPE html><html><p>Test 4</p><p>Test 5</p><p>Test 6</p><p>Test 7</p></html>");
     };
 
+    auto test17 = []() {
+        docpp::HTML::HTMLSection section = docpp::HTML::HTMLSection(docpp::HTML::SECTION_HTML, {});
+
+        section.push_back(docpp::HTML::HTMLElement("p", {}, "Test 1"));
+        section.push_back(docpp::HTML::HTMLElement("p", {}, "Test 2"));
+        section.push_back(docpp::HTML::HTMLElement("p", {}, "Test 3"));
+
+        docpp::HTML::HTMLDocument doc{section};
+
+        REQUIRE(doc.get(docpp::HTML::FORMATTING_PRETTY) == "<!DOCTYPE html>\n<html>\n\t<p>Test 1</p>\n\t<p>Test 2</p>\n\t<p>Test 3</p>\n</html>");
+    };
+
     std::vector<void (*)()> tests{
         test1,
         test2,
@@ -301,6 +313,7 @@ SCENARIO("Test HTML", "[HTML]") {
         test14,
         test15,
         test16,
+        test17,
     };
 
     for (const auto& test : tests) {

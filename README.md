@@ -4,6 +4,19 @@
 
 Small C++ library for generating XML, HTML and CSS.
 
+## Features
+
+- HTML, CSS and XML document generation and deserialization
+- Sensible indentation for pretty-formatting.
+- Modern C++ API
+- No dependencies, other than the standard library
+- Windows, macOS, Linux and *BSD support
+- LGPL license
+
+## Not yet implemented
+
+- HTML/XML/CSS serialization (parsing from e.g. file)
+
 ## Installation
 
 To install the library, you can utilize the provided CMakeLists.txt file:
