@@ -204,7 +204,7 @@ std::string docpp::HTML::Element::get(const int formatting, const int tabc) cons
 
     ret += "<" + this->tag;
 
-    for (const auto& it : this->properties.getProperties()) {
+    for (const Property& it : this->properties.getProperties()) {
         if (!it.getKey().compare("")) continue;
         if (!it.getValue().compare("")) continue;
 
@@ -226,6 +226,10 @@ std::string docpp::HTML::Element::get(const int formatting, const int tabc) cons
     }
 
     return std::move(ret);
+}
+
+template <typename T> T docpp::HTML::Element::get(const int formatting, const int tabc) const {
+    return T(this->get(formatting, tabc));
 }
 
 std::string docpp::HTML::Element::getTag() const {
@@ -332,7 +336,7 @@ void docpp::HTML::Section::erase(const size_type index) {
 
 void docpp::HTML::Section::erase(const Section& section) {
     for (size_type i{0}; i < this->size(); i++) {
-        const auto it = this->getSections().at(i);
+        const Section it = this->getSections().at(i);
 
         if (it.get() == section.get()) {
             this->erase(i);
@@ -345,7 +349,7 @@ void docpp::HTML::Section::erase(const Section& section) {
 
 void docpp::HTML::Section::erase(const Element& element) {
     for (size_type i{0}; i < this->size(); i++) {
-        const auto it = this->getElements().at(i);
+        const Element it = this->getElements().at(i);
 
         if (it.get() == element.get()) {
             this->erase(i);
@@ -389,7 +393,7 @@ docpp::HTML::Section docpp::HTML::Section::at_section(const size_type index) con
 
 docpp::HTML::Section::size_type docpp::HTML::Section::find(const Element& element) {
     for (size_type i{0}; i < this->size(); i++) {
-        const auto it = this->getElements().at(i);
+        const Element it = this->getElements().at(i);
 
         if (it.get() == element.get()) {
             return i;
@@ -401,7 +405,7 @@ docpp::HTML::Section::size_type docpp::HTML::Section::find(const Element& elemen
 
 docpp::HTML::Section::size_type docpp::HTML::Section::find(const Section& section) {
     for (size_type i{0}; i < this->size(); i++) {
-        const auto it = this->getSections().at(i);
+        const Section it = this->getSections().at(i);
 
         if (it.get() == section.get()) {
             return i;
@@ -412,7 +416,7 @@ docpp::HTML::Section::size_type docpp::HTML::Section::find(const Section& sectio
 }
 
 docpp::HTML::Section::size_type docpp::HTML::Section::find(const std::string& str) {
-    const auto elements = this->getElements();
+    const std::vector<Element> elements = this->getElements();
 
     for (size_type i{0}; i < elements.size(); i++) {
         if (!elements.at(i).get().compare(str)) {
@@ -420,7 +424,7 @@ docpp::HTML::Section::size_type docpp::HTML::Section::find(const std::string& st
         }
     }
 
-    const auto sections = this->getSections();
+    const std::vector<Section> sections = this->getSections();
 
     for (size_type i{0}; i < sections.size(); i++) {
         if (!sections.at(i).get().compare(str)) {
@@ -512,7 +516,7 @@ std::string docpp::HTML::Section::get(const int formatting, const int tabc) cons
     if (this->tag.compare("")) {
         ret += "<" + this->tag;
 
-        for (const auto& it : this->properties.getProperties()) {
+        for (const Property& it : this->properties.getProperties()) {
             if (!it.getKey().compare("")) continue;
             if (!it.getValue().compare("")) continue;
 
@@ -549,6 +553,10 @@ std::string docpp::HTML::Section::get(const int formatting, const int tabc) cons
     return std::move(ret);
 }
 
+template <typename T> T docpp::HTML::Section::get(const int formatting, const int tabc) const {
+    return T(this->get(formatting, tabc));
+}
+
 void docpp::HTML::Section::swap(const size_type index1, const size_type index2) {
     if (this->elements.find(index1) != this->elements.end() && this->elements.find(index2) != this->elements.end()) {
         std::swap(this->elements[index1], this->elements[index2]);
@@ -569,6 +577,10 @@ void docpp::HTML::Section::swap(const Section& section1, const Section& section2
 
 std::string docpp::HTML::Document::get(const int formatting, const int tabc) const {
     return this->doctype + (formatting == FORMATTING_PRETTY ? "\n" : formatting == FORMATTING_NEWLINE ? "\n" : "") + this->document.get(formatting, tabc);
+}
+
+template <typename T> T docpp::HTML::Document::get(const int formatting, const int tabc) const {
+    return T(this->get(formatting, tabc));
 }
 
 docpp::HTML::Section& docpp::HTML::Document::getSection() {
@@ -765,7 +777,7 @@ std::string docpp::CSS::Element::get(const int formatting, const int tabc) const
             ret += "\n";
         }
 
-        for (const auto& it : this->element.second) {
+        for (const Property& it : this->element.second) {
             if (!it.getKey().compare("")) continue;
             if (!it.getValue().compare("")) continue;
 
@@ -790,6 +802,10 @@ std::string docpp::CSS::Element::get(const int formatting, const int tabc) const
     }
 
     return std::move(ret);
+}
+
+template <typename T> T docpp::CSS::Element::get(const int formatting, const int tabc) const {
+    return T(this->get(formatting, tabc));
 }
 
 std::string docpp::CSS::Element::getTag() const {
@@ -904,9 +920,13 @@ std::vector<docpp::CSS::Element> docpp::CSS::Stylesheet::getElements() const {
 std::string docpp::CSS::Stylesheet::get(const int formatting, const int tabc) const {
     std::string ret{};
 
-    for (const auto& it : this->elements) {
+    for (const Element& it : this->elements) {
         ret += it.get(formatting, tabc);
     }
 
     return std::move(ret);
+}
+
+template <typename T> T docpp::CSS::Stylesheet::get(const int formatting, const int tabc) const {
+    return T(this->get(formatting, tabc));
 }

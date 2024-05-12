@@ -321,6 +321,11 @@ namespace docpp {
                  * @return std::string The tag of the element
                  */
                 std::string get(const int formatting = FORMATTING_NONE, const int tabc = 0) const;
+                /**
+                 * @brief Get the element in the form of a specific type.
+                 * @return T The element in the form of a specific type
+                 */
+                template <typename T> T get(const int formatting = FORMATTING_NONE, const int tabc = 0) const;
 
                 /**
                  * @brief Get the tag of the element
@@ -546,6 +551,11 @@ namespace docpp {
                  * @return std::string The section
                  */
                 std::string get(const int formatting = FORMATTING_NONE, const int tabc = 0) const;
+                /**
+                 * @brief Get the element in the form of a specific type.
+                 * @return T The element in the form of a specific type
+                 */
+                template <typename T> T get(const int formatting = FORMATTING_NONE, const int tabc = 0) const;
 
                 Section operator=(const Section& section);
                 void operator+=(const Element& element);
@@ -582,6 +592,11 @@ namespace docpp {
                  * @return std::string The document
                  */
                 std::string get(const int formatting = FORMATTING_NONE, const int tabc = 0) const;
+                /**
+                 * @brief Get the document in the form of a specific type.
+                 * @return T The document in the form of a specific type
+                 */
+                template <typename T> T get(const int formatting = FORMATTING_NONE, const int tabc = 0) const;
 
                 /**
                  * @brief Get the section
@@ -698,6 +713,9 @@ namespace docpp {
                 Property operator=(const std::pair<std::string, std::string>& property);
         };
 
+        /**
+         * @brief A class to represent the properties of a CSS element
+         */
         class Element {
             private:
                 std::pair<std::string, std::vector<Property>> element{};
@@ -849,6 +867,11 @@ namespace docpp {
                  * @return std::pair<std::string, std::vector<Property>> The element
                  */
                 std::string get(const int formatting = FORMATTING_NONE, const int tabc = 0) const;
+                /**
+                 * @brief Get the element in the form of a specific type.
+                 * @return T The element in the form of a specific type
+                 */
+                template <typename T> T get(const int formatting = FORMATTING_NONE, const int tabc = 0) const;
                 /**
                  * @brief Get the tag of the element
                  * @return std::string The tag of the element
@@ -1014,6 +1037,11 @@ namespace docpp {
                  * @return std::string The stylesheet
                  */
                 std::string get(const int formatting = FORMATTING_NONE, const int tabc = 0) const;
+                /**
+                 * @brief Get the stylesheet in the form of a specific type.
+                 * @return T The stylesheet in the form of a specific type
+                 */
+                template <typename T> T get(const int formatting = FORMATTING_NONE, const int tabc = 0) const;
 
                 Stylesheet operator=(const Stylesheet& stylesheet);
                 void operator+=(const Element& element);

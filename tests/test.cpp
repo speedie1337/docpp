@@ -373,6 +373,16 @@ SCENARIO("Test HTML", "[HTML]") {
         REQUIRE(caught);
     };
 
+    const auto test23 = []() {
+        docpp::HTML::Section sect{};
+
+        sect.push_back(docpp::HTML::Element("p", {}, "Test 1"));
+        sect.push_back(docpp::HTML::Element("p", {}, "Test 2"));
+        sect.push_back(docpp::HTML::Element("p", {}, "Test 3"));
+
+        REQUIRE(sect.get<std::string>() == "<p>Test 1</p><p>Test 2</p><p>Test 3</p>");
+    };
+
     std::vector<void (*)()> tests{
         test1,
         test2,
@@ -396,6 +406,7 @@ SCENARIO("Test HTML", "[HTML]") {
         test20,
         test21,
         test22,
+        test23,
     };
 
     for (const auto& test : tests) {
