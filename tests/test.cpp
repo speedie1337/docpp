@@ -7,7 +7,7 @@
  * @brief Test cases for the docpp namespace.
  */
 SCENARIO("Test HTML", "[HTML]") {
-    auto test1 = []() {
+    const auto test1 = []() {
         docpp::HTML::HTMLDocument doc{};
         docpp::HTML::HTMLSection html(docpp::HTML::SECTION_HTML, {});
 
@@ -20,7 +20,7 @@ SCENARIO("Test HTML", "[HTML]") {
         body.push_back(docpp::HTML::HTMLElement("h1", {}, "Test Header"));
         body.push_back(docpp::HTML::HTMLElement("p", {}, "Test Paragraph"));
 
-        docpp::HTML::HTMLElementProperties prop{};
+        docpp::HTML::HTMLProperties prop{};
         prop.push_back(docpp::HTML::HTMLProperty(std::pair<std::string, std::string>("id", "test_id")));
 
         body.push_back(docpp::HTML::HTMLElement("p", prop, "Test Paragraph With ID"));
@@ -44,7 +44,7 @@ SCENARIO("Test HTML", "[HTML]") {
         REQUIRE(doc.get(docpp::HTML::FORMATTING_NEWLINE) == "<!DOCTYPE html>\n<html>\n<head>\n<title>Test Title</title>\n</head>\n<body>\n<h1>Test Header</h1>\n<p>Test Paragraph</p>\n<p id=\"test_id\">Test Paragraph With ID</p>\n<div>\n<p>Test Paragraph In Div</p>\n</div>\n<p id=\"test_id\" class=\"class1 class2 class3\">Test Paragraph With ID And Class</p>\n</body>\n<footer>\n</footer>\n</html>");
     };
 
-    auto test2 = []() {
+    const auto test2 = []() {
         docpp::HTML::HTMLSection section(docpp::HTML::SECTION_HTML, {});
 
         section.push_back(docpp::HTML::HTMLElement("p", {}, "Test 1"));
@@ -57,7 +57,7 @@ SCENARIO("Test HTML", "[HTML]") {
         REQUIRE(section.get(docpp::HTML::FORMATTING_NEWLINE) == "<html>\n<p>Test 1</p>\n<p>Test 3</p>\n</html>");
     };
 
-    auto test3 = []() {
+    const auto test3 = []() {
         docpp::HTML::HTMLSection section = docpp::HTML::HTMLSection(docpp::HTML::SECTION_HTML, {});
 
         section.push_back(docpp::HTML::HTMLElement("p", {}, "Test 1"));
@@ -71,7 +71,7 @@ SCENARIO("Test HTML", "[HTML]") {
         REQUIRE(section.get(docpp::HTML::FORMATTING_NEWLINE) == "<html>\n<p>Test 1</p>\n<p>Test 2.5</p>\n<p>Test 3</p>\n</html>");
     };
 
-    auto test4 = []() {
+    const auto test4 = []() {
         docpp::HTML::HTMLSection section = docpp::HTML::HTMLSection(docpp::HTML::SECTION_HTML, {});
 
         section.push_back(docpp::HTML::HTMLElement("p", {}, "Test 1"));
@@ -86,7 +86,7 @@ SCENARIO("Test HTML", "[HTML]") {
         REQUIRE(section.get(docpp::HTML::FORMATTING_NEWLINE) == "<html>\n<p>Test 1</p>\n<p>Test 3</p>\n</html>");
     };
 
-    auto test5 = []() {
+    const auto test5 = []() {
         docpp::HTML::HTMLSection section = docpp::HTML::HTMLSection(docpp::HTML::SECTION_HTML, {});
         docpp::HTML::HTMLSection subsection(docpp::HTML::SECTION_DIV, {});
 
@@ -106,7 +106,7 @@ SCENARIO("Test HTML", "[HTML]") {
         REQUIRE(doc.get(docpp::HTML::FORMATTING_NEWLINE) == "<!DOCTYPE html>\n<html>\n<div>\n<p>Test 1</p>\n<div>\n<p>Test 2</p>\n</div>\n</div>\n</html>");
     };
 
-    auto test6 = []() {
+    const auto test6 = []() {
         docpp::CSS::CSSStylesheet css{};
         docpp::CSS::CSSElement element{"p", {{"color", "red"}, {"font-size", "16px"}, {"font-family", "Arial"}}};
 
@@ -116,7 +116,7 @@ SCENARIO("Test HTML", "[HTML]") {
         REQUIRE(css.get(docpp::CSS::FORMATTING_NEWLINE) == "p {\ncolor: red;\nfont-size: 16px;\nfont-family: Arial;\n}\n");
     };
 
-    auto test7 = []() {
+    const auto test7 = []() {
         docpp::CSS::CSSStylesheet css = docpp::CSS::CSSStylesheet{};
         docpp::CSS::CSSElement element = docpp::CSS::CSSElement{"p", {{"color", "red"}, {"font-size", "16px"}, {"font-family", "Arial"}}};
         docpp::CSS::CSSElement element2{"div", {{"color", "blue"}, {"font-size", "12px"}, {"font-family", "Arial"}}};
@@ -127,7 +127,7 @@ SCENARIO("Test HTML", "[HTML]") {
         REQUIRE(css.get() == "div {color: blue;font-size: 12px;font-family: Arial;}p {color: red;font-size: 16px;font-family: Arial;}");
     };
 
-    auto test8 = []() {
+    const auto test8 = []() {
         docpp::CSS::CSSStylesheet css = docpp::CSS::CSSStylesheet{};
         docpp::CSS::CSSElement element = docpp::CSS::CSSElement{"p", {{"color", "red"}, {"font-size", "16px"}, {"font-family", "Arial"}}};
         docpp::CSS::CSSElement element2{"div", {{"color", "blue"}, {"font-size", "12px"}, {"font-family", "Arial"}}};
@@ -140,7 +140,7 @@ SCENARIO("Test HTML", "[HTML]") {
         REQUIRE(css.get() == "p {color: red;font-size: 16px;font-family: Arial;}");
     };
 
-    auto test9 = []() {
+    const auto test9 = []() {
         docpp::CSS::CSSStylesheet css = docpp::CSS::CSSStylesheet{};
         docpp::CSS::CSSElement element = docpp::CSS::CSSElement{"p", {{"color", "red"}, {"font-size", "16px"}, {"font-family", "Arial"}}};
         docpp::CSS::CSSElement element2{"div", {{"color", "blue"}, {"font-size", "12px"}, {"font-family", "Arial"}}};
@@ -160,7 +160,7 @@ SCENARIO("Test HTML", "[HTML]") {
         REQUIRE(element.get() == "p {font-weight: bold;color: red;font-size: 16px;font-family: Arial;}");
     };
 
-    auto test10 = []() {
+    const auto test10 = []() {
         docpp::HTML::HTMLSection section = docpp::HTML::HTMLSection(docpp::HTML::SECTION_HTML, {});
 
         section.push_back(docpp::HTML::HTMLElement("p", {}, "Test 1"));
@@ -172,7 +172,7 @@ SCENARIO("Test HTML", "[HTML]") {
         REQUIRE(section.get() == "<html><p>Test 1</p><p>Test 3</p><p>Test 2</p></html>");
     };
 
-    auto test11 = []() {
+    const auto test11 = []() {
         docpp::HTML::HTMLSection section = docpp::HTML::HTMLSection(docpp::HTML::SECTION_HTML, {});
 
         section.push_back(docpp::HTML::HTMLElement("p", {}, "Test 1"));
@@ -184,7 +184,7 @@ SCENARIO("Test HTML", "[HTML]") {
         REQUIRE(section.get() == "<html><p>Test 1</p><p>Test 3</p><p>Test 2</p></html>");
     };
 
-    auto test12 = []() {
+    const auto test12 = []() {
         docpp::HTML::HTMLSection section = docpp::HTML::HTMLSection(docpp::HTML::SECTION_HTML, {});
 
         section.push_back(docpp::HTML::HTMLElement("p", {}, "Test 1"));
@@ -196,7 +196,7 @@ SCENARIO("Test HTML", "[HTML]") {
         REQUIRE(section.get() == "<html><p>Test 0</p><p>Test 1</p><p>Test 2</p><p>Test 3</p></html>");
     };
 
-    auto test13 = []() {
+    const auto test13 = []() {
         docpp::HTML::HTMLSection section = docpp::HTML::HTMLSection(docpp::HTML::SECTION_HTML, {});
 
         section.push_back(docpp::HTML::HTMLElement("p", {}, "Test 1"));
@@ -218,7 +218,7 @@ SCENARIO("Test HTML", "[HTML]") {
         REQUIRE(section.get() == "<html><p>Test 1</p><p>Test 3</p><p>Test 4</p><p>Test 5</p></html>");
     };
 
-    auto test14 = []() {
+    const auto test14 = []() {
         docpp::CSS::CSSElement element{"p", {{"color", "red"}, {"font-size", "16px"}, {"font-family", "Arial"}}};
 
         const int red = element.find("color");
@@ -238,8 +238,8 @@ SCENARIO("Test HTML", "[HTML]") {
         REQUIRE(element.get() == "p {color: red;font-size: 16px;font-family: Arial;}");
     };
 
-    auto test15 = []() {
-        docpp::HTML::HTMLElementProperties prop{};
+    const auto test15 = []() {
+        docpp::HTML::HTMLProperties prop{};
 
         prop.push_back(docpp::HTML::HTMLProperty(std::pair<std::string, std::string>("id", "test_id")));
         prop.push_back(docpp::HTML::HTMLProperty(std::pair<std::string, std::string>("class", "class1 class2 class3")));
@@ -248,25 +248,25 @@ SCENARIO("Test HTML", "[HTML]") {
 
         const int pos = prop.find("class");
 
-        REQUIRE(pos != docpp::HTML::HTMLElementProperties::npos);
+        REQUIRE(pos != docpp::HTML::HTMLProperties::npos);
 
         const int pos2 = prop.find("class2");
 
         REQUIRE(prop.at(pos2).getKey() == "class");
         REQUIRE(prop.at(pos2).getValue() == "class1 class2 class3");
 
-        REQUIRE(pos2 != docpp::HTML::HTMLElementProperties::npos);
+        REQUIRE(pos2 != docpp::HTML::HTMLProperties::npos);
 
         const int pos3 = prop.find("class4");
 
-        REQUIRE(pos3 == docpp::HTML::HTMLElementProperties::npos);
+        REQUIRE(pos3 == docpp::HTML::HTMLProperties::npos);
 
         prop.erase(pos);
 
         REQUIRE(docpp::HTML::HTMLElement("p", prop, {}).get() == "<p id=\"test_id\"></p>");
     };
 
-    auto test16 = []() {
+    const auto test16 = []() {
         docpp::HTML::HTMLDocument doc = docpp::HTML::HTMLSection({});
 
         doc.getSection().push_back(docpp::HTML::HTMLElement("p", {}, "Test 1"));
@@ -284,7 +284,7 @@ SCENARIO("Test HTML", "[HTML]") {
         REQUIRE(doc.get() == "<!DOCTYPE html><html><p>Test 4</p><p>Test 5</p><p>Test 6</p><p>Test 7</p></html>");
     };
 
-    auto test17 = []() {
+    const auto test17 = []() {
         docpp::HTML::HTMLSection section = docpp::HTML::HTMLSection(docpp::HTML::SECTION_HTML, {});
 
         section.push_back(docpp::HTML::HTMLElement("p", {}, "Test 1"));
@@ -296,7 +296,7 @@ SCENARIO("Test HTML", "[HTML]") {
         REQUIRE(doc.get(docpp::HTML::FORMATTING_PRETTY) == "<!DOCTYPE html>\n<html>\n\t<p>Test 1</p>\n\t<p>Test 2</p>\n\t<p>Test 3</p>\n</html>");
     };
 
-    auto test18 = []() {
+    const auto test18 = []() {
         docpp::HTML::HTMLSection section = docpp::HTML::HTMLSection(docpp::HTML::SECTION_EMPTY, {});
 
         section.push_back(docpp::HTML::HTMLElement("p", {}, "Test 1"));
@@ -306,7 +306,7 @@ SCENARIO("Test HTML", "[HTML]") {
         REQUIRE(section.get() == "<p>Test 1</p><p>Test 2</p><p>Test 3</p>");
     };
 
-    auto test19 = []() {
+    const auto test19 = []() {
         docpp::HTML::HTMLSection section = docpp::HTML::HTMLSection(docpp::HTML::SECTION_HTML, {});
 
         section.push_back(docpp::HTML::HTMLElement("p", {}, "Test 1"));
@@ -315,6 +315,62 @@ SCENARIO("Test HTML", "[HTML]") {
 
         REQUIRE(section.front().get() == "<p>Test 1</p>");
         REQUIRE(section.back().get() == "<p>Test 3</p>");
+    };
+
+    const auto test20 = []() {
+        docpp::HTML::HTMLProperties prop{};
+
+        prop.push_back(docpp::HTML::HTMLProperty(std::pair<std::string, std::string>("id", "test_id")));
+        prop.push_back(docpp::HTML::HTMLProperty(std::pair<std::string, std::string>("class", "class1 class2 class3")));
+        prop.push_back(docpp::HTML::HTMLProperty(std::pair<std::string, std::string>("style", "color: red; font-size: 16px; font-family: Arial;")));
+
+        for (const docpp::HTML::HTMLProperty& p : prop) {
+            REQUIRE(p.getKey() == "id");
+            REQUIRE(p.getValue() == "test_id");
+            break;
+        }
+
+        for (docpp::HTML::HTMLProperties::iterator it = ++prop.begin(); it != prop.end(); ++it) {
+            REQUIRE(it->getKey() == "class");
+            REQUIRE(it->getValue() == "class1 class2 class3");
+            break;
+        }
+    };
+
+    const auto test21 = []() {
+        docpp::HTML::HTMLSection sect{};
+
+        sect.push_back(docpp::HTML::HTMLElement("p", {}, "Test 1"));
+        sect.push_back(docpp::HTML::HTMLElement("p", {}, "Test 2"));
+        sect.push_back(docpp::HTML::HTMLElement("p", {}, "Test 3"));
+
+        for (const docpp::HTML::HTMLElement& elem : sect) {
+            REQUIRE(elem.get() == "<p>Test 1</p>");
+            break;
+        }
+
+        for (docpp::HTML::HTMLSection::iterator it = ++sect.begin(); it != sect.end(); ++it) {
+            docpp::HTML::HTMLElement elem = *it;
+            REQUIRE(elem.get() == "<p>Test 2</p>");
+            break;
+        }
+    };
+
+    const auto test22 = []() {
+        docpp::HTML::HTMLSection sect{};
+
+        sect.push_back(docpp::HTML::HTMLElement("p", {}, "Test 1"));
+        sect.push_back(docpp::HTML::HTMLElement("p", {}, "Test 2"));
+        sect.push_back(docpp::HTML::HTMLElement("p", {}, "Test 3"));
+
+        bool caught{false};
+        try {
+            sect.at(1337);
+        } catch (const docpp::out_of_range& e) {
+            caught = true;
+        }
+
+        REQUIRE(caught);
     };
 
     std::vector<void (*)()> tests{
@@ -337,6 +393,9 @@ SCENARIO("Test HTML", "[HTML]") {
         test17,
         test18,
         test19,
+        test20,
+        test21,
+        test22,
     };
 
     for (const auto& test : tests) {

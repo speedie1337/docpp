@@ -22,7 +22,7 @@ int main() {
      * The first argument is the type of section, and this can either be a predefined value (e.g., docpp::HTML::SECTION_HTML) or a
      * custom value in the form of an std::string object.
      *
-     * The second argument is an HTMLElementProperties object, which is a collection of HTMLProperty objects. Each property is a std::pair of an
+     * The second argument is an HTMLProperties object, which is a collection of HTMLProperty objects. Each property is a std::pair of an
      * attribute name and an attribute value. If you don't want to specify any attributes, you can pass an empty HTMLElementAttributes object.
      * If you need to change the tag and/or attributes later, you can use the set() method.
      *
@@ -40,7 +40,7 @@ int main() {
     /* This is an HTML element. Unlike a section, an element cannot hold any other elements or sections, rather it holds text and/or attributes.
      * The first argument is the type of element, and this should simply be the tag name (e.g., "p", "h1", "a", etc.).
      *
-     * The second argument is an HTMLElementProperties object, which is a collection of HTMLProperty objects. Each property is a std::pair of an
+     * The second argument is an HTMLProperties object, which is a collection of HTMLProperty objects. Each property is a std::pair of an
      * attribute name and an attribute value. If you don't want to specify any attributes, you can pass an empty HTMLElementAttributes object.
      * If you need to change the element's tag, attributes, type or text later, you can use the set() method.
      *

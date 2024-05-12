@@ -51,8 +51,8 @@ int main() {
     docpp::HTML::HTMLSection div2{docpp::HTML::SECTION_DIV, {docpp::HTML::HTMLProperty("align", "center")}};
     docpp::HTML::HTMLSection form{"form", {{docpp::HTML::HTMLProperty("action", "https://google.com/search"), docpp::HTML::HTMLProperty("method", "get")}}};
 
-    form.push_back({"input", docpp::HTML::HTMLElementProperties({docpp::HTML::HTMLProperty("type", "text"), docpp::HTML::HTMLProperty("name", "q")}), "", docpp::HTML::TYPE_SELF_CLOSING});
-    form.push_back({"input", docpp::HTML::HTMLElementProperties({docpp::HTML::HTMLProperty("type", "submit"), docpp::HTML::HTMLProperty("value", "Search!")}), "", docpp::HTML::TYPE_SELF_CLOSING});
+    form.push_back({"input", docpp::HTML::HTMLProperties({docpp::HTML::HTMLProperty("type", "text"), docpp::HTML::HTMLProperty("name", "q")}), "", docpp::HTML::TYPE_SELF_CLOSING});
+    form.push_back({"input", docpp::HTML::HTMLProperties({docpp::HTML::HTMLProperty("type", "submit"), docpp::HTML::HTMLProperty("value", "Search!")}), "", docpp::HTML::TYPE_SELF_CLOSING});
 
     div2.push_back(form);
     html.push_back(div2);

@@ -16,11 +16,43 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
+#include <map>
 
 /**
  * @brief A namespace to represent HTML elements and documents
  */
 namespace docpp {
+    /**
+     * @brief A class to represent an exception when an index is out of range
+     */
+    class out_of_range : public std::exception {
+        private:
+            const char* message{"Out of range"};
+        public:
+            const char* what() const noexcept override {
+                return message;
+            }
+            out_of_range() = default;
+            out_of_range(const char* message) : message(message) {};
+    };
+
+    /**
+     * @brief A class to represent an exception when an argument is invalid
+     */
+    class invalid_argument : public std::exception {
+        private:
+            const char* message{"Invalid argument"};
+        public:
+            const char* what() const noexcept override {
+                return message;
+            }
+            invalid_argument() = default;
+            invalid_argument(const char* message) : message(message) {};
+    };
+
+    /**
+     * @brief A namespace to represent HTML elements and documents
+     */
     namespace HTML {
         enum {
             SECTION_EMPTY,
@@ -100,11 +132,57 @@ namespace docpp {
         /**
          * @brief A class to represent the properties of an HTML element
          */
-        class HTMLElementProperties {
+        class HTMLProperties {
             private:
                 std::vector<HTMLProperty> properties{};
             protected:
             public:
+                using iterator = std::vector<HTMLProperty>::iterator;
+                using const_iterator = std::vector<HTMLProperty>::const_iterator;
+                using reverse_iterator = std::vector<HTMLProperty>::reverse_iterator;
+                using const_reverse_iterator = std::vector<HTMLProperty>::const_reverse_iterator;
+
+                /**
+                 * @brief Return an iterator to the beginning.
+                 * @return iterator The iterator to the beginning.
+                 */
+                iterator begin() { return properties.begin(); }
+                /**
+                 * @brief Return an iterator to the end.
+                 * @return iterator The iterator to the end.
+                 */
+                iterator end() { return properties.end(); }
+                /**
+                 * @brief Return a const iterator to the beginning.
+                 * @return const_iterator The const iterator to the beginning.
+                 */
+                const_iterator cbegin() const { return properties.cbegin(); }
+                /**
+                 * @brief Return a const iterator to the end.
+                 * @return const_iterator The const iterator to the end.
+                 */
+                const_iterator cend() const { return properties.cend(); }
+                /**
+                 * @brief Return a reverse iterator to the beginning.
+                 * @return reverse_iterator The reverse iterator to the beginning.
+                 */
+                reverse_iterator rbegin() { return properties.rbegin(); }
+                /**
+                 * @brief Return a reverse iterator to the end.
+                 * @return reverse_iterator The reverse iterator to the end.
+                 */
+                reverse_iterator rend() { return properties.rend(); }
+                /**
+                 * @brief Return a const reverse iterator to the beginning.
+                 * @return const_reverse_iterator The const reverse iterator to the beginning.
+                 */
+                const_reverse_iterator crbegin() { return properties.crbegin(); }
+                /**
+                 * @brief Return a const reverse iterator to the end.
+                 * @return const_reverse_iterator The const reverse iterator to the end.
+                 */
+                const_reverse_iterator crend() { return properties.crend(); }
+
                 /**
                  * @brief The npos value
                  */
@@ -187,24 +265,26 @@ namespace docpp {
                  */
                 void push_back(const HTMLProperty& property);
                 /**
-                 * @brief Construct a new HTMLElementProperties object
+                 * @brief Construct a new HTMLProperties object
                  * @param properties The properties to set
                  */
-                HTMLElementProperties(const std::vector<HTMLProperty>& properties);
+                HTMLProperties(const std::vector<HTMLProperty>& properties);
                 /**
-                 * @brief Construct a new HTMLElementProperties object
+                 * @brief Construct a new HTMLProperties object
                  * @param property The property to add
                  */
-                HTMLElementProperties(const HTMLProperty& property);
+                HTMLProperties(const HTMLProperty& property);
                 /**
-                 * @brief Construct a new HTMLElementProperties object
+                 * @brief Construct a new HTMLProperties object
                  */
-                HTMLElementProperties() = default;
-                HTMLElementProperties operator=(const HTMLElementProperties& properties);
-                HTMLElementProperties operator=(const std::vector<HTMLProperty>& properties);
-                HTMLElementProperties operator=(const HTMLProperty& property);
+                HTMLProperties() = default;
+                HTMLProperties operator=(const HTMLProperties& properties);
+                HTMLProperties operator=(const std::vector<HTMLProperty>& properties);
+                HTMLProperties operator=(const HTMLProperty& property);
                 void operator+=(const HTMLProperty& property);
         };
+
+        using HTMLElementProperties = HTMLProperties;
 
         /**
          * @brief A class to represent an HTML element
@@ -214,7 +294,7 @@ namespace docpp {
                 std::string tag{};
                 std::string data{};
                 int type{TYPE_NON_SELF_CLOSING};
-                HTMLElementProperties properties{};
+                HTMLProperties properties{};
             protected:
             public:
                 /**
@@ -228,7 +308,7 @@ namespace docpp {
                  * @param properties The properties of the element
                  * @param data The data of the element
                  */
-                HTMLElement(const std::string& tag, const HTMLElementProperties& properties = {}, const std::string& data = {}, const int type = TYPE_NON_SELF_CLOSING);
+                HTMLElement(const std::string& tag, const HTMLProperties& properties = {}, const std::string& data = {}, const int type = TYPE_NON_SELF_CLOSING);
                 /**
                  * @brief Construct a new HTMLElement object
                  */
@@ -239,7 +319,7 @@ namespace docpp {
                  * @param id The id of the element
                  * @param classes The classes of the element
                  */
-                void set(const std::string& tag, const HTMLElementProperties& properties = {}, const std::string& data = {}, const int type = TYPE_NON_SELF_CLOSING);
+                void set(const std::string& tag, const HTMLProperties& properties = {}, const std::string& data = {}, const int type = TYPE_NON_SELF_CLOSING);
 
                 /**
                  * @brief Get the element in the form of an HTML tag.
@@ -269,12 +349,41 @@ namespace docpp {
             private:
                 int index{};
                 std::string tag{};
-                HTMLElementProperties properties{};
+                HTMLProperties properties{};
 
-                std::unordered_map<int, HTMLElement> elements{};
+                std::map<int, HTMLElement> elements{};
                 std::unordered_map<int, HTMLSection> sections{};
             protected:
             public:
+                /**
+                 * @brief A class to represent an iterator for the HTMLSection class
+                 */
+                template <typename T>
+                class sect_iterator {
+                    private:
+                        T element{};
+                    public:
+                        sect_iterator(const T& element) : element(element) {}
+                        sect_iterator operator++() { return ++element; }
+                        HTMLElement operator*() { return element->second; }
+                        bool operator==(const sect_iterator& other) { return element == other.element; }
+                        bool operator!=(const sect_iterator& other) { return element != other.element; }
+                };
+
+                using iterator = sect_iterator<std::map<int, HTMLElement>::iterator>;
+                using const_iterator = sect_iterator<std::map<int, HTMLElement>::const_iterator>;
+                using reverse_iterator = sect_iterator<std::map<int, HTMLElement>::reverse_iterator>;
+                using const_reverse_iterator = sect_iterator<std::map<int, HTMLElement>::const_reverse_iterator>;
+
+                iterator begin() { return iterator(elements.begin()); }
+                iterator end() { return iterator(elements.end()); }
+                const_iterator cbegin() const { return const_iterator(elements.cbegin()); }
+                const_iterator cend() const { return const_iterator(elements.cend()); }
+                reverse_iterator rbegin() { return reverse_iterator(elements.rbegin()); }
+                reverse_iterator rend() { return reverse_iterator(elements.rend()); }
+                const_reverse_iterator crbegin() { return const_reverse_iterator(elements.crbegin()); }
+                const_reverse_iterator crend() { return const_reverse_iterator(elements.crend()); }
+
                 /**
                  * @brief The npos value
                  */
@@ -388,13 +497,13 @@ namespace docpp {
                  * @param tag The tag of the section
                  * @param properties The properties of the section
                  */
-                HTMLSection(const std::string& tag, const HTMLElementProperties& properties = {});
+                HTMLSection(const std::string& tag, const HTMLProperties& properties = {});
                 /**
                  * @brief Construct a new HTMLSection object
                  * @param tag The tag of the section
                  * @param properties The properties of the section
                  */
-                HTMLSection(const int tag, const HTMLElementProperties& properties = {});
+                HTMLSection(const int tag, const HTMLProperties& properties = {});
                 /**
                  * @brief Construct a new HTMLSection object
                  */
@@ -405,14 +514,14 @@ namespace docpp {
                  * @param id The id of the section
                  * @param classes The classes of the section
                  */
-                void set(const std::string& tag, const HTMLElementProperties& properties = {});
+                void set(const std::string& tag, const HTMLProperties& properties = {});
                 /**
                  * @brief Set the tag, id, and classes of the section
                  * @param tag The tag of the section
                  * @param id The id of the section
                  * @param classes The classes of the section
                  */
-                void set(const int tag, const HTMLElementProperties& properties = {});
+                void set(const int tag, const HTMLProperties& properties = {});
                 /**
                  * @brief Swap two elements in the section
                  * @param index1 The index of the first element
@@ -512,6 +621,9 @@ namespace docpp {
         };
     } // namespace HTML
 
+    /**
+     * @brief A namespace to represent CSS elements and documents
+     */
     namespace CSS {
         enum {
             FORMATTING_NONE,
@@ -519,6 +631,9 @@ namespace docpp {
             FORMATTING_NEWLINE,
         };
 
+        /**
+         * @brief A class to represent a CSS property
+         */
         class CSSProperty {
             private:
                 std::pair<std::string, std::string> property{};
@@ -588,6 +703,52 @@ namespace docpp {
                 std::pair<std::string, std::vector<CSSProperty>> element{};
             protected:
             public:
+                using iterator = std::vector<CSSProperty>::iterator;
+                using const_iterator = std::vector<CSSProperty>::const_iterator;
+                using reverse_iterator = std::vector<CSSProperty>::reverse_iterator;
+                using const_reverse_iterator = std::vector<CSSProperty>::const_reverse_iterator;
+
+                /**
+                 * @brief Return an iterator to the beginning.
+                 * @return iterator The iterator to the beginning.
+                 */
+                iterator begin() { return element.second.begin(); }
+                /**
+                 * @brief Return an iterator to the end.
+                 * @return iterator The iterator to the end.
+                 */
+                iterator end() { return element.second.end(); }
+                /**
+                 * @brief Return a const iterator to the beginning.
+                 * @return const_iterator The const iterator to the beginning.
+                 */
+                const_iterator cbegin() const { return element.second.cbegin(); }
+                /**
+                 * @brief Return a const iterator to the end.
+                 * @return const_iterator The const iterator to the end.
+                 */
+                const_iterator cend() const { return element.second.cend(); }
+                /**
+                 * @brief Return a reverse iterator to the beginning.
+                 * @return reverse_iterator The reverse iterator to the beginning.
+                 */
+                reverse_iterator rbegin() { return element.second.rbegin(); }
+                /**
+                 * @brief Return a reverse iterator to the end.
+                 * @return reverse_iterator The reverse iterator to the end.
+                 */
+                reverse_iterator rend() { return element.second.rend(); }
+                /**
+                 * @brief Return a const reverse iterator to the beginning.
+                 * @return const_reverse_iterator The const reverse iterator to the beginning.
+                 */
+                const_reverse_iterator crbegin() { return element.second.crbegin(); }
+                /**
+                 * @brief Return a const reverse iterator to the end.
+                 * @return const_reverse_iterator The const reverse iterator to the end.
+                 */
+                const_reverse_iterator crend() { return element.second.crend(); }
+
                 /**
                  * @brief The npos value
                  */
@@ -712,6 +873,52 @@ namespace docpp {
                 std::vector<CSSElement> elements{};
             protected:
             public:
+                using iterator = std::vector<CSSElement>::iterator;
+                using const_iterator = std::vector<CSSElement>::const_iterator;
+                using reverse_iterator = std::vector<CSSElement>::reverse_iterator;
+                using const_reverse_iterator = std::vector<CSSElement>::const_reverse_iterator;
+
+                /**
+                 * @brief Return an iterator to the beginning.
+                 * @return iterator The iterator to the beginning.
+                 */
+                iterator begin() { return elements.begin(); }
+                /**
+                 * @brief Return an iterator to the end.
+                 * @return iterator The iterator to the end.
+                 */
+                iterator end() { return elements.end(); }
+                /**
+                 * @brief Return a const iterator to the beginning.
+                 * @return const_iterator The const iterator to the beginning.
+                 */
+                const_iterator cbegin() const { return elements.cbegin(); }
+                /**
+                 * @brief Return a const iterator to the end.
+                 * @return const_iterator The const iterator to the end.
+                 */
+                const_iterator cend() const { return elements.cend(); }
+                /**
+                 * @brief Return a reverse iterator to the beginning.
+                 * @return reverse_iterator The reverse iterator to the beginning.
+                 */
+                reverse_iterator rbegin() { return elements.rbegin(); }
+                /**
+                 * @brief Return a reverse iterator to the end.
+                 * @return reverse_iterator The reverse iterator to the end.
+                 */
+                reverse_iterator rend() { return elements.rend(); }
+                /**
+                 * @brief Return a const reverse iterator to the beginning.
+                 * @return const_reverse_iterator The const reverse iterator to the beginning.
+                 */
+                const_reverse_iterator crbegin() { return elements.crbegin(); }
+                /**
+                 * @brief Return a const reverse iterator to the end.
+                 * @return const_reverse_iterator The const reverse iterator to the end.
+                 */
+                const_reverse_iterator crend() { return elements.crend(); }
+
                 /**
                  * @brief The npos value
                  */
