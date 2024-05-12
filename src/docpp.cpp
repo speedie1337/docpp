@@ -22,12 +22,24 @@ std::string docpp::HTML::Property::getKey() const {
     return this->property.first;
 }
 
+template <typename T> T docpp::HTML::Property::getKey() const {
+    return T(this->property.first);
+}
+
 std::string docpp::HTML::Property::getValue() const {
     return this->property.second;
 }
 
+template <typename T> T docpp::HTML::Property::getValue() const {
+    return T(this->property.second);
+}
+
 std::pair<std::string, std::string> docpp::HTML::Property::get() const {
     return this->property;
+}
+
+template <typename T> std::pair<T, T> docpp::HTML::Property::get() const {
+    return T(this->property);
 }
 
 void docpp::HTML::Property::setKey(const std::string& key) {
@@ -236,8 +248,16 @@ std::string docpp::HTML::Element::getTag() const {
     return this->tag;
 }
 
+template <typename T> T docpp::HTML::Element::getTag() const {
+    return T(this->tag);
+}
+
 std::string docpp::HTML::Element::getData() const {
     return this->data;
+}
+
+template <typename T> T docpp::HTML::Element::getData() const {
+    return T(this->data);
 }
 
 docpp::HTML::Section::Section(const std::string& tag, const Properties& properties) {
@@ -615,6 +635,10 @@ std::string docpp::HTML::Document::getDoctype() const {
     return this->doctype;
 }
 
+template <typename T> T docpp::HTML::Document::getDoctype() const {
+    return T(this->doctype);
+}
+
 docpp::CSS::Property::Property(const std::string& key, const std::string& value) {
     this->set(key, value);
 }
@@ -627,12 +651,24 @@ std::string docpp::CSS::Property::getKey() const {
     return this->property.first;
 }
 
+template <typename T> T docpp::CSS::Property::getKey() const {
+    return T(this->property.first);
+}
+
 std::string docpp::CSS::Property::getValue() const {
     return this->property.second;
 }
 
+template <typename T> T docpp::CSS::Property::getValue() const {
+    return T(this->property.second);
+}
+
 std::pair<std::string, std::string> docpp::CSS::Property::get() const {
     return this->property;
+}
+
+template <typename T> std::pair<T, T> docpp::CSS::Property::get() const {
+    return std::pair<T, T>(this->property.first, this->property.second);
 }
 
 void docpp::CSS::Property::setKey(const std::string& key) {
@@ -810,6 +846,10 @@ template <typename T> T docpp::CSS::Element::get(const int formatting, const int
 
 std::string docpp::CSS::Element::getTag() const {
     return this->element.first;
+}
+
+template <typename T> T docpp::CSS::Element::getTag() const {
+    return T(this->element.first);
 }
 
 std::vector<docpp::CSS::Property> docpp::CSS::Element::getProperties() const {
