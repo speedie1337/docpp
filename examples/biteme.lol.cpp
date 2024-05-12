@@ -11,13 +11,13 @@
 #include <docpp/docpp.hpp>
 
 int main() {
-    docpp::HTML::HTMLSection html(docpp::HTML::SECTION_HTML, {});
+    docpp::HTML::Section html(docpp::HTML::SECTION_HTML, {});
 
     html.push_back({"title", {}, "Google"});
 
-    docpp::CSS::CSSStylesheet sheet{};
+    docpp::CSS::Stylesheet sheet{};
 
-    sheet.push_back(docpp::CSS::CSSElement(
+    sheet.push_back(docpp::CSS::Element(
         ".center", {
             {"display", "flex"},
             {"flex-wrap", "wrap"},
@@ -29,7 +29,7 @@ int main() {
         }
     ));
 
-    sheet.push_back(docpp::CSS::CSSElement(
+    sheet.push_back(docpp::CSS::Element(
         "input[type=text], select", {
             {"width", "50vw"},
         }
@@ -37,27 +37,27 @@ int main() {
 
     html.push_back({"style", {}, sheet.get(docpp::CSS::FORMATTING_PRETTY)});
 
-    docpp::HTML::HTMLSection div{docpp::HTML::SECTION_DIV, {docpp::HTML::HTMLProperty("class", "center")}};
+    docpp::HTML::Section div{docpp::HTML::SECTION_DIV, {docpp::HTML::Property("class", "center")}};
 
-    div.push_back({"font", {docpp::HTML::HTMLProperty("color", "blue")}, "G"});
-    div.push_back({"font", {docpp::HTML::HTMLProperty("color", "red")}, "o"});
-    div.push_back({"font", {docpp::HTML::HTMLProperty("color", "yellow")}, "o"});
-    div.push_back({"font", {docpp::HTML::HTMLProperty("color", "blue")}, "g"});
-    div.push_back({"font", {docpp::HTML::HTMLProperty("color", "green")}, "l"});
-    div.push_back({"font", {docpp::HTML::HTMLProperty("color", "red")}, "e"});
+    div.push_back({"font", {docpp::HTML::Property("color", "blue")}, "G"});
+    div.push_back({"font", {docpp::HTML::Property("color", "red")}, "o"});
+    div.push_back({"font", {docpp::HTML::Property("color", "yellow")}, "o"});
+    div.push_back({"font", {docpp::HTML::Property("color", "blue")}, "g"});
+    div.push_back({"font", {docpp::HTML::Property("color", "green")}, "l"});
+    div.push_back({"font", {docpp::HTML::Property("color", "red")}, "e"});
 
     html.push_back(div);
 
-    docpp::HTML::HTMLSection div2{docpp::HTML::SECTION_DIV, {docpp::HTML::HTMLProperty("align", "center")}};
-    docpp::HTML::HTMLSection form{"form", {{docpp::HTML::HTMLProperty("action", "https://google.com/search"), docpp::HTML::HTMLProperty("method", "get")}}};
+    docpp::HTML::Section div2{docpp::HTML::SECTION_DIV, {docpp::HTML::Property("align", "center")}};
+    docpp::HTML::Section form{"form", {{docpp::HTML::Property("action", "https://google.com/search"), docpp::HTML::Property("method", "get")}}};
 
-    form.push_back({"input", docpp::HTML::HTMLProperties({docpp::HTML::HTMLProperty("type", "text"), docpp::HTML::HTMLProperty("name", "q")}), "", docpp::HTML::TYPE_SELF_CLOSING});
-    form.push_back({"input", docpp::HTML::HTMLProperties({docpp::HTML::HTMLProperty("type", "submit"), docpp::HTML::HTMLProperty("value", "Search!")}), "", docpp::HTML::TYPE_SELF_CLOSING});
+    form.push_back({"input", docpp::HTML::Properties({docpp::HTML::Property("type", "text"), docpp::HTML::Property("name", "q")}), "", docpp::HTML::TYPE_SELF_CLOSING});
+    form.push_back({"input", docpp::HTML::Properties({docpp::HTML::Property("type", "submit"), docpp::HTML::Property("value", "Search!")}), "", docpp::HTML::TYPE_SELF_CLOSING});
 
     div2.push_back(form);
     html.push_back(div2);
 
-    docpp::HTML::HTMLDocument doc{html};
+    docpp::HTML::Document doc{html};
 
     std::ofstream file("biteme.lol.html");
 
