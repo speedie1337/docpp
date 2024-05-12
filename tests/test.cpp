@@ -64,7 +64,7 @@ SCENARIO("Test HTML", "[HTML]") {
         section.push_back(docpp::HTML::Element("p", {}, "Test 2"));
         section.push_back(docpp::HTML::Element("p", {}, "Test 3"));
 
-        int pos = section.find(docpp::HTML::Element("p", {}, "Test 2"));
+        std::size_t pos = section.find(docpp::HTML::Element("p", {}, "Test 2"));
         section.insert(pos, docpp::HTML::Element("p", {}, "Test 2.5"));
 
         REQUIRE(section.get() == "<html><p>Test 1</p><p>Test 2.5</p><p>Test 3</p></html>");
@@ -78,7 +78,7 @@ SCENARIO("Test HTML", "[HTML]") {
         section.push_back(docpp::HTML::Element("p", {}, "Test 2"));
         section.push_back(docpp::HTML::Element("p", {}, "Test 3"));
 
-        int pos = section.find(docpp::HTML::Element("p", {}, "Test 2"));
+        std::size_t pos = section.find(docpp::HTML::Element("p", {}, "Test 2"));
 
         section.erase(pos);
 
@@ -206,11 +206,11 @@ SCENARIO("Test HTML", "[HTML]") {
         section.push_back(docpp::HTML::Element("p", {}, "Test 5"));
         section.push_back(docpp::HTML::Element("p", {}, "Test 6"));
 
-        const int pos{section.find("<p>Test 2</p>")};
+        const std::size_t pos{section.find("<p>Test 2</p>")};
 
         REQUIRE(pos != docpp::HTML::Section::npos);
 
-        const int pos2{section.find("<p>Test 6</p>")};
+        const std::size_t pos2{section.find("<p>Test 6</p>")};
 
         section.erase(pos);
         section.erase(pos2);

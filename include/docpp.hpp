@@ -3,13 +3,6 @@
  * Licensed under the LGPL-3.0-or-later license.
  *
  * Author: speedie <speedie@speedie.site>
- *
- * @file docpp.hpp
- * @brief Header file for docpp
- * @author speedie
- * @date 2024
- * @copyright GNU Lesser General Public License 3.0
- * @version 0.0.1
  */
 #pragma once
 
@@ -79,10 +72,12 @@ namespace docpp {
                 std::pair<std::string, std::string> property{};
             protected:
             public:
+                using size_type = std::size_t;
+
                 /**
                  * @brief The npos value
                  */
-                static const int npos = -1;
+                static const size_type npos = -1;
 
                 /**
                  * @brief Construct a new Property object
@@ -129,8 +124,6 @@ namespace docpp {
                 void set(const std::pair<std::string, std::string>& property);
         };
 
-        using HTMLProperty = Property;
-
         /**
          * @brief A class to represent the properties of an HTML element
          */
@@ -139,6 +132,7 @@ namespace docpp {
                 std::vector<Property> properties{};
             protected:
             public:
+                using size_type = std::size_t;
                 using iterator = std::vector<Property>::iterator;
                 using const_iterator = std::vector<Property>::const_iterator;
                 using reverse_iterator = std::vector<Property>::reverse_iterator;
@@ -188,7 +182,7 @@ namespace docpp {
                 /**
                  * @brief The npos value
                  */
-                static const int npos = -1;
+                static const size_type npos = -1;
 
                 /**
                  * @brief Get the properties of the element
@@ -205,36 +199,36 @@ namespace docpp {
                  * @param index The index of the property
                  * @return Property The property at the index
                  */
-                Property at(const int index) const;
+                Property at(const size_type index) const;
                 /**
                  * @brief Insert a property into the element
                  * @param index The index to insert the property
                  * @param property The property to insert
                  */
-                void insert(const int index, const Property& property);
+                void insert(const size_type index, const Property& property);
                 /**
                  * @brief Erase a property from the element
                  * @param index The index of the property to erase
                  */
-                void erase(const int index);
+                void erase(const size_type index);
                 /**
                  * @brief Find a property in the element
                  * @param property The property to find
-                 * @return int The index of the property
+                 * @return size_type The index of the property
                  */
-                int find(const Property& property);
+                size_type find(const Property& property);
                 /**
                  * @brief Find a property in the element
                  * @param str The property to find
-                 * @return int The index of the property
+                 * @return size_type The index of the property
                  */
-                int find(const std::string& str);
+                size_type find(const std::string& str);
                 /**
                  * @brief Swap two properties in the element
                  * @param index1 The index of the first property
                  * @param index2 The index of the second property
                  */
-                void swap(const int index1, const int index2);
+                void swap(const size_type index1, const size_type index2);
                 /**
                  * @brief Swap two properties in the element
                  * @param property1 The first property
@@ -253,9 +247,9 @@ namespace docpp {
                 Property back() const;
                 /**
                  * @brief Get the size of the element
-                 * @return int The size of the element
+                 * @return size_type The size of the element
                  */
-                int size() const;
+                size_type size() const;
                 /**
                  * @brief Prepend a property to the element
                  * @param property The property to add
@@ -286,8 +280,6 @@ namespace docpp {
                 void operator+=(const Property& property);
         };
 
-        using HTMLElementProperties = Properties;
-
         /**
          * @brief A class to represent an HTML element
          */
@@ -299,10 +291,11 @@ namespace docpp {
                 Properties properties{};
             protected:
             public:
+                using size_type = std::size_t;
                 /**
                  * @brief The npos value
                  */
-                static const int npos = -1;
+                static const size_type npos = -1;
 
                 /**
                  * @brief Construct a new Element object
@@ -344,21 +337,14 @@ namespace docpp {
                 void operator+=(const std::string& data);
         };
 
-        using HTMLElement = Element;
-
         /**
          * @brief A class to represent an HTML section (head, body, etc.)
          */
         class Section {
-            private:
-                int index{};
-                std::string tag{};
-                Properties properties{};
-
-                std::map<int, Element> elements{};
-                std::unordered_map<int, Section> sections{};
             protected:
             public:
+                using size_type = std::size_t;
+
                 /**
                  * @brief A class to represent an iterator for the Section class
                  */
@@ -391,7 +377,7 @@ namespace docpp {
                 /**
                  * @brief The npos value
                  */
-                static const int npos = -1;
+                static const size_type npos = -1;
 
                 /**
                  * @brief Prepend an element to the section
@@ -418,18 +404,18 @@ namespace docpp {
                  * @param index The index of the element
                  * @return Element The element at the index
                  */
-                Element at(const int index) const;
+                Element at(const size_type index) const;
                 /**
                  * @brief Get the section at an index. To get an element, use at()
                  * @param index The index of the section
                  * @return Section The section at the index
                  */
-                Section at_section(const int index) const;
+                Section at_section(const size_type index) const;
                 /**
                  * @brief Erase an element from the section. Note that this will NOT change the size/index.
                  * @param index The index of the element to erase
                  */
-                void erase(const int index);
+                void erase(const size_type index);
                 /**
                  * @brief Erase a section from the section, by reading from a section. The section will be erased if it's identical to section. Note that this will NOT change the size/index.
                  * @param section The section to erase
@@ -443,33 +429,33 @@ namespace docpp {
                 /**
                  * @brief Find an element in the section
                  * @param element The element to find
-                 * @return int The index of the element
+                 * @return size_type The index of the element
                  */
-                int find(const Element& element);
+                size_type find(const Element& element);
                 /**
                  * @brief Find a section in the section
                  * @param section The section to find
-                 * @return int The index of the section
+                 * @return size_type The index of the section
                  */
-                int find(const Section& section);
+                size_type find(const Section& section);
                 /**
                  * @brief Find an element or section in the section
                  * @param str The element or section to find
-                 * @return int The index of the element or section
+                 * @return size_type The index of the element or section
                  */
-                int find(const std::string& str);
+                size_type find(const std::string& str);
                 /**
                  * @brief Insert an element into the section
                  * @param index The index to insert the element
                  * @param element The element to insert
                  */
-                void insert(const int index, const Element& element);
+                void insert(const size_type index, const Element& element);
                 /**
                  * @brief Insert a section into the section
                  * @param index The index to insert the section
                  * @param section The section to insert
                  */
-                void insert(const int index, const Section& section);
+                void insert(const size_type index, const Section& section);
                 /**
                  * @brief Get the first element of the section
                  * @return Element The first element of the section
@@ -492,9 +478,9 @@ namespace docpp {
                 Section back_section() const;
                 /**
                  * @brief Get the size of the section
-                 * @return int The size of the section
+                 * @return size_type The size of the section
                  */
-                int size() const;
+                size_type size() const;
 
                 /**
                  * @brief Construct a new Section object
@@ -531,7 +517,7 @@ namespace docpp {
                  * @param index1 The index of the first element
                  * @param index2 The index of the second element
                  */
-                void swap(const int index1, const int index2);
+                void swap(const size_type index1, const size_type index2);
                 /**
                  * @brief Swap two elements in the section
                  * @param element1 The first element
@@ -565,9 +551,14 @@ namespace docpp {
                 void operator+=(const Element& element);
                 void operator+=(const Section& section);
                 Element operator[](const int& index) const;
-        };
+            private:
+                size_type index{};
+                std::string tag{};
+                Properties properties{};
 
-        using HTMLSection = Section;
+                std::map<int, Element> elements{};
+                std::unordered_map<int, Section> sections{};
+        };
 
         /**
          * @brief A class to represent an HTML document
@@ -578,10 +569,12 @@ namespace docpp {
                 Section document{};
             protected:
             public:
+                using size_type = std::size_t;
+
                 /**
                  * @brief The npos value
                  */
-                static const int npos = -1;
+                static const size_type npos = -1;
 
                 /**
                  * @brief Get the document
@@ -625,8 +618,6 @@ namespace docpp {
                 Document operator=(const Document& document);
                 Document operator=(const Section& section);
         };
-
-        using HTMLDocument = Document;
     } // namespace HTML
 
     /**
@@ -647,10 +638,11 @@ namespace docpp {
                 std::pair<std::string, std::string> property{};
             protected:
             public:
+                using size_type = std::size_t;
                 /**
                  * @brief The npos value
                  */
-                static const int npos = -1;
+                static const size_type npos = -1;
 
                 /**
                  * @brief Construct a new Property object
@@ -706,13 +698,12 @@ namespace docpp {
                 Property operator=(const std::pair<std::string, std::string>& property);
         };
 
-        using CSSProperty = Property;
-
         class Element {
             private:
                 std::pair<std::string, std::vector<Property>> element{};
             protected:
             public:
+                using size_type = std::size_t;
                 using iterator = std::vector<Property>::iterator;
                 using const_iterator = std::vector<Property>::const_iterator;
                 using reverse_iterator = std::vector<Property>::reverse_iterator;
@@ -762,7 +753,7 @@ namespace docpp {
                 /**
                  * @brief The npos value
                  */
-                static const int npos = -1;
+                static const size_type npos = -1;
 
                 /**
                  * @brief Construct a new Element object
@@ -792,36 +783,36 @@ namespace docpp {
                  * @param index The index to insert the property
                  * @param property The property to insert
                  */
-                void insert(const int index, const Property& property);
+                void insert(const size_type index, const Property& property);
                 /**
                  * @brief Erase a property from the element
                  * @param index The index of the property to erase
                  */
-                void erase(const int index);
+                void erase(const size_type index);
                 /**
                  * @brief Find a property in the element
                  * @param property The property to find
-                 * @return int The index of the property
+                 * @return size_type The index of the property
                  */
-                int find(const Property& property);
+                size_type find(const Property& property);
                 /**
                  * @brief Get the property at an index
                  * @param index The index of the property
                  * @return Property The property at the index
                  */
-                Property at(const int index) const;
+                Property at(const size_type index) const;
                 /**
                  * @brief Find a property in the element
                  * @param str The property to find
-                 * @return int The index of the property
+                 * @return size_type The index of the property
                  */
-                int find(const std::string& str);
+                size_type find(const std::string& str);
                 /**
                  * @brief Swap two properties in the element
                  * @param index1 The index of the first property
                  * @param index2 The index of the second property
                  */
-                void swap(const int index1, const int index2);
+                void swap(const size_type index1, const size_type index2);
                 /**
                  * @brief Swap two properties in the element
                  * @param property1 The first property
@@ -840,9 +831,10 @@ namespace docpp {
                 Property back() const;
                 /**
                  * @brief Get the size of the element
-                 * @return int The size of the element
+                 * @return size_type The size of the element
                  */
-                int size() const;
+                size_type size() const;
+                int size();
                 /**
                  * @brief Set the properties of the element
                  * @param properties The properties to set
@@ -875,8 +867,6 @@ namespace docpp {
                 Property operator[](const int& index) const;
         };
 
-        using CSSElement = Element;
-
         /**
          * @brief A class to represent a CSS stylesheet
          */
@@ -885,6 +875,7 @@ namespace docpp {
                 std::vector<Element> elements{};
             protected:
             public:
+                using size_type = std::size_t;
                 using iterator = std::vector<Element>::iterator;
                 using const_iterator = std::vector<Element>::const_iterator;
                 using reverse_iterator = std::vector<Element>::reverse_iterator;
@@ -934,7 +925,7 @@ namespace docpp {
                 /**
                  * @brief The npos value
                  */
-                static const int npos = -1;
+                static const size_type npos = -1;
 
                 /**
                  * @brief Construct a new Stylesheet object
@@ -958,35 +949,35 @@ namespace docpp {
                  * @param index The index to insert the element
                  * @param element The element to insert
                  */
-                void insert(const int index, const Element& element);
+                void insert(const size_type index, const Element& element);
                 /**
                  * @brief Erase an element from the stylesheet. Note that this will NOT change the size/index.
                  * @param index The index of the element to erase
                  */
-                void erase(const int index);
+                void erase(const size_type index);
                 /**
                  * @brief Find an element in the stylesheet
                  * @param element The element to find
-                 * @return int The index of the element
+                 * @return size_type The index of the element
                  */
-                int find(const Element& element);
+                size_type find(const Element& element);
                 /**
                  * @brief Find an element in the stylesheet
                  * @param str The element to find, either the tag or the stylesheet itself
-                 * @return int The index of the element
+                 * @return size_type The index of the element
                  */
-                int find(const std::string& str);
+                size_type find(const std::string& str);
                 /**
                  * @brief Get the element at an index
                  * @param index The index of the element
                  * @return Element The element at the index
                  */
-                Element at(const int index) const;
+                Element at(const size_type index) const;
                 /**
                  * @brief Get the size of the stylesheet
-                 * @return int The size of the stylesheet
+                 * @return size_type The size of the stylesheet
                  */
-                int size() const;
+                size_type size() const;
                 /**
                  * @brief Get the first element of the stylesheet
                  * @return Element The first element of the stylesheet
@@ -1002,7 +993,7 @@ namespace docpp {
                  * @param index1 The index of the first element
                  * @param index2 The index of the second element
                  */
-                void swap(const int index1, const int index2);
+                void swap(const size_type index1, const size_type index2);
                 /**
                  * @brief Swap two elements in the stylesheet
                  * @param element1 The first element
@@ -1029,7 +1020,5 @@ namespace docpp {
                 void operator+=(const Element& element);
                 Element operator[](const int& index) const;
         };
-
-        using CSSStylesheet = Stylesheet;
     }
 }

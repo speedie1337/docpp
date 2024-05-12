@@ -3,13 +3,6 @@
  * Licensed under the LGPL-3.0-or-later license.
  *
  * Author: speedie <speedie@speedie.site>
- *
- * @file docpp.cpp
- * @brief Implementation of the docpp library.
- * @author speedie
- * @date 2024
- * @copyright GNU Lesser General Public License 3.0.
- * @version 0.0.1
  */
 
 #include <include/docpp.hpp>
@@ -80,7 +73,7 @@ std::vector<docpp::HTML::Property> docpp::HTML::Properties::getProperties() cons
     return this->properties;
 }
 
-docpp::HTML::Property docpp::HTML::Properties::at(const int index) const {
+docpp::HTML::Property docpp::HTML::Properties::at(const size_type index) const {
     if (index < 0 || index >= this->properties.size()) {
         throw docpp::out_of_range("Index out of range");
     }
@@ -92,7 +85,7 @@ void docpp::HTML::Properties::set(const std::vector<docpp::HTML::Property>& prop
     this->properties = properties;
 }
 
-void docpp::HTML::Properties::insert(const int index, const docpp::HTML::Property& property) {
+void docpp::HTML::Properties::insert(const size_type index, const docpp::HTML::Property& property) {
     if (index < 0 || index >= this->properties.size()) {
         throw docpp::out_of_range("Index out of range");
     }
@@ -100,7 +93,7 @@ void docpp::HTML::Properties::insert(const int index, const docpp::HTML::Propert
     this->properties.insert(this->properties.begin() + index, property);
 }
 
-void docpp::HTML::Properties::erase(const int index) {
+void docpp::HTML::Properties::erase(const size_type index) {
     if (index < 0 || index >= this->properties.size()) {
         throw docpp::out_of_range("Index out of range");
     }
@@ -116,8 +109,8 @@ void docpp::HTML::Properties::push_back(const docpp::HTML::Property& property) {
     this->properties.push_back(property);
 }
 
-int docpp::HTML::Properties::find(const docpp::HTML::Property& property) {
-    for (int i{0}; i < this->properties.size(); i++) {
+docpp::HTML::Properties::size_type docpp::HTML::Properties::find(const docpp::HTML::Property& property) {
+    for (size_type i{0}; i < this->properties.size(); i++) {
         if (!this->properties.at(i).getKey().compare(property.getKey())) {
             return i;
         } else if (!this->properties.at(i).getValue().compare(property.getValue())) {
@@ -134,8 +127,8 @@ int docpp::HTML::Properties::find(const docpp::HTML::Property& property) {
     return docpp::HTML::Properties::npos;
 }
 
-int docpp::HTML::Properties::find(const std::string& str) {
-    for (int i{0}; i < this->properties.size(); i++) {
+docpp::HTML::Properties::size_type docpp::HTML::Properties::find(const std::string& str) {
+    for (size_type i{0}; i < this->properties.size(); i++) {
         if (!this->properties.at(i).getKey().compare(str) || !this->properties.at(i).getValue().compare(str)) {
             return i;
         } else if (this->properties.at(i).getKey().find(str) != std::string::npos || this->properties.at(i).getValue().find(str) != std::string::npos) {
@@ -154,11 +147,11 @@ docpp::HTML::Property docpp::HTML::Properties::back() const {
     return this->properties.back();
 }
 
-int docpp::HTML::Properties::size() const {
+docpp::HTML::Properties::size_type docpp::HTML::Properties::size() const {
     return this->properties.size();
 }
 
-void docpp::HTML::Properties::swap(const int index1, const int index2) {
+void docpp::HTML::Properties::swap(const size_type index1, const size_type index2) {
     if (index1 < 0 || index1 >= this->properties.size() || index2 < 0 || index2 >= this->properties.size()) {
         throw docpp::out_of_range("Index out of range");
     }
@@ -196,7 +189,7 @@ std::string docpp::HTML::Element::get(const int formatting, const int tabc) cons
     if (this->type == docpp::HTML::TYPE_TEXT) {
         return this->data;
     } else if (this->type == docpp::HTML::TYPE_TEXT_TAB) {
-        for (int i{0}; i < tabc; i++) {
+        for (size_type i{0}; i < tabc; i++) {
             ret += "\t";
         }
 
@@ -204,7 +197,7 @@ std::string docpp::HTML::Element::get(const int formatting, const int tabc) cons
     }
 
     if (formatting == docpp::HTML::FORMATTING_PRETTY) {
-        for (int i{0}; i < tabc; i++) {
+        for (size_type i{0}; i < tabc; i++) {
             ret += "\t";
         }
     }
@@ -296,7 +289,7 @@ void docpp::HTML::Section::set(const int tag, const Properties& properties) {
 }
 
 void docpp::HTML::Section::push_front(const Element& element) {
-    for (int i{this->index}; i > 0; i--) {
+    for (size_type i{this->index}; i > 0; i--) {
         this->elements[i] = this->elements.at(i - 1);
     }
 
@@ -305,7 +298,7 @@ void docpp::HTML::Section::push_front(const Element& element) {
 }
 
 void docpp::HTML::Section::push_front(const Section& section) {
-    for (int i{this->index}; i > 0; i--) {
+    for (size_type i{this->index}; i > 0; i--) {
         this->sections.at(i) = this->sections.at(i - 1);
     }
 
@@ -321,7 +314,7 @@ void docpp::HTML::Section::push_back(const Section& section) {
     this->sections[this->index++] = section;
 }
 
-void docpp::HTML::Section::erase(const int index) {
+void docpp::HTML::Section::erase(const size_type index) {
     bool erased{false};
 
     if (this->elements.find(index) != this->elements.end()) {
@@ -338,7 +331,7 @@ void docpp::HTML::Section::erase(const int index) {
 }
 
 void docpp::HTML::Section::erase(const Section& section) {
-    for (int i{0}; i < this->size(); i++) {
+    for (size_type i{0}; i < this->size(); i++) {
         const auto it = this->getSections().at(i);
 
         if (it.get() == section.get()) {
@@ -351,7 +344,7 @@ void docpp::HTML::Section::erase(const Section& section) {
 }
 
 void docpp::HTML::Section::erase(const Element& element) {
-    for (int i{0}; i < this->size(); i++) {
+    for (size_type i{0}; i < this->size(); i++) {
         const auto it = this->getElements().at(i);
 
         if (it.get() == element.get()) {
@@ -363,7 +356,7 @@ void docpp::HTML::Section::erase(const Element& element) {
     throw docpp::out_of_range("Element not found");
 }
 
-void docpp::HTML::Section::insert(const int index, const Element& element) {
+void docpp::HTML::Section::insert(const size_type index, const Element& element) {
     if (this->sections.find(index) != this->sections.end()) {
         throw docpp::invalid_argument("Index already occupied by a section");
     } else {
@@ -373,12 +366,12 @@ void docpp::HTML::Section::insert(const int index, const Element& element) {
     this->index = std::max(this->index, index) + 1;
 }
 
-void docpp::HTML::Section::insert(const int index, const Section& section) {
+void docpp::HTML::Section::insert(const size_type index, const Section& section) {
     this->sections[index] = section;
     this->index = std::max(this->index, index) + 1;
 }
 
-docpp::HTML::Element docpp::HTML::Section::at(const int index) const {
+docpp::HTML::Element docpp::HTML::Section::at(const size_type index) const {
     if (this->elements.find(index) != this->elements.end()) {
         return this->elements.at(index);
     }
@@ -386,7 +379,7 @@ docpp::HTML::Element docpp::HTML::Section::at(const int index) const {
     throw docpp::out_of_range("Index out of range");
 }
 
-docpp::HTML::Section docpp::HTML::Section::at_section(const int index) const {
+docpp::HTML::Section docpp::HTML::Section::at_section(const size_type index) const {
     if (this->sections.find(index) != this->sections.end()) {
         return this->sections.at(index);
     }
@@ -394,8 +387,8 @@ docpp::HTML::Section docpp::HTML::Section::at_section(const int index) const {
     throw docpp::out_of_range("Index out of range");
 }
 
-int docpp::HTML::Section::find(const Element& element) {
-    for (int i{0}; i < this->size(); i++) {
+docpp::HTML::Section::size_type docpp::HTML::Section::find(const Element& element) {
+    for (size_type i{0}; i < this->size(); i++) {
         const auto it = this->getElements().at(i);
 
         if (it.get() == element.get()) {
@@ -406,8 +399,8 @@ int docpp::HTML::Section::find(const Element& element) {
     return docpp::HTML::Section::npos;
 }
 
-int docpp::HTML::Section::find(const Section& section) {
-    for (int i{0}; i < this->size(); i++) {
+docpp::HTML::Section::size_type docpp::HTML::Section::find(const Section& section) {
+    for (size_type i{0}; i < this->size(); i++) {
         const auto it = this->getSections().at(i);
 
         if (it.get() == section.get()) {
@@ -418,10 +411,10 @@ int docpp::HTML::Section::find(const Section& section) {
     return docpp::HTML::Section::npos;
 }
 
-int docpp::HTML::Section::find(const std::string& str) {
+docpp::HTML::Section::size_type docpp::HTML::Section::find(const std::string& str) {
     const auto elements = this->getElements();
 
-    for (int i{0}; i < elements.size(); i++) {
+    for (size_type i{0}; i < elements.size(); i++) {
         if (!elements.at(i).get().compare(str)) {
             return i;
         }
@@ -429,7 +422,7 @@ int docpp::HTML::Section::find(const std::string& str) {
 
     const auto sections = this->getSections();
 
-    for (int i{0}; i < sections.size(); i++) {
+    for (size_type i{0}; i < sections.size(); i++) {
         if (!sections.at(i).get().compare(str)) {
             return i;
         }
@@ -470,14 +463,14 @@ docpp::HTML::Section docpp::HTML::Section::back_section() const {
     throw docpp::out_of_range("Index out of range");
 }
 
-int docpp::HTML::Section::size() const {
+docpp::HTML::Section::size_type docpp::HTML::Section::size() const {
     return this->index;
 }
 
 std::vector<docpp::HTML::Element> docpp::HTML::Section::getElements() const {
     std::vector<docpp::HTML::Element> ret{};
     ret.reserve(this->index);
-    for (int i{0}; i < this->index; i++) {
+    for (size_type i{0}; i < this->index; i++) {
         if (this->elements.find(i) != this->elements.end()) {
             ret.push_back(this->elements.at(i));
         }
@@ -489,7 +482,7 @@ std::vector<docpp::HTML::Section> docpp::HTML::Section::getSections() const {
     std::vector<docpp::HTML::Section> ret{};
     ret.reserve(this->index);
 
-    for (int i{0}; i < this->index; i++) {
+    for (size_type i{0}; i < this->index; i++) {
         if (this->sections.find(i) != this->sections.end()) {
             ret.push_back(this->sections.at(i));
         }
@@ -511,7 +504,7 @@ std::string docpp::HTML::Section::get(const int formatting, const int tabc) cons
     }
 
     if (formatting == docpp::HTML::FORMATTING_PRETTY) {
-        for (int i{0}; i < tabcount; i++) {
+        for (size_type i{0}; i < tabcount; i++) {
             ret += "\t";
         }
     }
@@ -533,7 +526,7 @@ std::string docpp::HTML::Section::get(const int formatting, const int tabc) cons
         }
     }
 
-    for (int i{0}; i < this->index; i++) {
+    for (size_type i{0}; i < this->index; i++) {
         if (this->elements.find(i) != this->elements.end()) {
             ret += this->elements.at(i).get(formatting, tabcount + 1);
         } else if (this->sections.find(i) != this->sections.end()) {
@@ -546,7 +539,7 @@ std::string docpp::HTML::Section::get(const int formatting, const int tabc) cons
     }
 
     if (formatting == docpp::HTML::FORMATTING_PRETTY) {
-        for (int i{0}; i < tabcount; i++) {
+        for (size_type i{0}; i < tabcount; i++) {
             ret += "\t";
         }
     }
@@ -556,7 +549,7 @@ std::string docpp::HTML::Section::get(const int formatting, const int tabc) cons
     return std::move(ret);
 }
 
-void docpp::HTML::Section::swap(const int index1, const int index2) {
+void docpp::HTML::Section::swap(const size_type index1, const size_type index2) {
     if (this->elements.find(index1) != this->elements.end() && this->elements.find(index2) != this->elements.end()) {
         std::swap(this->elements[index1], this->elements[index2]);
     } else if (this->sections.find(index1) != this->sections.end() && this->sections.find(index2) != this->sections.end()) {
@@ -694,7 +687,7 @@ void docpp::CSS::Element::push_back(const Property& property) {
     this->element.second.push_back(property);
 }
 
-void docpp::CSS::Element::insert(const int index, const Property& property) {
+void docpp::CSS::Element::insert(const size_type index, const Property& property) {
     if (index < 0 || index >= this->element.second.size()) {
         throw docpp::out_of_range("Index out of range");
     }
@@ -702,7 +695,7 @@ void docpp::CSS::Element::insert(const int index, const Property& property) {
     this->element.second.insert(this->element.second.begin() + index, property);
 }
 
-void docpp::CSS::Element::erase(const int index) {
+void docpp::CSS::Element::erase(const size_type index) {
     if (index < 0 || index >= this->element.second.size()) {
         throw docpp::out_of_range("Index out of range");
     }
@@ -710,7 +703,7 @@ void docpp::CSS::Element::erase(const int index) {
     this->element.second.erase(this->element.second.begin() + index);
 }
 
-docpp::CSS::Property docpp::CSS::Element::at(const int index) const {
+docpp::CSS::Property docpp::CSS::Element::at(const size_type index) const {
     if (index < 0 || index >= this->element.second.size()) {
         throw docpp::out_of_range("Index out of range");
     }
@@ -718,8 +711,8 @@ docpp::CSS::Property docpp::CSS::Element::at(const int index) const {
     return this->element.second.at(index);
 }
 
-int docpp::CSS::Element::find(const Property& property) {
-    for (int i{0}; i < this->element.second.size(); i++) {
+docpp::CSS::Element::size_type docpp::CSS::Element::find(const Property& property) {
+    for (size_type i{0}; i < this->element.second.size(); i++) {
         if (this->element.second.at(i).get() == property.get()) {
             return i;
         }
@@ -728,8 +721,8 @@ int docpp::CSS::Element::find(const Property& property) {
     return docpp::CSS::Element::npos;
 }
 
-int docpp::CSS::Element::find(const std::string& str) {
-    for (int i{0}; i < this->element.second.size(); i++) {
+docpp::CSS::Element::size_type docpp::CSS::Element::find(const std::string& str) {
+    for (size_type i{0}; i < this->element.second.size(); i++) {
         if (!this->element.second.at(i).getKey().compare(str) || !this->element.second.at(i).getValue().compare(str)) {
             return i;
         }
@@ -746,11 +739,11 @@ docpp::CSS::Property docpp::CSS::Element::back() const {
     return this->element.second.back();
 }
 
-int docpp::CSS::Element::size() const {
+docpp::CSS::Element::size_type docpp::CSS::Element::size() const {
     return this->element.second.size();
 }
 
-void docpp::CSS::Element::swap(const int index1, const int index2) {
+void docpp::CSS::Element::swap(const size_type index1, const size_type index2) {
     if (index1 < 0 || index1 >= this->element.second.size() || index2 < 0 || index2 >= this->element.second.size()) {
         throw docpp::out_of_range("Index out of range");
     }
@@ -777,7 +770,7 @@ std::string docpp::CSS::Element::get(const int formatting, const int tabc) const
             if (!it.getValue().compare("")) continue;
 
             if (formatting == docpp::CSS::FORMATTING_PRETTY) {
-                for (int i{0}; i < tabc + 1; i++) {
+                for (size_type i{0}; i < tabc + 1; i++) {
                     ret += "\t";
                 }
             }
@@ -823,7 +816,7 @@ void docpp::CSS::Stylesheet::push_back(const Element& element) {
     this->elements.push_back(element);
 }
 
-void docpp::CSS::Stylesheet::insert(const int index, const Element& element) {
+void docpp::CSS::Stylesheet::insert(const size_type index, const Element& element) {
     if (index < 0 || index >= this->elements.size()) {
         throw docpp::out_of_range("Index out of range");
     }
@@ -831,7 +824,7 @@ void docpp::CSS::Stylesheet::insert(const int index, const Element& element) {
     this->elements.insert(this->elements.begin() + index, element);
 }
 
-void docpp::CSS::Stylesheet::erase(const int index) {
+void docpp::CSS::Stylesheet::erase(const size_type index) {
     if (index < 0 || index >= this->elements.size()) {
         throw docpp::out_of_range("Index out of range");
     }
@@ -852,7 +845,7 @@ docpp::CSS::Element docpp::CSS::Stylesheet::operator[](const int& index) const {
     return this->at(index);
 }
 
-docpp::CSS::Element docpp::CSS::Stylesheet::at(const int index) const {
+docpp::CSS::Element docpp::CSS::Stylesheet::at(const size_type index) const {
     if (index < 0 || index >= this->elements.size()) {
         throw docpp::out_of_range("Index out of range");
     }
@@ -860,8 +853,8 @@ docpp::CSS::Element docpp::CSS::Stylesheet::at(const int index) const {
     return this->elements.at(index);
 }
 
-int docpp::CSS::Stylesheet::find(const Element& element) {
-    for (int i{0}; i < this->elements.size(); i++) {
+docpp::CSS::Stylesheet::size_type docpp::CSS::Stylesheet::find(const Element& element) {
+    for (size_type i{0}; i < this->elements.size(); i++) {
         if (this->elements.at(i).get() == element.get()) {
             return i;
         }
@@ -870,8 +863,8 @@ int docpp::CSS::Stylesheet::find(const Element& element) {
     return docpp::CSS::Stylesheet::npos;
 }
 
-int docpp::CSS::Stylesheet::find(const std::string& str) {
-    for (int i{0}; i < this->elements.size(); i++) {
+docpp::CSS::Stylesheet::size_type docpp::CSS::Stylesheet::find(const std::string& str) {
+    for (size_type i{0}; i < this->elements.size(); i++) {
         if (!this->elements.at(i).get().compare(str) || !this->elements.at(i).getTag().compare(str)) {
             return i;
         }
@@ -880,7 +873,7 @@ int docpp::CSS::Stylesheet::find(const std::string& str) {
     return docpp::CSS::Stylesheet::npos;
 }
 
-int docpp::CSS::Stylesheet::size() const {
+docpp::CSS::Stylesheet::size_type docpp::CSS::Stylesheet::size() const {
     return this->elements.size();
 }
 
@@ -892,7 +885,7 @@ docpp::CSS::Element docpp::CSS::Stylesheet::back() const {
     return this->elements.back();
 }
 
-void docpp::CSS::Stylesheet::swap(const int index1, const int index2) {
+void docpp::CSS::Stylesheet::swap(const size_type index1, const size_type index2) {
     if (index1 < 0 || index1 >= this->elements.size() || index2 < 0 || index2 >= this->elements.size()) {
         throw docpp::out_of_range("Index out of range");
     }
