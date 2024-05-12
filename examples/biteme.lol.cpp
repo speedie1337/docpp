@@ -15,10 +15,8 @@ int main() {
 
     html.push_back({"title", {}, "Google"});
 
-    docpp::CSS::Stylesheet sheet{};
-
-    sheet.push_back(docpp::CSS::Element(
-        ".center", {
+    docpp::CSS::Stylesheet sheet{{
+        {".center", {
             {"display", "flex"},
             {"flex-wrap", "wrap"},
             {"justify-content", "center"},
@@ -26,14 +24,11 @@ int main() {
             {"font-size", "10vw"},
             {"height", "10vw"},
             {"padding", "10vw"},
-        }
-    ));
-
-    sheet.push_back(docpp::CSS::Element(
-        "input[type=text], select", {
+        }},
+        {"input[type=text], select", {
             {"width", "50vw"},
-        }
-    ));
+        }},
+    }};
 
     html.push_back({"style", {}, sheet.get(docpp::CSS::FORMATTING_PRETTY)});
 

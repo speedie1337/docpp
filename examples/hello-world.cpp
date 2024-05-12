@@ -28,7 +28,7 @@ int main() {
      *
      * Note that it is very important that you do not append a section or element to a section until you have finished its construction,
      * because push_back() makes a copy of the object you pass to it. If you need to make changes later, you can use methods such as find() and swap(),
-     * or construct a new object.
+     * or construct a new object. An alternative is to append using the += operator, which does the same thing as push_back().
      *
      * To get the section as an std::string object, call section.get().
      */
