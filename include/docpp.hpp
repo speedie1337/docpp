@@ -834,7 +834,6 @@ namespace docpp {
                  * @return size_type The size of the element
                  */
                 size_type size() const;
-                int size();
                 /**
                  * @brief Set the properties of the element
                  * @param properties The properties to set
