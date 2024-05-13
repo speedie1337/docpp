@@ -101,3 +101,53 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
          $<CONFIGURATION> -R "^${PROJECT_NAME}_test$"
     )
 endif()
+
+if (NOT WIN32)
+    if (EXISTS "${PROJECT_SOURCE_DIR}/cmake/${PROJECT_NAME}.PKGBUILD.in")
+        configure_file(${PROJECT_SOURCE_DIR}/cmake/${PROJECT_NAME}.PKGBUILD.in
+            ${CMAKE_CURRENT_BINARY_DIR}/PKGBUILD @ONLY
+        )
+    endif()
+
+    if (EXISTS "${PROJECT_SOURCE_DIR}/cmake/${PROJECT_NAME}.ebuild.in")
+        configure_file(${PROJECT_SOURCE_DIR}/cmake/${PROJECT_NAME}.ebuild.in
+            ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-${PROJECT_VERSION}.ebuild @ONLY
+        )
+    endif()
+
+    if (BUILD_TARBALL OR BUILD_ARCH)
+        add_custom_command(
+            TARGET ${PROJECT_NAME}
+            COMMENT "Create tarball"
+            POST_BUILD
+            WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+            COMMAND scripts/${PROJECT_NAME}_make dist && mv ${PROJECT_SOURCE_DIR}/${PROJECT_NAME}-${PROJECT_VERSION}.tar.gz* ${CMAKE_BINARY_DIR}
+        )
+    elseif (BUILD_TARBALL_RELEASE OR BUILD_ARCH_RELEASE)
+        add_custom_command(
+            TARGET ${PROJECT_NAME}
+            COMMENT "Create tarball"
+            POST_BUILD
+            WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+            COMMAND scripts/${PROJECT_NAME}_make dist_release && mv ${PROJECT_SOURCE_DIR}/${PROJECT_NAME}-${PROJECT_VERSION}.tar.gz* ${CMAKE_BINARY_DIR}
+        )
+    endif()
+
+    if (BUILD_ARCH_RELEASE)
+        add_custom_command(
+            TARGET ${PROJECT_NAME}
+            COMMENT "Build arch package"
+            POST_BUILD
+            WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+            COMMAND makepkg -sfr --sign
+        )
+    elseif (BUILD_ARCH)
+        add_custom_command(
+            TARGET ${PROJECT_NAME}
+            COMMENT "Build arch package"
+            POST_BUILD
+            WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+            COMMAND makepkg -sfr
+        )
+    endif()
+endif()
