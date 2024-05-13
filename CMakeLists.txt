@@ -1,8 +1,19 @@
+# docpp CMakeLists.txt
 cmake_minimum_required(VERSION 3.1...3.29)
 
-project(docpp LANGUAGES CXX VERSION 0.0.1)
+project(
+    docpp
+    VERSION 0.0.1
+    DESCRIPTION "Simple C++ library for generating XML, HTML and CSS."
+    HOMEPAGE_URL "https://speedie.site/docpp"
+    LANGUAGES CXX
+)
 
-if (MSVC)
+if (NOT DEFINED CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Debug)
+endif()
+
+if (MSVC AND CMAKE_BUILD_TYPE STREQUAL "Debug")
     set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 endif()
 
@@ -51,35 +62,44 @@ install(FILES "${PROJECT_SOURCE_DIR}/cmake/${PROJECT_NAME}Config.cmake"
     "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
     DESTINATION lib/cmake/${PROJECT_NAME})
 
-if (NOT ENABLE_TESTS)
-    return()
+if (NOT WIN32 AND NOT APPLE)
+    configure_file(${PROJECT_SOURCE_DIR}/cmake/${PROJECT_NAME}.pc.in
+        ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.pc @ONLY
+    )
+
+    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.pc
+        DESTINATION lib/pkgconfig)
+    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.pc
+        DESTINATION lib64/pkgconfig)
 endif()
 
-enable_testing()
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+    enable_testing()
 
-find_package(Catch2 3 REQUIRED)
+    find_package(Catch2 3 REQUIRED)
 
-add_executable(${PROJECT_NAME}_test
-    tests/test.cpp
-)
+    add_executable(${PROJECT_NAME}_test
+        tests/test.cpp
+    )
 
-target_include_directories(${PROJECT_NAME}_test PRIVATE
-    "${PROJECT_SOURCE_DIR}"
-)
+    target_include_directories(${PROJECT_NAME}_test PRIVATE
+        "${PROJECT_SOURCE_DIR}"
+    )
 
-target_link_libraries(${PROJECT_NAME}_test PRIVATE
-    Catch2::Catch2WithMain
-)
+    target_link_libraries(${PROJECT_NAME}_test PRIVATE
+        Catch2::Catch2WithMain
+    )
 
-include(CTest)
-include(Catch)
-catch_discover_tests(${PROJECT_NAME}_test)
+    include(CTest)
+    include(Catch)
+    catch_discover_tests(${PROJECT_NAME}_test)
 
-add_custom_command(
-     TARGET ${PROJECT_NAME}_test
-     COMMENT "Run tests"
-     POST_BUILD
-     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-     COMMAND ${CMAKE_CTEST_COMMAND} --output-on-failure --rerun-failed -C
-     $<CONFIGURATION> -R "^${PROJECT_NAME}_test$"
-)
+    add_custom_command(
+         TARGET ${PROJECT_NAME}_test
+         COMMENT "Run tests"
+         POST_BUILD
+         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+         COMMAND ${CMAKE_CTEST_COMMAND} --output-on-failure --rerun-failed -C
+         $<CONFIGURATION> -R "^${PROJECT_NAME}_test$"
+    )
+endif()

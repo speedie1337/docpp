@@ -24,7 +24,7 @@ To install the library, you can utilize the provided CMakeLists.txt file:
 ```sh
 mkdir build
 cd build
-cmake ..
+cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr
 cmake --build .
 cmake --install . --prefix /usr
 ```
