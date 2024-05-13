@@ -12,7 +12,7 @@
 int main() {
     /* This is your root document. It can hold *one* HTML section, and that section can hold any number of elements and/or sections.
      * By default, the root document will prepend a doctype declaration. If you don't want that (e.g., if you're writing XML), you can
-     * use docpp::HTML::Document::setDocType() to set the doctype to your preferred value.
+     * use docpp::HTML::Document::set_doctype() to set the doctype to your preferred value.
      *
      * To get the document as an std::string object, call doc.get().
      */

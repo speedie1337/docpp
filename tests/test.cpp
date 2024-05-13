@@ -252,8 +252,8 @@ SCENARIO("Test HTML", "[HTML]") {
 
         const int pos2 = prop.find("class2");
 
-        REQUIRE(prop.at(pos2).getKey() == "class");
-        REQUIRE(prop.at(pos2).getValue() == "class1 class2 class3");
+        REQUIRE(prop.at(pos2).get_key() == "class");
+        REQUIRE(prop.at(pos2).get_value() == "class1 class2 class3");
 
         REQUIRE(pos2 != docpp::HTML::Properties::npos);
 
@@ -269,17 +269,17 @@ SCENARIO("Test HTML", "[HTML]") {
     const auto test16 = []() {
         docpp::HTML::Document doc = docpp::HTML::Section({});
 
-        doc.getSection().push_back(docpp::HTML::Element("p", {}, "Test 1"));
-        doc.getSection().push_back(docpp::HTML::Element("p", {}, "Test 2"));
-        doc.getSection().push_back(docpp::HTML::Element("p", {}, "Test 3"));
+        doc.get_section().push_back(docpp::HTML::Element("p", {}, "Test 1"));
+        doc.get_section().push_back(docpp::HTML::Element("p", {}, "Test 2"));
+        doc.get_section().push_back(docpp::HTML::Element("p", {}, "Test 3"));
 
-        doc.getSection() = docpp::HTML::Section(docpp::HTML::SECTION_HTML, {});
+        doc.get_section() = docpp::HTML::Section(docpp::HTML::SECTION_HTML, {});
 
-        doc.getSection().push_back(docpp::HTML::Element("p", {}, "Test 4"));
-        doc.getSection().push_back(docpp::HTML::Element("p", {}, "Test 5"));
-        doc.getSection().push_back(docpp::HTML::Element("p", {}, "Test 6"));
+        doc.get_section().push_back(docpp::HTML::Element("p", {}, "Test 4"));
+        doc.get_section().push_back(docpp::HTML::Element("p", {}, "Test 5"));
+        doc.get_section().push_back(docpp::HTML::Element("p", {}, "Test 6"));
 
-        doc.getSection() += docpp::HTML::Element("p", {}, "Test 7");
+        doc.get_section() += docpp::HTML::Element("p", {}, "Test 7");
 
         REQUIRE(doc.get() == "<!DOCTYPE html><html><p>Test 4</p><p>Test 5</p><p>Test 6</p><p>Test 7</p></html>");
     };
@@ -325,14 +325,14 @@ SCENARIO("Test HTML", "[HTML]") {
         prop.push_back(docpp::HTML::Property(std::pair<std::string, std::string>("style", "color: red; font-size: 16px; font-family: Arial;")));
 
         for (const docpp::HTML::Property& p : prop) {
-            REQUIRE(p.getKey() == "id");
-            REQUIRE(p.getValue() == "test_id");
+            REQUIRE(p.get_key() == "id");
+            REQUIRE(p.get_value() == "test_id");
             break;
         }
 
         for (docpp::HTML::Properties::iterator it = ++prop.begin(); it != prop.end(); ++it) {
-            REQUIRE(it->getKey() == "class");
-            REQUIRE(it->getValue() == "class1 class2 class3");
+            REQUIRE(it->get_key() == "class");
+            REQUIRE(it->get_value() == "class1 class2 class3");
             break;
         }
     };

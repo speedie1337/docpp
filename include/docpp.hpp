@@ -96,22 +96,22 @@ namespace docpp {
                  * @brief Get the key of the property
                  * @return std::string The key of the property
                  */
-                std::string getKey() const;
+                std::string get_key() const;
                 /**
                  * @brief Get the key of the property in a specific type
                  * @return T The key of the property
                  */
-                template <typename T> T getKey() const;
+                template <typename T> T get_key() const;
                 /**
                  * @brief Get the value of the property
                  * @return std::string The value of the property
                  */
-                std::string getValue() const;
+                std::string get_value() const;
                 /**
                  * @brief Get the value of the property in a specific type
                  * @return T The value of the property
                  */
-                template <typename T> T getValue() const;
+                template <typename T> T get_value() const;
                 /**
                  * @brief Get the property.
                  * @return std::pair<std::string, std::string> The value of the property
@@ -126,12 +126,12 @@ namespace docpp {
                  * @brief Set the key of the property.
                  * @param key The key.
                  */
-                void setKey(const std::string& key);
+                void set_key(const std::string& key);
                 /**
                  * @brief Set the value of the property.
                  * @param value The value.
                  */
-                void setValue(const std::string& value);
+                void set_value(const std::string& value);
                 /**
                  * @brief Set the property
                  * @param property The property.
@@ -203,7 +203,7 @@ namespace docpp {
                  * @brief Get the properties of the element
                  * @return std::vector<Property> The properties of the element
                  */
-                std::vector<Property> getProperties() const;
+                std::vector<Property> get_properties() const;
                 /**
                  * @brief Set the properties of the element
                  * @param properties The properties to set
@@ -346,23 +346,23 @@ namespace docpp {
                  * @brief Get the tag of the element
                  * @return std::string The data of the element
                  */
-                std::string getTag() const;
+                std::string get_tag() const;
                 /**
                  * @brief Get the tag of the element in a specific type
                  * @return T The tag of the element
                  */
-                template <typename T> T getTag() const;
+                template <typename T> T get_tag() const;
 
                 /**
                  * @brief Get the data of the element
                  * @return std::string The data of the element
                  */
-                std::string getData() const;
+                std::string get_data() const;
                 /**
                  * @brief Get the data of the element in a specific type
                  * @return T The data of the element
                  */
-                template <typename T> T getData() const;
+                template <typename T> T get_data() const;
 
                 Element operator=(const Element& element);
                 void operator+=(const std::string& data);
@@ -565,12 +565,12 @@ namespace docpp {
                  * @brief Get the elements of the section
                  * @return std::vector<Element> The elements of the section
                  */
-                std::vector<Element> getElements() const;
+                std::vector<Element> get_elements() const;
                 /**
                  * @brief Get the sections of the section
                  * @return std::vector<Section> The sections of the section
                  */
-                std::vector<Section> getSections() const;
+                std::vector<Section> get_sections() const;
 
                 /**
                  * @brief Dump the entire section.
@@ -628,18 +628,18 @@ namespace docpp {
                  * @brief Get the section
                  * @return Section The section
                  */
-                Section& getSection();
+                Section& get_section();
 
                 /**
                  * @brief Get the doctype of the document
                  * @return std::string The doctype of the document
                  */
-                std::string getDoctype() const;
+                std::string get_doctype() const;
                 /**
                  * @brief Get the doctype of the document in a specific type
                  * @return T The doctype of the document
                  */
-                template <typename T> T getDoctype() const;
+                template <typename T> T get_doctype() const;
 
                 /**
                  * @brief Set the document
@@ -650,7 +650,7 @@ namespace docpp {
                  * @brief Set the doctype of the document
                  * @param doctype The doctype to set
                  */
-                void setDoctype(const std::string& doctype);
+                void set_doctype(const std::string& doctype);
                 /**
                  * @brief Construct a new Document object
                  */
@@ -707,22 +707,22 @@ namespace docpp {
                  * @brief Get the key of the property
                  * @return std::string The key of the property
                  */
-                std::string getKey() const;
+                std::string get_key() const;
                 /**
                  * @brief Get the key of the property in a specific type
                  * @return T The key of the property
                  */
-                template <typename T> T getKey() const;
+                template <typename T> T get_key() const;
                 /**
                  * @brief Get the value of the property
                  * @return std::string The value of the property
                  */
-                std::string getValue() const;
+                std::string get_value() const;
                 /**
                  * @brief Get the value of the property in a specific type
                  * @return T The value of the property
                  */
-                template <typename T> T getValue() const;
+                template <typename T> T get_value() const;
                 /**
                  * @brief Get the property.
                  * @return std::pair<std::string, std::string> The value of the property
@@ -737,12 +737,12 @@ namespace docpp {
                  * @brief Set the key of the property.
                  * @param key The key.
                  */
-                void setKey(const std::string& key);
+                void set_key(const std::string& key);
                 /**
                  * @brief Set the value of the property.
                  * @param value The value.
                  */
-                void setValue(const std::string& value);
+                void set_value(const std::string& value);
                 /**
                  * @brief Set the property
                  * @param property The property.
@@ -922,17 +922,17 @@ namespace docpp {
                  * @brief Get the tag of the element
                  * @return std::string The tag of the element
                  */
-                std::string getTag() const;
+                std::string get_tag() const;
                 /**
                  * @brief Get the tag of the element in a specific type
                  * @return T The tag of the element
                  */
-                template <typename T> T getTag() const;
+                template <typename T> T get_tag() const;
                 /**
                  * @brief Get the properties of the element
                  * @return std::vector<Property> The properties of the element
                  */
-                std::vector<Property> getProperties() const;
+                std::vector<Property> get_properties() const;
 
                 Element operator=(const Element& element);
                 Element operator=(const std::pair<std::string, std::vector<Property>>& element);
@@ -1082,7 +1082,7 @@ namespace docpp {
                  * @brief Get the elements of the stylesheet
                  * @return std::vector<Element> The elements of the stylesheet
                  */
-                std::vector<Element> getElements() const;
+                std::vector<Element> get_elements() const;
                 /**
                  * @brief Get the stylesheet
                  * @return std::string The stylesheet
