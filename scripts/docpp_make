@@ -1,0 +1,156 @@
+#!/usr/bin/env bash
+# docpp_make
+# wrapper script for generating distro packages
+
+proj="docpp"
+prefix="${prefix:-/usr}"
+release="${release:-Release}"
+
+clean() {
+    rm -rf ./*.zst* ./*.tar* ./*.sig* *.PKGBUILD *.ebuild *.ebuild* build/ PKGBUILD
+}
+
+check_correct_dir() {
+    [ ! -d ".git" ] && printf "Incorrect directory.\n" && exit 1
+}
+
+gen_pkg() {
+    [ "$(id -u)" = "0" ] && printf "Do not run as root.\n" && exit 1
+    version="${version:-$(grep project CMakeLists.txt | sed "s/project(${proj} VERSION //g")}"
+
+    if [ ! -e ".git" ]; then
+        printf "This is not a git repository.\n"
+        exit 1
+    fi
+
+    if [ ! -x "$(command -v git)" ]; then
+        printf "git is required for this action.\n"
+        exit 1
+    fi
+
+    rm -f ${proj} ${proj}-${version}.tar.gz ${proj}-${version}.PKGBUILD *.o *zst*
+    mkdir -p ${proj}-${version}
+    cp -rf $(git ls-files | cut -d/ -f1 | uniq) "${proj}-${version}"
+    tar -cf ${proj}-${version}.tar ${proj}-${version}
+    gzip ${proj}-${version}.tar
+    rm -rf ${proj}-${version}
+
+    USER="$(whoami)"
+    printf "Is your GPG key '$(whoami)'?\n"
+    select yn in "Yes" "No"; do
+        case $yn in
+            Yes) USER="$(whoami)"; break ;;
+            No) printf "\n> "; read -r USER; break ;;
+        esac
+    done
+
+    if [ -x "$(command -v gpg)" ]; then
+        gpg --detach-sign --yes --local-user "${USER}" ${proj}-${version}.tar.gz
+    fi
+
+    if [ -x "$(command -v md5sum)" ]; then
+        md5sum *.tar.gz | cut -d ' ' -f 1 > ${proj}-${version}.tar.gz.md5
+    fi
+
+    if [ -x "$(command -v sha256sum)" ]; then
+        sha256sum *.tar.gz | cut -d ' ' -f 1 > ${proj}-${version}.tar.gz.sha256
+    fi
+}
+
+#gen_gentoo_pkg() {
+    #[ "$(id -u)" = "0" ] && printf "Do not run as root.\n" && exit 1
+    #version="${version:-$(grep project CMakeLists.txt | sed "s/project(${proj} VERSION //g")}"
+#
+    #USER="$(whoami)"
+    #printf "Is your GPG key '$(whoami)'?\n"
+    #select yn in "Yes" "No"; do
+        #case $yn in
+            #Yes) USER="$(whoami)"; break ;;
+            #No) printf "\n> "; read -r USER; break ;;
+        #esac
+    #done
+#
+    #if [ -f "packaging/${proj}.ebuild" ]; then
+        #cp packaging/${proj}.ebuild ${proj}-${version}.ebuild
+#
+        #if [ -x "$(command -v gpg)" ]; then
+            #gpg --detach-sign --yes --local-user "${USER}" ${proj}-${version}.ebuild
+        #fi
+#
+        #if [ -x "$(command -v md5sum)" ]; then
+            #md5sum ${proj}-${version}.ebuild | cut -d ' ' -f 1 > ${proj}-${version}.ebuild.md5
+        #fi
+#
+        #if [ -x "$(command -v sha256sum)" ]; then
+            #sha256sum ${proj}-${version}.ebuild | cut -d ' ' -f 1 > ${proj}-${version}.ebuild.sha256
+        #fi
+    #fi
+#}
+
+#gen_arch_pkg() {
+    #[ "$(id -u)" = "0" ] && printf "Do not run as root.\n" && exit 1
+    #[ ! -x "$(command -v makepkg)" ] && printf "makepkg required for this action.\n" && exit 1
+#
+    #rm -f PKGBUILD
+#
+    #gen_pkg
+#
+    #if [ -x "$(command -v md5sum)" ]; then
+        #MD5_SUM="$(md5sum ${proj}-${version}.tar.gz | cut -d ' ' -f 1)"
+    #fi
+#
+    #if [ -x "$(command -v sha256sum)" ]; then
+        #SHA256_SUM="$(sha256sum ${proj}-${version}.tar.gz | cut -d ' ' -f 1)"
+    #fi
+#
+    #sed "s/VERSION/${version}/g; s/MD5SUM/$MD5_SUM/g; s/SHA256SUM/$SHA256_SUM/g" packaging/${proj}.PKGBUILD > PKGBUILD
+#
+    #makepkg -sfr --sign || exit 1
+#
+    #rm -rf pkg/ src/${proj}-${version}.tar.gz src/${proj}-${version}.tar.gz.sig src/${proj}-${version}
+#
+    #mv PKGBUILD ${proj}-${version}.PKGBUILD
+#
+    ## generate MD5 checksum
+    #[ -x "$(command -v md5sum)" ] && \
+        #md5sum ${proj}-${version}-1-x86_64.pkg.tar.zst | cut -d ' ' -f 1 > ${proj}-${version}-1-x86_64.pkg.tar.zst.md5
+#
+    ## generate SHA256 checksum
+    #[ -x "$(command -v sha256sum)" ] && \
+        #sha256sum ${proj}-${version}-1-x86_64.pkg.tar.zst | cut -d ' ' -f 1 > ${proj}-${version}-1-x86_64.pkg.tar.zst.sha256
+#}
+
+help() {
+cat << EOF
+$0 - Wrapper script for generating distro packages
+End users should not run this script directly, this is for maintainers only.
+
+$0 clean         Clean up the source tree
+$0 dist          Create a distro package for ${proj}
+$0 help          Print this help
+EOF
+}
+
+main() {
+    case "$1" in
+        "clean") action="clean" ;;
+        "dist") action="dist" ;;
+        "help") action="help" ;;
+        "") action="help" ;;
+        *) [ -z "$action" ] && action="wrong" ;;
+    esac
+
+    check_correct_dir
+
+    case "$action" in
+        "wrong") printf "Invalid action: %s\n" "$1" && exit 1 ;;
+        "clean") clean ;;
+        "help") help ;;
+        "dist") gen_pkg ;;
+    esac
+
+    exit $?
+}
+
+main "$@"
+
