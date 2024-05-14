@@ -2,7 +2,7 @@
 cmake_minimum_required(VERSION 3.1...3.29)
 
 project(docpp VERSION 0.0.1
-    DESCRIPTION "Simple C++ library for generating XML, HTML and CSS."
+    DESCRIPTION "C++ library for generating XML, HTML and CSS."
     HOMEPAGE_URL "https://speedie.site/docpp"
     LANGUAGES CXX
 )
