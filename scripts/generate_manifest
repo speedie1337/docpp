@@ -1,0 +1,21 @@
+#!/bin/sh
+
+[ "$1" = "" ] && {
+    printf "%s\n" "Usage: $0 <file>"
+    exit 1
+}
+
+[ ! -f "$1" ] && {
+    printf "%s\n" "Error: file '$1' not found"
+    exit 1
+}
+
+filename=$(basename "$1")
+size=$(stat -c %s "$1")
+#md5=$(md5sum "$1" | cut -d' ' -f1)
+#sha1=$(sha1sum "$1" | cut -d' ' -f1)
+#sha256=$(sha256sum "$1" | cut -d' ' -f1)
+sha512=$(sha512sum "$1" | cut -d' ' -f1)
+blake2b=$(b2sum "$1" | cut -d' ' -f1)
+
+printf "%s\n" "DIST $filename $size BLAKE2B $blake2b SHA512 $sha512"

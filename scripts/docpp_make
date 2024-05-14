@@ -36,13 +36,16 @@ gen_pkg() {
     rm -rf ${proj}-${version}
 
     USER="$(whoami)"
-    printf "Is your GPG key '$(whoami)'?\n"
-    select yn in "Yes" "No"; do
-        case $yn in
-            Yes) USER="$(whoami)"; break ;;
-            No) printf "\n> "; read -r USER; break ;;
-        esac
-    done
+
+    if [ "$1" = "release" ]; then
+        printf "Is your GPG key '$(whoami)'?\n"
+        select yn in "Yes" "No"; do
+            case $yn in
+                Yes) USER="$(whoami)"; break ;;
+                No) printf "\n> "; read -r USER; break ;;
+            esac
+        done
+    fi
 
     if [ -x "$(command -v gpg)" ] && [ "$1" = "release" ]; then
         gpg --detach-sign --yes --local-user "${USER}" ${proj}-${version}.tar.gz
