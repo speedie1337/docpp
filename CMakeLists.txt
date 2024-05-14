@@ -70,8 +70,6 @@ if (NOT WIN32 AND NOT APPLE)
 endif()
 
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-    enable_testing()
-
     find_package(Catch2 3 REQUIRED)
 
     add_executable(${PROJECT_NAME}_test
@@ -86,17 +84,12 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
         Catch2::Catch2WithMain
     )
 
-    include(CTest)
-    include(Catch)
-    catch_discover_tests(${PROJECT_NAME}_test)
-
     add_custom_command(
          TARGET ${PROJECT_NAME}_test
          COMMENT "Run tests"
          POST_BUILD
          WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-         COMMAND ${CMAKE_CTEST_COMMAND} --output-on-failure --rerun-failed -C
-         $<CONFIGURATION> -R "^${PROJECT_NAME}_test$"
+         COMMAND ${PROJECT_NAME}_test
     )
 endif()
 
