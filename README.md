@@ -2,7 +2,7 @@
 
 ![action](https://github.com/speediegq/docpp/actions/workflows/cmake-multi-platform.yml/badge.svg)
 
-Small C++ library for generating XML, HTML and CSS.
+C++11 library for generating XML, HTML and CSS.
 
 ## Features
 
