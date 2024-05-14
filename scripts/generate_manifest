@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 [ "$1" = "" ] && {
     printf "%s\n" "Usage: $0 <file>"
