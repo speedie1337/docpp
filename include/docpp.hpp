@@ -115,6 +115,7 @@ namespace docpp {
             ELEMENT_H5,
             ELEMENT_H6,
             ELEMENT_HGROUP,
+            ELEMENT_HR,
             ELEMENT_HTML,
             ELEMENT_IFRAME,
             ELEMENT_IMAGE,
@@ -477,7 +478,7 @@ namespace docpp {
                  * @param properties The properties of the element
                  * @param data The data of the element
                  */
-                Element(const Tag tag, const Properties& properties = {}, const std::string& data = {}, const Type = TYPE_NON_SELF_CLOSING);
+                Element(const Tag tag, const Properties& properties = {}, const std::string& data = {});
                 /**
                  * @brief Construct a new Element object
                  */
@@ -825,10 +826,11 @@ namespace docpp {
         };
 
         /**
-         * @brief  Resolve a tag.
+         * @brief Resolve a tag to a string and type.
          * @param tag The tag to resolve
+         * @return std::pair<std::string, Type> The resolved tag
          */
-        template <typename T> T resolve_tag(const Tag tag);
+        std::pair<std::string, Type> resolve_tag(const Tag tag);
     } // namespace HTML
 
     /**
