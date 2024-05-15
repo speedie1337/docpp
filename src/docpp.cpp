@@ -179,6 +179,10 @@ docpp::HTML::Element::Element(const std::string& tag, const Properties& properti
     this->set(tag, properties, data, type);
 }
 
+docpp::HTML::Element::Element(const int tag, const Properties& properties, const std::string& data, const int type) {
+    this->set(resolve_tag<std::string>(tag), properties, data, type);
+}
+
 docpp::HTML::Element docpp::HTML::Element::operator=(const docpp::HTML::Element& element) {
     this->set(element.get_tag(), element.properties, element.get_data(), element.type);
     return *this;
@@ -296,19 +300,298 @@ void docpp::HTML::Section::set(const std::string& tag, const Properties& propert
     this->properties = properties;
 }
 
-void docpp::HTML::Section::set(const int tag, const Properties& properties) {
-    if (tag == docpp::HTML::SECTION_DIV) {
-        this->tag = "div";
-    } else if (tag == docpp::HTML::SECTION_BODY) {
-        this->tag = "body";
-    } else if (tag == docpp::HTML::SECTION_FOOTER) {
-        this->tag = "footer";
-    } else if (tag == docpp::HTML::SECTION_HEAD) {
-        this->tag = "head";
-    } else if (tag == docpp::HTML::SECTION_HTML) {
-        this->tag = "html";
+template <typename T> T docpp::HTML::resolve_tag(const int tag) {
+    switch (tag) {
+        case ELEMENT_EMPTY:
+            return "";
+        case ELEMENT_ABBREVIATION:
+            return "abbr";
+        case ELEMENT_ABBR:
+            return "abbr";
+        case ELEMENT_ACRONYM:
+            return "acronym";
+        case ELEMENT_ADDRESS:
+            return "address";
+        case ELEMENT_APPLET:
+            return "applet";
+        case ELEMENT_ANCHOR:
+            return "a";
+        case ELEMENT_A:
+            return "a";
+        case ELEMENT_ARTICLE:
+            return "article";
+        case ELEMENT_AREA:
+            return "area";
+        case ELEMENT_ASIDE:
+            return "aside";
+        case ELEMENT_AUDIO:
+            return "audio";
+        case ELEMENT_BASE:
+            return "base";
+        case ELEMENT_BASEFONT:
+            return "basefont";
+        case ELEMENT_BDI:
+            return "bdi";
+        case ELEMENT_BDO:
+            return "bdo";
+        case ELEMENT_BGSOUND:
+            return "bgsound";
+        case ELEMENT_BIG:
+            return "big";
+        case ELEMENT_BLOCKQUOTE:
+            return "blockquote";
+        case ELEMENT_BODY:
+            return "body";
+        case ELEMENT_B:
+            return "b";
+        case ELEMENT_BOLD:
+            return "b";
+        case ELEMENT_BR:
+            return "br";
+        case ELEMENT_BREAK:
+            return "br";
+        case ELEMENT_BUTTON:
+            return "button";
+        case ELEMENT_CAPTION:
+            return "caption";
+        case ELEMENT_CANVAS:
+            return "canvas";
+        case ELEMENT_CENTER:
+            return "center";
+        case ELEMENT_CITE:
+            return "cite";
+        case ELEMENT_CODE:
+            return "code";
+        case ELEMENT_COLGROUP:
+            return "colgroup";
+        case ELEMENT_COLUMN:
+            return "col";
+        case ELEMENT_COL:
+            return "col";
+        case ELEMENT_DATA:
+            return "data";
+        case ELEMENT_DATALIST:
+            return "datalist";
+        case ELEMENT_DD:
+            return "dd";
+        case ELEMENT_DFN:
+            return "dfn";
+        case ELEMENT_DEFINE:
+            return "dfn";
+        case ELEMENT_DELETE:
+            return "del";
+        case ELEMENT_DEL:
+            return "del";
+        case ELEMENT_DETAILS:
+            return "details";
+        case ELEMENT_DIALOG:
+            return "dialog";
+        case ELEMENT_DIR:
+            return "dir";
+        case ELEMENT_DIV:
+            return "div";
+        case ELEMENT_DL:
+            return "dl";
+        case ELEMENT_DT:
+            return "dt";
+        case ELEMENT_EMBED:
+            return "embed";
+        case ELEMENT_FIELDSET:
+            return "fieldset";
+        case ELEMENT_FIGCAPTION:
+            return "figcaption";
+        case ELEMENT_FIGURE:
+            return "figure";
+        case ELEMENT_FONT:
+            return "font";
+        case ELEMENT_FOOTER:
+            return "footer";
+        case ELEMENT_FORM:
+            return "form";
+        case ELEMENT_FRAME:
+            return "frame";
+        case ELEMENT_FRAMESET:
+            return "frameset";
+        case ELEMENT_HEAD:
+             return "head";
+        case ELEMENT_HEADER:
+             return "header";
+        case ELEMENT_H1:
+            return "h1";
+        case ELEMENT_H2:
+            return "h2";
+        case ELEMENT_H3:
+            return "h3";
+        case ELEMENT_H4:
+            return "h4";
+        case ELEMENT_H5:
+            return "h5";
+        case ELEMENT_H6:
+            return "h6";
+        case ELEMENT_HGROUP:
+            return "hgroup";
+        case ELEMENT_HTML:
+            return "html";
+        case ELEMENT_IFRAME:
+            return "iframe";
+        case ELEMENT_IMAGE:
+            return "img";
+        case ELEMENT_IMG:
+            return "img";
+        case ELEMENT_INPUT:
+            return "input";
+        case ELEMENT_INS:
+            return "ins";
+        case ELEMENT_ISINDEX:
+            return "isindex";
+        case ELEMENT_ITALIC:
+            return "i";
+        case ELEMENT_I:
+            return "i";
+        case ELEMENT_KBD:
+            return "kbd";
+        case ELEMENT_KEYGEN:
+            return "keygen";
+        case ELEMENT_LABEL:
+            return "label";
+        case ELEMENT_LEGEND:
+            return "legend";
+        case ELEMENT_LIST:
+            return "li";
+        case ELEMENT_LI:
+            return "li";
+        case ELEMENT_MAIN:
+            return "main";
+        case ELEMENT_MARK:
+            return "mark";
+        case ELEMENT_MARQUEE:
+            return "marquee";
+        case ELEMENT_MENUITEM:
+            return "menuitem";
+        case ELEMENT_META:
+            return "meta";
+        case ELEMENT_METER:
+             return "meter";
+        case ELEMENT_NAV:
+             return "nav";
+        case ELEMENT_NOBREAK:
+            return "nobr";
+        case ELEMENT_NOBR:
+            return "nobr";
+        case ELEMENT_NOEMBED:
+            return "noembed";
+        case ELEMENT_NOSCRIPT:
+            return "noscript";
+        case ELEMENT_OBJECT:
+            return "object";
+        case ELEMENT_OPTGROUP:
+            return "optgroup";
+        case ELEMENT_OPTION:
+            return "option";
+        case ELEMENT_OUTPUT:
+            return "output";
+        case ELEMENT_PARAGRAPH:
+            return "p";
+        case ELEMENT_P:
+            return "p";
+        case ELEMENT_PARAM:
+            return "param";
+        case ELEMENT_PHRASE:
+            return "phrase";
+        case ELEMENT_PRE:
+            return "pre";
+        case ELEMENT_PROGRESS:
+            return "progress";
+        case ELEMENT_QUOTE:
+            return "q";
+        case ELEMENT_Q:
+            return "q";
+        case ELEMENT_RP:
+            return "rp";
+        case ELEMENT_RT:
+            return "rt";
+        case ELEMENT_RUBY:
+            return "ruby";
+        case ELEMENT_OUTDATED:
+            return "s";
+        case ELEMENT_S:
+            return "s";
+        case ELEMENT_SAMPLE:
+            return "samp";
+        case ELEMENT_SAMP:
+            return "samp";
+        case ELEMENT_SCRIPT:
+            return "script";
+        case ELEMENT_SECTION:
+            return "section";
+        case ELEMENT_SMALL:
+            return "small";
+        case ELEMENT_SOURCE:
+            return "source";
+        case ELEMENT_SPACER:
+            return "spacer";
+        case ELEMENT_SPAN:
+            return "span";
+        case ELEMENT_STRIKE:
+            return "strike";
+        case ELEMENT_STRONG:
+            return "strong";
+        case ELEMENT_STYLE:
+            return "style";
+        case ELEMENT_SUB:
+            return "sub";
+        case ELEMENT_SUBSCRIPT:
+            return "sub";
+        case ELEMENT_SUP:
+            return "sup";
+        case ELEMENT_SUPERSCRIPT:
+            return "sup";
+        case ELEMENT_SUMMARY:
+            return "summary";
+        case ELEMENT_SVG:
+            return "svg";
+        case ELEMENT_TABLE:
+            return "table";
+        case ELEMENT_TBODY:
+            return "tbody";
+        case ELEMENT_TD:
+            return "td";
+        case ELEMENT_TEMPLATE:
+            return "template";
+        case ELEMENT_TFOOT:
+            return "tfoot";
+        case ELEMENT_TH:
+            return "th";
+        case ELEMENT_THEAD:
+            return "thead";
+        case ELEMENT_TIME:
+            return "time";
+        case ELEMENT_TITLE:
+            return "title";
+        case ELEMENT_TRACK:
+            return "track";
+        case ELEMENT_TT:
+            return "tt";
+        case ELEMENT_UNDERLINE:
+            return "u";
+        case ELEMENT_U:
+            return "u";
+        case ELEMENT_VAR:
+            return "var";
+        case ELEMENT_VIDEO:
+            return "video";
+        case ELEMENT_WBR:
+            return "wbr";
+        case ELEMENT_XMP:
+            return "xmp";
+        default:
+            break;
     }
+    return "";
+}
 
+void docpp::HTML::Section::set(const int tag, const Properties& properties) {
+    this->tag = resolve_tag<std::string>(tag);
     this->properties = properties;
 }
 

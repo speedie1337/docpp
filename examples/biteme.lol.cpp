@@ -11,7 +11,7 @@
 #include <docpp/docpp.hpp>
 
 int main() {
-    docpp::HTML::Section html(docpp::HTML::SECTION_HTML, {});
+    docpp::HTML::Section html(docpp::HTML::ELEMENT_HTML, {});
 
     html.push_back({"title", {}, "Google"});
 
@@ -32,7 +32,7 @@ int main() {
 
     html.push_back({"style", {}, sheet.get(docpp::CSS::FORMATTING_PRETTY)});
 
-    docpp::HTML::Section div{docpp::HTML::SECTION_DIV, {docpp::HTML::Property("class", "center")}};
+    docpp::HTML::Section div{docpp::HTML::ELEMENT_DIV, {docpp::HTML::Property("class", "center")}};
 
     div.push_back({"font", {docpp::HTML::Property("color", "blue")}, "G"});
     div.push_back({"font", {docpp::HTML::Property("color", "red")}, "o"});
@@ -43,7 +43,7 @@ int main() {
 
     html.push_back(div);
 
-    docpp::HTML::Section div2{docpp::HTML::SECTION_DIV, {docpp::HTML::Property("align", "center")}};
+    docpp::HTML::Section div2{docpp::HTML::ELEMENT_DIV, {docpp::HTML::Property("align", "center")}};
     docpp::HTML::Section form{"form", {{docpp::HTML::Property("action", "https://google.com/search"), docpp::HTML::Property("method", "get")}}};
 
     form.push_back({"input", docpp::HTML::Properties({docpp::HTML::Property("type", "text"), docpp::HTML::Property("name", "q")}), "", docpp::HTML::TYPE_SELF_CLOSING});

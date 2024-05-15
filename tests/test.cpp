@@ -9,12 +9,12 @@
 SCENARIO("Test HTML", "[HTML]") {
     const auto test1 = []() {
         docpp::HTML::Document doc{};
-        docpp::HTML::Section html(docpp::HTML::SECTION_HTML, {});
+        docpp::HTML::Section html(docpp::HTML::ELEMENT_HTML, {});
 
-        docpp::HTML::Section head(docpp::HTML::SECTION_HEAD, {});
-        docpp::HTML::Section body(docpp::HTML::SECTION_BODY, {});
-        docpp::HTML::Section div(docpp::HTML::SECTION_DIV, {});
-        docpp::HTML::Section footer(docpp::HTML::SECTION_FOOTER, {});
+        docpp::HTML::Section head(docpp::HTML::ELEMENT_HEAD, {});
+        docpp::HTML::Section body(docpp::HTML::ELEMENT_BODY, {});
+        docpp::HTML::Section div(docpp::HTML::ELEMENT_DIV, {});
+        docpp::HTML::Section footer(docpp::HTML::ELEMENT_FOOTER, {});
 
         head.push_back(docpp::HTML::Element("title", {}, "Test Title"));
         body.push_back(docpp::HTML::Element("h1", {}, "Test Header"));
@@ -45,7 +45,7 @@ SCENARIO("Test HTML", "[HTML]") {
     };
 
     const auto test2 = []() {
-        docpp::HTML::Section section(docpp::HTML::SECTION_HTML, {});
+        docpp::HTML::Section section(docpp::HTML::ELEMENT_HTML, {});
 
         section.push_back(docpp::HTML::Element("p", {}, "Test 1"));
         section.push_back(docpp::HTML::Element("p", {}, "Test 2"));
@@ -58,7 +58,7 @@ SCENARIO("Test HTML", "[HTML]") {
     };
 
     const auto test3 = []() {
-        docpp::HTML::Section section = docpp::HTML::Section(docpp::HTML::SECTION_HTML, {});
+        docpp::HTML::Section section = docpp::HTML::Section(docpp::HTML::ELEMENT_HTML, {});
 
         section.push_back(docpp::HTML::Element("p", {}, "Test 1"));
         section.push_back(docpp::HTML::Element("p", {}, "Test 2"));
@@ -72,7 +72,7 @@ SCENARIO("Test HTML", "[HTML]") {
     };
 
     const auto test4 = []() {
-        docpp::HTML::Section section = docpp::HTML::Section(docpp::HTML::SECTION_HTML, {});
+        docpp::HTML::Section section = docpp::HTML::Section(docpp::HTML::ELEMENT_HTML, {});
 
         section.push_back(docpp::HTML::Element("p", {}, "Test 1"));
         section.push_back(docpp::HTML::Element("p", {}, "Test 2"));
@@ -87,12 +87,12 @@ SCENARIO("Test HTML", "[HTML]") {
     };
 
     const auto test5 = []() {
-        docpp::HTML::Section section = docpp::HTML::Section(docpp::HTML::SECTION_HTML, {});
-        docpp::HTML::Section subsection(docpp::HTML::SECTION_DIV, {});
+        docpp::HTML::Section section = docpp::HTML::Section(docpp::HTML::ELEMENT_HTML, {});
+        docpp::HTML::Section subsection(docpp::HTML::ELEMENT_DIV, {});
 
         subsection.push_back(docpp::HTML::Element("p", {}, "Test 1"));
 
-        docpp::HTML::Section subsection2(docpp::HTML::SECTION_DIV, {});
+        docpp::HTML::Section subsection2(docpp::HTML::ELEMENT_DIV, {});
         subsection2.push_back(docpp::HTML::Element("p", {}, "Test 2"));
 
         subsection.push_back(subsection2);
@@ -161,7 +161,7 @@ SCENARIO("Test HTML", "[HTML]") {
     };
 
     const auto test10 = []() {
-        docpp::HTML::Section section = docpp::HTML::Section(docpp::HTML::SECTION_HTML, {});
+        docpp::HTML::Section section = docpp::HTML::Section(docpp::HTML::ELEMENT_HTML, {});
 
         section.push_back(docpp::HTML::Element("p", {}, "Test 1"));
         section.push_back(docpp::HTML::Element("p", {}, "Test 2"));
@@ -173,7 +173,7 @@ SCENARIO("Test HTML", "[HTML]") {
     };
 
     const auto test11 = []() {
-        docpp::HTML::Section section = docpp::HTML::Section(docpp::HTML::SECTION_HTML, {});
+        docpp::HTML::Section section = docpp::HTML::Section(docpp::HTML::ELEMENT_HTML, {});
 
         section.push_back(docpp::HTML::Element("p", {}, "Test 1"));
         section.push_back(docpp::HTML::Element("p", {}, "Test 2"));
@@ -185,7 +185,7 @@ SCENARIO("Test HTML", "[HTML]") {
     };
 
     const auto test12 = []() {
-        docpp::HTML::Section section = docpp::HTML::Section(docpp::HTML::SECTION_HTML, {});
+        docpp::HTML::Section section = docpp::HTML::Section(docpp::HTML::ELEMENT_HTML, {});
 
         section.push_back(docpp::HTML::Element("p", {}, "Test 1"));
         section.push_back(docpp::HTML::Element("p", {}, "Test 2"));
@@ -197,7 +197,7 @@ SCENARIO("Test HTML", "[HTML]") {
     };
 
     const auto test13 = []() {
-        docpp::HTML::Section section = docpp::HTML::Section(docpp::HTML::SECTION_HTML, {});
+        docpp::HTML::Section section = docpp::HTML::Section(docpp::HTML::ELEMENT_HTML, {});
 
         section.push_back(docpp::HTML::Element("p", {}, "Test 1"));
         section.push_back(docpp::HTML::Element("p", {}, "Test 2"));
@@ -273,7 +273,7 @@ SCENARIO("Test HTML", "[HTML]") {
         doc.get_section().push_back(docpp::HTML::Element("p", {}, "Test 2"));
         doc.get_section().push_back(docpp::HTML::Element("p", {}, "Test 3"));
 
-        doc.get_section() = docpp::HTML::Section(docpp::HTML::SECTION_HTML, {});
+        doc.get_section() = docpp::HTML::Section(docpp::HTML::ELEMENT_HTML, {});
 
         doc.get_section().push_back(docpp::HTML::Element("p", {}, "Test 4"));
         doc.get_section().push_back(docpp::HTML::Element("p", {}, "Test 5"));
@@ -285,7 +285,7 @@ SCENARIO("Test HTML", "[HTML]") {
     };
 
     const auto test17 = []() {
-        docpp::HTML::Section section = docpp::HTML::Section(docpp::HTML::SECTION_HTML, {});
+        docpp::HTML::Section section = docpp::HTML::Section(docpp::HTML::ELEMENT_HTML, {});
 
         section.push_back(docpp::HTML::Element("p", {}, "Test 1"));
         section.push_back(docpp::HTML::Element("p", {}, "Test 2"));
@@ -297,7 +297,7 @@ SCENARIO("Test HTML", "[HTML]") {
     };
 
     const auto test18 = []() {
-        docpp::HTML::Section section = docpp::HTML::Section(docpp::HTML::SECTION_EMPTY, {});
+        docpp::HTML::Section section = docpp::HTML::Section(docpp::HTML::ELEMENT_EMPTY, {});
 
         section.push_back(docpp::HTML::Element("p", {}, "Test 1"));
         section.push_back(docpp::HTML::Element("p", {}, "Test 2"));
@@ -307,7 +307,7 @@ SCENARIO("Test HTML", "[HTML]") {
     };
 
     const auto test19 = []() {
-        docpp::HTML::Section section = docpp::HTML::Section(docpp::HTML::SECTION_HTML, {});
+        docpp::HTML::Section section = docpp::HTML::Section(docpp::HTML::ELEMENT_HTML, {});
 
         section.push_back(docpp::HTML::Element("p", {}, "Test 1"));
         section.push_back(docpp::HTML::Element("p", {}, "Test 2"));

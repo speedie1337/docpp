@@ -19,7 +19,7 @@ int main() {
     docpp::HTML::Document doc{};
 
     /* This is an HTML section. It can hold any number of elements and/or sections.
-     * The first argument is the type of section, and this can either be a predefined value (e.g., docpp::HTML::SECTION_HTML) or a
+     * The first argument is the type of section, and this can either be a predefined value (e.g., docpp::HTML::ELEMENT_HTML) or a
      * custom value in the form of an std::string object.
      *
      * The second argument is an HTMLProperties object, which is a collection of Property objects. Each property is a std::pair of an
@@ -32,10 +32,10 @@ int main() {
      *
      * To get the section as an std::string object, call section.get().
      */
-    docpp::HTML::Section htmlSection(docpp::HTML::SECTION_HTML, {}); // <html></html>
-    docpp::HTML::Section headSection(docpp::HTML::SECTION_HEAD, {}); // <head></head>
-    docpp::HTML::Section bodySection(docpp::HTML::SECTION_BODY, {}); // <body></body>
-    docpp::HTML::Section footerSection(docpp::HTML::SECTION_FOOTER, {}); // <footer></footer>
+    docpp::HTML::Section htmlSection(docpp::HTML::ELEMENT_HTML, {}); // <html></html>
+    docpp::HTML::Section headSection(docpp::HTML::ELEMENT_HEAD, {}); // <head></head>
+    docpp::HTML::Section bodySection(docpp::HTML::ELEMENT_BODY, {}); // <body></body>
+    docpp::HTML::Section footerSection(docpp::HTML::ELEMENT_FOOTER, {}); // <footer></footer>
 
     /* This is an HTML element. Unlike a section, an element cannot hold any other elements or sections, rather it holds text and/or attributes.
      * The first argument is the type of element, and this should simply be the tag name (e.g., "p", "h1", "a", etc.).
@@ -91,7 +91,7 @@ int main() {
     /* Add a paragraph element to the footer section. */
     footerSection.push_back(docpp::HTML::Element("p", {}, "This is the footer.")); // <p>This is the footer.</p>
 
-    docpp::HTML::Section divSection(docpp::HTML::SECTION_DIV, {{docpp::HTML::Property("id", "main")}}); // <div id="main"></div>
+    docpp::HTML::Section divSection(docpp::HTML::ELEMENT_DIV, {{docpp::HTML::Property("id", "main")}}); // <div id="main"></div>
 
     /* Add a header element and a paragraph element to the div section. */
     divSection.push_back(docpp::HTML::Element("h1", {}, "Hello world!")); // <h1>Hello world!</h1>
