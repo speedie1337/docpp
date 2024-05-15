@@ -130,6 +130,7 @@ namespace docpp {
             ELEMENT_LEGEND,
             ELEMENT_LIST,
             ELEMENT_LI,
+            ELEMENT_LINK,
             ELEMENT_MAIN,
             ELEMENT_MARK,
             ELEMENT_MARQUEE,

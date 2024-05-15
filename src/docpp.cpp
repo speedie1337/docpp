@@ -382,6 +382,7 @@ template <typename T> T docpp::HTML::resolve_tag(const Tag tag) {
         {ELEMENT_LEGEND, "legend"},
         {ELEMENT_LIST, "li"},
         {ELEMENT_LI, "li"},
+        {ELEMENT_LINK, "link"},
         {ELEMENT_MAIN, "main"},
         {ELEMENT_MARK, "mark"},
         {ELEMENT_MARQUEE, "marquee"},
