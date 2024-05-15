@@ -175,11 +175,11 @@ void docpp::HTML::Properties::swap(const docpp::HTML::Property& property1, const
     this->swap(this->find(property1), this->find(property2));
 }
 
-docpp::HTML::Element::Element(const std::string& tag, const Properties& properties, const std::string& data, const int type) {
+docpp::HTML::Element::Element(const std::string& tag, const Properties& properties, const std::string& data, const Type type) {
     this->set(tag, properties, data, type);
 }
 
-docpp::HTML::Element::Element(const int tag, const Properties& properties, const std::string& data, const int type) {
+docpp::HTML::Element::Element(const Tag tag, const Properties& properties, const std::string& data, const Type type) {
     this->set(resolve_tag<std::string>(tag), properties, data, type);
 }
 
@@ -192,14 +192,14 @@ void docpp::HTML::Element::operator+=(const std::string& data) {
     this->data += data;
 }
 
-void docpp::HTML::Element::set(const std::string& tag, const Properties& properties, const std::string& data, const int type) {
+void docpp::HTML::Element::set(const std::string& tag, const Properties& properties, const std::string& data, const Type type) {
     this->tag = tag;
     this->data = data;
     this->properties = properties;
     this->type = type;
 }
 
-std::string docpp::HTML::Element::get(const int formatting, const int tabc) const {
+std::string docpp::HTML::Element::get(const Formatting formatting, const int tabc) const {
     std::string ret{};
 
     if (this->type == docpp::HTML::TYPE_TEXT) {
@@ -244,7 +244,7 @@ std::string docpp::HTML::Element::get(const int formatting, const int tabc) cons
     return std::move(ret);
 }
 
-template <typename T> T docpp::HTML::Element::get(const int formatting, const int tabc) const {
+template <typename T> T docpp::HTML::Element::get(const Formatting formatting, const int tabc) const {
     return T(this->get(formatting, tabc));
 }
 
@@ -291,7 +291,7 @@ docpp::HTML::Element docpp::HTML::Section::operator[](const int& index) const {
     return this->at(index);
 }
 
-docpp::HTML::Section::Section(const int tag, const Properties& properties) {
+docpp::HTML::Section::Section(const Tag tag, const Properties& properties) {
     this->set(tag, properties);
 }
 
@@ -300,7 +300,7 @@ void docpp::HTML::Section::set(const std::string& tag, const Properties& propert
     this->properties = properties;
 }
 
-template <typename T> T docpp::HTML::resolve_tag(const int tag) {
+template <typename T> T docpp::HTML::resolve_tag(const Tag tag) {
     switch (tag) {
         case ELEMENT_EMPTY:
             return "";
@@ -590,7 +590,7 @@ template <typename T> T docpp::HTML::resolve_tag(const int tag) {
     return "";
 }
 
-void docpp::HTML::Section::set(const int tag, const Properties& properties) {
+void docpp::HTML::Section::set(const Tag tag, const Properties& properties) {
     this->tag = resolve_tag<std::string>(tag);
     this->properties = properties;
 }
@@ -798,7 +798,7 @@ std::vector<docpp::HTML::Section> docpp::HTML::Section::get_sections() const {
     return std::move(ret);
 }
 
-std::string docpp::HTML::Section::get(const int formatting, const int tabc) const {
+std::string docpp::HTML::Section::get(const Formatting formatting, const int tabc) const {
     std::string ret{};
     int tabcount{tabc};
 
@@ -856,7 +856,7 @@ std::string docpp::HTML::Section::get(const int formatting, const int tabc) cons
     return std::move(ret);
 }
 
-template <typename T> T docpp::HTML::Section::get(const int formatting, const int tabc) const {
+template <typename T> T docpp::HTML::Section::get(const Formatting formatting, const int tabc) const {
     return T(this->get(formatting, tabc));
 }
 
@@ -878,11 +878,11 @@ void docpp::HTML::Section::swap(const Section& section1, const Section& section2
     this->swap(this->find(section1), this->find(section2));
 }
 
-std::string docpp::HTML::Document::get(const int formatting, const int tabc) const {
+std::string docpp::HTML::Document::get(const Formatting formatting, const int tabc) const {
     return this->doctype + (formatting == FORMATTING_PRETTY ? "\n" : formatting == FORMATTING_NEWLINE ? "\n" : "") + this->document.get(formatting, tabc);
 }
 
-template <typename T> T docpp::HTML::Document::get(const int formatting, const int tabc) const {
+template <typename T> T docpp::HTML::Document::get(const Formatting formatting, const int tabc) const {
     return T(this->get(formatting, tabc));
 }
 
@@ -1086,7 +1086,7 @@ void docpp::CSS::Element::swap(const Property& property1, const Property& proper
     this->swap(this->find(property1), this->find(property2));
 }
 
-std::string docpp::CSS::Element::get(const int formatting, const int tabc) const {
+std::string docpp::CSS::Element::get(const Formatting formatting, const int tabc) const {
     std::string ret{};
 
     if (this->element.first.compare("")) {
@@ -1123,7 +1123,7 @@ std::string docpp::CSS::Element::get(const int formatting, const int tabc) const
     return std::move(ret);
 }
 
-template <typename T> T docpp::CSS::Element::get(const int formatting, const int tabc) const {
+template <typename T> T docpp::CSS::Element::get(const Formatting formatting, const int tabc) const {
     return T(this->get(formatting, tabc));
 }
 
@@ -1240,7 +1240,7 @@ std::vector<docpp::CSS::Element> docpp::CSS::Stylesheet::get_elements() const {
     return this->elements;
 }
 
-std::string docpp::CSS::Stylesheet::get(const int formatting, const int tabc) const {
+std::string docpp::CSS::Stylesheet::get(const Formatting formatting, const int tabc) const {
     std::string ret{};
 
     for (const Element& it : this->elements) {
@@ -1250,6 +1250,6 @@ std::string docpp::CSS::Stylesheet::get(const int formatting, const int tabc) co
     return std::move(ret);
 }
 
-template <typename T> T docpp::CSS::Stylesheet::get(const int formatting, const int tabc) const {
+template <typename T> T docpp::CSS::Stylesheet::get(const Formatting formatting, const int tabc) const {
     return T(this->get(formatting, tabc));
 }

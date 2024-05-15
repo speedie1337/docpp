@@ -47,7 +47,10 @@ namespace docpp {
      * @brief A namespace to represent HTML elements and documents
      */
     namespace HTML {
-        enum {
+        /**
+         * @brief Enum for element tags.
+         */
+        enum Tag {
             ELEMENT_EMPTY,
             ELEMENT_ABBREVIATION,
             ELEMENT_ABBR,
@@ -190,11 +193,23 @@ namespace docpp {
             ELEMENT_VIDEO,
             ELEMENT_WBR,
             ELEMENT_XMP,
+        };
+
+        /**
+         * @brief Enum for element types.
+         */
+        enum Type {
             TYPE_SELF_CLOSING,
             TYPE_NON_SELF_CLOSING,
             TYPE_NON_CLOSED,
             TYPE_TEXT,
             TYPE_TEXT_TAB,
+        };
+
+        /**
+         * @brief Enum for formatting options.
+         */
+        enum Formatting {
             FORMATTING_NONE,
             FORMATTING_PRETTY,
             FORMATTING_NEWLINE,
@@ -438,7 +453,7 @@ namespace docpp {
             private:
                 std::string tag{};
                 std::string data{};
-                int type{TYPE_NON_SELF_CLOSING};
+                Type type{TYPE_NON_SELF_CLOSING};
                 Properties properties{};
             protected:
             public:
@@ -454,14 +469,14 @@ namespace docpp {
                  * @param properties The properties of the element
                  * @param data The data of the element
                  */
-                Element(const std::string& tag, const Properties& properties = {}, const std::string& data = {}, const int type = TYPE_NON_SELF_CLOSING);
+                Element(const std::string& tag, const Properties& properties = {}, const std::string& data = {}, const Type = TYPE_NON_SELF_CLOSING);
                 /**
                  * @brief Construct a new Element object
                  * @param tag The tag of the element
                  * @param properties The properties of the element
                  * @param data The data of the element
                  */
-                Element(const int tag, const Properties& properties = {}, const std::string& data = {}, const int type = TYPE_NON_SELF_CLOSING);
+                Element(const Tag tag, const Properties& properties = {}, const std::string& data = {}, const Type = TYPE_NON_SELF_CLOSING);
                 /**
                  * @brief Construct a new Element object
                  */
@@ -472,18 +487,18 @@ namespace docpp {
                  * @param id The id of the element
                  * @param classes The classes of the element
                  */
-                void set(const std::string& tag, const Properties& properties = {}, const std::string& data = {}, const int type = TYPE_NON_SELF_CLOSING);
+                void set(const std::string& tag, const Properties& properties = {}, const std::string& data = {}, const Type = TYPE_NON_SELF_CLOSING);
 
                 /**
                  * @brief Get the element in the form of an HTML tag.
                  * @return std::string The tag of the element
                  */
-                std::string get(const int formatting = FORMATTING_NONE, const int tabc = 0) const;
+                std::string get(const Formatting formatting = FORMATTING_NONE, const int tabc = 0) const;
                 /**
                  * @brief Get the element in the form of a specific type.
                  * @return T The element in the form of a specific type
                  */
-                template <typename T> T get(const int formatting = FORMATTING_NONE, const int tabc = 0) const;
+                template <typename T> T get(const Formatting formatting = FORMATTING_NONE, const int tabc = 0) const;
 
                 /**
                  * @brief Get the tag of the element
@@ -667,7 +682,7 @@ namespace docpp {
                  * @param tag The tag of the section
                  * @param properties The properties of the section
                  */
-                Section(const int tag, const Properties& properties = {});
+                Section(const Tag tag, const Properties& properties = {});
                 /**
                  * @brief Construct a new Section object
                  */
@@ -685,7 +700,7 @@ namespace docpp {
                  * @param id The id of the section
                  * @param classes The classes of the section
                  */
-                void set(const int tag, const Properties& properties = {});
+                void set(const Tag tag, const Properties& properties = {});
                 /**
                  * @brief Swap two elements in the section
                  * @param index1 The index of the first element
@@ -719,12 +734,12 @@ namespace docpp {
                  * @brief Dump the entire section.
                  * @return std::string The section
                  */
-                std::string get(const int formatting = FORMATTING_NONE, const int tabc = 0) const;
+                std::string get(const Formatting formatting = FORMATTING_NONE, const int tabc = 0) const;
                 /**
                  * @brief Get the element in the form of a specific type.
                  * @return T The element in the form of a specific type
                  */
-                template <typename T> T get(const int formatting = FORMATTING_NONE, const int tabc = 0) const;
+                template <typename T> T get(const Formatting formatting = FORMATTING_NONE, const int tabc = 0) const;
 
                 Section operator=(const Section& section);
                 void operator+=(const Element& element);
@@ -760,12 +775,12 @@ namespace docpp {
                  * @param std::string The type to return
                  * @return std::string The document
                  */
-                std::string get(const int formatting = FORMATTING_NONE, const int tabc = 0) const;
+                std::string get(const Formatting formatting = FORMATTING_NONE, const int tabc = 0) const;
                 /**
                  * @brief Get the document in the form of a specific type.
                  * @return T The document in the form of a specific type
                  */
-                template <typename T> T get(const int formatting = FORMATTING_NONE, const int tabc = 0) const;
+                template <typename T> T get(const Formatting formatting = FORMATTING_NONE, const int tabc = 0) const;
 
                 /**
                  * @brief Get the section
@@ -812,14 +827,17 @@ namespace docpp {
          * @brief  Resolve a tag.
          * @param tag The tag to resolve
          */
-        template <typename T> T resolve_tag(const int tag);
+        template <typename T> T resolve_tag(const Tag tag);
     } // namespace HTML
 
     /**
      * @brief A namespace to represent CSS elements and documents
      */
     namespace CSS {
-        enum {
+        /**
+         * @brief Enum for formatting options.
+         */
+        enum Formatting {
             FORMATTING_NONE,
             FORMATTING_PRETTY,
             FORMATTING_NEWLINE,
@@ -1061,12 +1079,12 @@ namespace docpp {
                  * @brief Get the element
                  * @return std::pair<std::string, std::vector<Property>> The element
                  */
-                std::string get(const int formatting = FORMATTING_NONE, const int tabc = 0) const;
+                std::string get(const Formatting formatting = FORMATTING_NONE, const int tabc = 0) const;
                 /**
                  * @brief Get the element in the form of a specific type.
                  * @return T The element in the form of a specific type
                  */
-                template <typename T> T get(const int formatting = FORMATTING_NONE, const int tabc = 0) const;
+                template <typename T> T get(const Formatting formatting = FORMATTING_NONE, const int tabc = 0) const;
                 /**
                  * @brief Get the tag of the element
                  * @return std::string The tag of the element
@@ -1236,12 +1254,12 @@ namespace docpp {
                  * @brief Get the stylesheet
                  * @return std::string The stylesheet
                  */
-                std::string get(const int formatting = FORMATTING_NONE, const int tabc = 0) const;
+                std::string get(const Formatting formatting = FORMATTING_NONE, const int tabc = 0) const;
                 /**
                  * @brief Get the stylesheet in the form of a specific type.
                  * @return T The stylesheet in the form of a specific type
                  */
-                template <typename T> T get(const int formatting = FORMATTING_NONE, const int tabc = 0) const;
+                template <typename T> T get(const Formatting formatting = FORMATTING_NONE, const int tabc = 0) const;
 
                 Stylesheet operator=(const Stylesheet& stylesheet);
                 void operator+=(const Element& element);
