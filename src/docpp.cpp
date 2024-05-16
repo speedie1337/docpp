@@ -58,10 +58,6 @@ void docpp::HTML::Property::set(const std::pair<std::string, std::string>& prope
     this->property = property;
 }
 
-docpp::HTML::Properties::Properties(const std::vector<docpp::HTML::Property>& properties) {
-    this->set(properties);
-}
-
 docpp::HTML::Properties docpp::HTML::Properties::operator=(const docpp::HTML::Property& property) {
     this->properties = {property};
     return *this;

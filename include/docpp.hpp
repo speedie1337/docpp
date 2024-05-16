@@ -439,12 +439,12 @@ namespace docpp {
                  * @brief Construct a new Properties object
                  * @param properties The properties to set
                  */
-                explicit Properties(const std::vector<Property>& properties);
+                Properties(const std::vector<Property>& properties) : properties(properties) {};
                 /**
                  * @brief Construct a new Properties object
                  * @param property The property to add
                  */
-                explicit Properties(const Property& property) : properties({property}) {};
+                Properties(const Property& property) : properties({property}) {};
                 /**
                  * @brief Construct a new Properties object
                  */
