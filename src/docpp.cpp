@@ -9,12 +9,17 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
+#include <type_traits>
 
 std::string docpp::HTML::Property::get_key() const {
     return this->property.first;
 }
 
 template <typename T> T docpp::HTML::Property::get_key() const {
+    if (std::is_same<T, std::string>::value) {
+        return this->property.first;
+    }
+
     return T(this->property.first);
 }
 
@@ -23,6 +28,9 @@ std::string docpp::HTML::Property::get_value() const {
 }
 
 template <typename T> T docpp::HTML::Property::get_value() const {
+    if (std::is_same<T, std::string>::value) {
+        return this->property.second;
+    }
     return T(this->property.second);
 }
 
@@ -31,6 +39,10 @@ std::pair<std::string, std::string> docpp::HTML::Property::get() const {
 }
 
 template <typename T> std::pair<T, T> docpp::HTML::Property::get() const {
+    if (std::is_same<T, std::string>::value) {
+        return this->property;
+    }
+
     return T(this->property);
 }
 
@@ -226,6 +238,9 @@ std::string docpp::HTML::Element::get(const Formatting formatting, const int tab
 }
 
 template <typename T> T docpp::HTML::Element::get(const Formatting formatting, const int tabc) const {
+    if (std::is_same<T, std::string>::value) {
+        return this->get(formatting, tabc);
+    }
     return T(this->get(formatting, tabc));
 }
 
@@ -234,6 +249,9 @@ std::string docpp::HTML::Element::get_tag() const {
 }
 
 template <typename T> T docpp::HTML::Element::get_tag() const {
+    if (std::is_same<T, std::string>::value) {
+        return this->tag;
+    }
     return T(this->tag);
 }
 
@@ -242,6 +260,9 @@ std::string docpp::HTML::Element::get_data() const {
 }
 
 template <typename T> T docpp::HTML::Element::get_data() const {
+    if (std::is_same<T, std::string>::value) {
+        return this->data;
+    }
     return T(this->data);
 }
 
@@ -696,6 +717,9 @@ std::string docpp::HTML::Section::get(const Formatting formatting, const int tab
 }
 
 template <typename T> T docpp::HTML::Section::get(const Formatting formatting, const int tabc) const {
+    if (std::is_same<T, std::string>::value) {
+        return this->get(formatting, tabc);
+    }
     return T(this->get(formatting, tabc));
 }
 
@@ -722,6 +746,9 @@ std::string docpp::HTML::Document::get(const Formatting formatting, const int ta
 }
 
 template <typename T> T docpp::HTML::Document::get(const Formatting formatting, const int tabc) const {
+    if (std::is_same<T, std::string>::value) {
+        return this->get(formatting, tabc);
+    }
     return T(this->get(formatting, tabc));
 }
 
@@ -753,6 +780,9 @@ std::string docpp::HTML::Document::get_doctype() const {
 }
 
 template <typename T> T docpp::HTML::Document::get_doctype() const {
+    if (std::is_same<T, std::string>::value) {
+        return this->doctype;
+    }
     return T(this->doctype);
 }
 
@@ -761,6 +791,9 @@ std::string docpp::CSS::Property::get_key() const {
 }
 
 template <typename T> T docpp::CSS::Property::get_key() const {
+    if (std::is_same<T, std::string>::value) {
+        return this->property.first;
+    }
     return T(this->property.first);
 }
 
@@ -769,6 +802,9 @@ std::string docpp::CSS::Property::get_value() const {
 }
 
 template <typename T> T docpp::CSS::Property::get_value() const {
+    if (std::is_same<T, std::string>::value) {
+        return this->property.second;
+    }
     return T(this->property.second);
 }
 
@@ -777,6 +813,9 @@ std::pair<std::string, std::string> docpp::CSS::Property::get() const {
 }
 
 template <typename T> std::pair<T, T> docpp::CSS::Property::get() const {
+    if (std::is_same<T, std::string>::value) {
+        return std::make_pair(this->property.first, this->property.second);
+    }
     return std::pair<T, T>(this->property.first, this->property.second);
 }
 
@@ -942,6 +981,9 @@ std::string docpp::CSS::Element::get(const Formatting formatting, const int tabc
 }
 
 template <typename T> T docpp::CSS::Element::get(const Formatting formatting, const int tabc) const {
+    if (std::is_same<T, std::string>::value) {
+        return this->get(formatting, tabc);
+    }
     return T(this->get(formatting, tabc));
 }
 
@@ -950,6 +992,9 @@ std::string docpp::CSS::Element::get_tag() const {
 }
 
 template <typename T> T docpp::CSS::Element::get_tag() const {
+    if (std::is_same<T, std::string>::value) {
+        return this->element.first;
+    }
     return T(this->element.first);
 }
 
@@ -1065,5 +1110,8 @@ std::string docpp::CSS::Stylesheet::get(const Formatting formatting, const int t
 }
 
 template <typename T> T docpp::CSS::Stylesheet::get(const Formatting formatting, const int tabc) const {
+    if (std::is_same<T, std::string>::value) {
+        return this->get(formatting, tabc);
+    }
     return T(this->get(formatting, tabc));
 }
