@@ -1,8 +1,8 @@
-/**
+/*
  * docpp - C++ library for generating XML, HTML and CSS.
- * Licensed under the LGPL-3.0-or-later license.
  *
- * Author: speedie <speedie@speedie.site>
+ * SPDX-License-Identifier: LGPL-3.0-or-later
+ * Copyright (c) 2024 speedie <speedie@speedie.site>
  */
 #pragma once
 
@@ -10,6 +10,8 @@
 #include <vector>
 #include <unordered_map>
 #include <map>
+#include <exception>
+#include <utility>
 
 /**
  * @brief A namespace to represent HTML elements and documents
@@ -1269,5 +1271,5 @@ namespace docpp {
                 void operator+=(const Element& element);
                 Element operator[](const int& index) const;
         };
-    }
-}
+    } // namespace CSS
+} // namespace docpp
