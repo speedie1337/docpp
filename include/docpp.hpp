@@ -26,7 +26,7 @@ namespace docpp {
                 return message;
             }
             out_of_range() = default;
-            out_of_range(const char* message) : message(message) {};
+            explicit out_of_range(const char* message) : message(message) {};
     };
 
     /**
@@ -40,7 +40,7 @@ namespace docpp {
                 return message;
             }
             invalid_argument() = default;
-            invalid_argument(const char* message) : message(message) {};
+            explicit invalid_argument(const char* message) : message(message) {};
     };
 
     /**
@@ -218,6 +218,13 @@ namespace docpp {
         };
 
         /**
+         * @brief Resolve a tag to a string and type.
+         * @param tag The tag to resolve
+         * @return std::pair<std::string, Type> The resolved tag
+         */
+        std::pair<std::string, Type> resolve_tag(const Tag tag);
+
+        /**
          * @brief A class to represent an HTML property
          */
         class Property {
@@ -237,12 +244,12 @@ namespace docpp {
                  * @param key The key of the property
                  * @param value The value of the property
                  */
-                Property(const std::string& key, const std::string& value);
+                Property(const std::string& key, const std::string& value) : property(std::make_pair(key, value)) {};
                 /**
                  * @brief Construct a new Property object
                  * @param property The property to set
                  */
-                Property(const std::pair<std::string, std::string>& property);
+                explicit Property(const std::pair<std::string, std::string>& property) : property(property) {};
                 Property() = default;
 
                 /**
@@ -432,12 +439,12 @@ namespace docpp {
                  * @brief Construct a new Properties object
                  * @param properties The properties to set
                  */
-                Properties(const std::vector<Property>& properties);
+                explicit Properties(const std::vector<Property>& properties);
                 /**
                  * @brief Construct a new Properties object
                  * @param property The property to add
                  */
-                Properties(const Property& property);
+                explicit Properties(const Property& property) : properties({property}) {};
                 /**
                  * @brief Construct a new Properties object
                  */
@@ -470,15 +477,16 @@ namespace docpp {
                  * @param tag The tag of the element
                  * @param properties The properties of the element
                  * @param data The data of the element
+                 * @param type The close tag type.
                  */
-                Element(const std::string& tag, const Properties& properties = {}, const std::string& data = {}, const Type = TYPE_NON_SELF_CLOSING);
+                Element(const std::string& tag, const Properties& properties = {}, const std::string& data = {}, const Type type = TYPE_NON_SELF_CLOSING) : tag(tag), properties(properties), data(data), type(type) {};
                 /**
                  * @brief Construct a new Element object
                  * @param tag The tag of the element
                  * @param properties The properties of the element
                  * @param data The data of the element
                  */
-                Element(const Tag tag, const Properties& properties = {}, const std::string& data = {});
+                Element(const Tag tag, const Properties& properties = {}, const std::string& data = {}) : tag(resolve_tag(tag).first), properties(properties), data(data), type(resolve_tag(tag).second) {};
                 /**
                  * @brief Construct a new Element object
                  */
@@ -678,13 +686,13 @@ namespace docpp {
                  * @param tag The tag of the section
                  * @param properties The properties of the section
                  */
-                Section(const std::string& tag, const Properties& properties = {});
+                Section(const std::string& tag, const Properties& properties = {}) : tag(tag), properties(properties) {};
                 /**
                  * @brief Construct a new Section object
                  * @param tag The tag of the section
                  * @param properties The properties of the section
                  */
-                Section(const Tag tag, const Properties& properties = {});
+                Section(const Tag tag, const Properties& properties = {}) : tag(resolve_tag(tag).first), properties(properties) {};
                 /**
                  * @brief Construct a new Section object
                  */
@@ -819,18 +827,11 @@ namespace docpp {
                  * @brief Construct a new Document object
                  * @param document The document to set
                  */
-                Document(const Section& document, const std::string& doctype = "<!DOCTYPE html>");
+                Document(const Section& document, const std::string& doctype = "<!DOCTYPE html>") : document(document), doctype(doctype) {};
 
                 Document operator=(const Document& document);
                 Document operator=(const Section& section);
         };
-
-        /**
-         * @brief Resolve a tag to a string and type.
-         * @param tag The tag to resolve
-         * @return std::pair<std::string, Type> The resolved tag
-         */
-        std::pair<std::string, Type> resolve_tag(const Tag tag);
     } // namespace HTML
 
     /**
@@ -865,12 +866,12 @@ namespace docpp {
                  * @param key The key of the property
                  * @param value The value of the property
                  */
-                Property(const std::string& key, const std::string& value);
+                Property(const std::string& key, const std::string& value) : property(std::make_pair(key, value)) {};
                 /**
                  * @brief Construct a new Property object
                  * @param property The property to set
                  */
-                Property(const std::pair<std::string, std::string>& property);
+                explicit Property(const std::pair<std::string, std::string>& property) : property(property) {};
                 Property() = default;
 
                 /**
@@ -994,12 +995,12 @@ namespace docpp {
                  * @param tag The tag of the element
                  * @param properties The properties of the element
                  */
-                Element(const std::string& tag, const std::vector<Property>& properties);
+                Element(const std::string& tag, const std::vector<Property>& properties) : element(std::make_pair(tag, properties)) {};
                 /**
                  * @brief Construct a new Element object
                  * @param element The element to set
                  */
-                Element(const std::pair<std::string, std::vector<Property>>& element);
+                explicit Element(const std::pair<std::string, std::vector<Property>>& element) : element(element) {};
                 Element() = default;
 
                 /**
@@ -1174,7 +1175,7 @@ namespace docpp {
                  * @brief Construct a new Stylesheet object
                  * @param elements The elements to set
                  */
-                Stylesheet(const std::vector<Element>& elements);
+                explicit Stylesheet(const std::vector<Element>& elements) : elements(elements) {};
                 Stylesheet() = default;
 
                 /**

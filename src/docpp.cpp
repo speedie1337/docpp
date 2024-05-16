@@ -10,15 +10,6 @@
 #include <unordered_map>
 #include <vector>
 
-docpp::HTML::Property::Property(const std::string& key, const std::string& value) {
-    this->set_key(key);
-    this->set_value(value);
-}
-
-docpp::HTML::Property::Property(const std::pair<std::string, std::string>& property) {
-    this->set(property);
-}
-
 std::string docpp::HTML::Property::get_key() const {
     return this->property.first;
 }
@@ -57,10 +48,6 @@ void docpp::HTML::Property::set(const std::pair<std::string, std::string>& prope
 
 docpp::HTML::Properties::Properties(const std::vector<docpp::HTML::Property>& properties) {
     this->set(properties);
-}
-
-docpp::HTML::Properties::Properties(const docpp::HTML::Property& property) {
-    this->push_back(property);
 }
 
 docpp::HTML::Properties docpp::HTML::Properties::operator=(const docpp::HTML::Property& property) {
@@ -176,17 +163,6 @@ void docpp::HTML::Properties::swap(const docpp::HTML::Property& property1, const
     this->swap(this->find(property1), this->find(property2));
 }
 
-docpp::HTML::Element::Element(const std::string& tag, const Properties& properties, const std::string& data, const Type type) {
-    this->set(tag, properties, data, type);
-}
-
-docpp::HTML::Element::Element(const Tag tag, const Properties& properties, const std::string& data) {
-    std::pair<std::string, Type> map = resolve_tag(tag);
-
-    this->tag = map.first;
-    this->type = map.second;
-    this->properties = properties;
-}
 
 docpp::HTML::Element docpp::HTML::Element::operator=(const docpp::HTML::Element& element) {
     this->set(element.get_tag(), element.properties, element.get_data(), element.type);
@@ -269,11 +245,6 @@ template <typename T> T docpp::HTML::Element::get_data() const {
     return T(this->data);
 }
 
-docpp::HTML::Section::Section(const std::string& tag, const Properties& properties) {
-    this->tag = tag;
-    this->properties = properties;
-}
-
 docpp::HTML::Section docpp::HTML::Section::operator=(const docpp::HTML::Section& section) {
     this->tag = section.tag;
     this->properties = section.properties;
@@ -294,10 +265,6 @@ void docpp::HTML::Section::operator+=(const docpp::HTML::Section& section) {
 
 docpp::HTML::Element docpp::HTML::Section::operator[](const int& index) const {
     return this->at(index);
-}
-
-docpp::HTML::Section::Section(const Tag tag, const Properties& properties) {
-    this->set(tag, properties);
 }
 
 void docpp::HTML::Section::set(const std::string& tag, const Properties& properties) {
@@ -781,25 +748,12 @@ docpp::HTML::Document docpp::HTML::Document::operator=(const docpp::HTML::Sectio
     return *this;
 }
 
-docpp::HTML::Document::Document(const docpp::HTML::Section& document, const std::string& doctype) {
-    this->set(document);
-    this->set_doctype(doctype);
-}
-
 std::string docpp::HTML::Document::get_doctype() const {
     return this->doctype;
 }
 
 template <typename T> T docpp::HTML::Document::get_doctype() const {
     return T(this->doctype);
-}
-
-docpp::CSS::Property::Property(const std::string& key, const std::string& value) {
-    this->set(key, value);
-}
-
-docpp::CSS::Property::Property(const std::pair<std::string, std::string>& property) {
-    this->set(property);
 }
 
 std::string docpp::CSS::Property::get_key() const {
@@ -850,14 +804,6 @@ docpp::CSS::Property docpp::CSS::Property::operator=(const docpp::CSS::Property&
 docpp::CSS::Property docpp::CSS::Property::operator=(const std::pair<std::string, std::string>& property) {
     this->set(property);
     return *this;
-}
-
-docpp::CSS::Element::Element(const std::string& tag, const std::vector<Property>& properties) {
-    this->set(tag, properties);
-}
-
-docpp::CSS::Element::Element(const std::pair<std::string, std::vector<Property>>& element) {
-    this->set(element);
 }
 
 docpp::CSS::Element docpp::CSS::Element::operator=(const docpp::CSS::Element& element) {
@@ -1009,10 +955,6 @@ template <typename T> T docpp::CSS::Element::get_tag() const {
 
 std::vector<docpp::CSS::Property> docpp::CSS::Element::get_properties() const {
     return this->element.second;
-}
-
-docpp::CSS::Stylesheet::Stylesheet(const std::vector<Element>& elements) {
-    this->set(elements);
 }
 
 void docpp::CSS::Stylesheet::set(const std::vector<Element>& elements) {
