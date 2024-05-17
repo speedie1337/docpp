@@ -15,7 +15,7 @@ jobs:
 
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        build_type: [Debug, Release]
+        build_type: [Release]
         include:
           - os: windows-latest
             cpp_compiler: cl
