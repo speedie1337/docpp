@@ -830,7 +830,7 @@ namespace docpp {
                  * @brief Get the document in the form of a specific type.
                  * @return T The document in the form of a specific type
                  */
-                template <typename T> T get(const Formatting formatting, const int tabc) const {
+                template <typename T> T get(const Formatting formatting = FORMATTING_NONE, const int tabc = 0) const {
                     if (std::is_same<T, std::string>::value) {
                         return this->get(formatting, tabc);
                     }
@@ -1153,7 +1153,7 @@ namespace docpp {
                  * @brief Get the element in the form of a specific type.
                  * @return T The element in the form of a specific type
                  */
-                template <typename T> T get(const Formatting formatting, const int tabc) const {
+                template <typename T> T get(const Formatting formatting = FORMATTING_NONE, const int tabc = 0) const {
                     if (std::is_same<T, std::string>::value) {
                         return this->get(formatting, tabc);
                     }
