@@ -383,6 +383,50 @@ SCENARIO("Test HTML", "[HTML]") {
         REQUIRE(sect.get<std::string>() == "<p>Test 1</p><p>Test 2</p><p>Test 3</p>");
     };
 
+    const auto test24 = []() {
+        const auto test = docpp::HTML::resolve_tag(docpp::HTML::ELEMENT_HTML);
+        const auto test2 = docpp::HTML::resolve_tag(docpp::HTML::ELEMENT_HEAD);
+        const auto test3 = docpp::HTML::resolve_tag(docpp::HTML::ELEMENT_BODY);
+        const auto test4 = docpp::HTML::resolve_tag(docpp::HTML::ELEMENT_DIV);
+        const auto test5 = docpp::HTML::resolve_tag(docpp::HTML::ELEMENT_NAV);
+        const auto test6 = docpp::HTML::resolve_tag(docpp::HTML::ELEMENT_FOOTER);
+        const auto test7 = docpp::HTML::resolve_tag(docpp::HTML::ELEMENT_P);
+        const auto test8 = docpp::HTML::resolve_tag(docpp::HTML::ELEMENT_H1);
+        const auto test9 = docpp::HTML::resolve_tag(docpp::HTML::ELEMENT_H2);
+        const auto test10 = docpp::HTML::resolve_tag(docpp::HTML::ELEMENT_H3);
+        const auto test11 = docpp::HTML::resolve_tag(docpp::HTML::ELEMENT_H4);
+        const auto test12 = docpp::HTML::resolve_tag(docpp::HTML::ELEMENT_H5);
+        const auto test13 = docpp::HTML::resolve_tag(docpp::HTML::ELEMENT_H6);
+
+        docpp::HTML::Section sect = docpp::HTML::Section(docpp::HTML::ELEMENT_HTML);
+        docpp::HTML::Section sect2 = docpp::HTML::Section(docpp::HTML::ELEMENT_HEAD);
+        docpp::HTML::Section sect3 = docpp::HTML::Section(docpp::HTML::ELEMENT_BODY);
+        docpp::HTML::Section sect4 = docpp::HTML::Section(docpp::HTML::ELEMENT_DIV);
+        docpp::HTML::Section sect5 = docpp::HTML::Section(docpp::HTML::ELEMENT_NAV);
+        docpp::HTML::Section sect6 = docpp::HTML::Section(docpp::HTML::ELEMENT_FOOTER);
+        docpp::HTML::Section sect7 = docpp::HTML::Section(docpp::HTML::ELEMENT_P);
+        docpp::HTML::Section sect8 = docpp::HTML::Section(docpp::HTML::ELEMENT_H1);
+        docpp::HTML::Section sect9 = docpp::HTML::Section(docpp::HTML::ELEMENT_H2);
+        docpp::HTML::Section sect10 = docpp::HTML::Section(docpp::HTML::ELEMENT_H3);
+        docpp::HTML::Section sect11 = docpp::HTML::Section(docpp::HTML::ELEMENT_H4);
+        docpp::HTML::Section sect12 = docpp::HTML::Section(docpp::HTML::ELEMENT_H5);
+        docpp::HTML::Section sect13 = docpp::HTML::Section(docpp::HTML::ELEMENT_H6);
+
+        docpp::HTML::Element elem = docpp::HTML::Element(docpp::HTML::ELEMENT_HTML);;
+        docpp::HTML::Element elem2 = docpp::HTML::Element(docpp::HTML::ELEMENT_HEAD);
+        docpp::HTML::Element elem3 = docpp::HTML::Element(docpp::HTML::ELEMENT_BODY);
+        docpp::HTML::Element elem4 = docpp::HTML::Element(docpp::HTML::ELEMENT_DIV);
+        docpp::HTML::Element elem5 = docpp::HTML::Element(docpp::HTML::ELEMENT_NAV);
+        docpp::HTML::Element elem6 = docpp::HTML::Element(docpp::HTML::ELEMENT_FOOTER);
+        docpp::HTML::Element elem7 = docpp::HTML::Element(docpp::HTML::ELEMENT_P);
+        docpp::HTML::Element elem8 = docpp::HTML::Element(docpp::HTML::ELEMENT_H1);
+        docpp::HTML::Element elem9 = docpp::HTML::Element(docpp::HTML::ELEMENT_H2);
+        docpp::HTML::Element elem10 = docpp::HTML::Element(docpp::HTML::ELEMENT_H3);
+        docpp::HTML::Element elem11 = docpp::HTML::Element(docpp::HTML::ELEMENT_H4);
+        docpp::HTML::Element elem12 = docpp::HTML::Element(docpp::HTML::ELEMENT_H5);
+        docpp::HTML::Element elem13 = docpp::HTML::Element(docpp::HTML::ELEMENT_H6);
+    };
+
     std::vector<void (*)()> tests{
         test1,
         test2,
@@ -407,6 +451,7 @@ SCENARIO("Test HTML", "[HTML]") {
         test21,
         test22,
         test23,
+        test24,
     };
 
     for (const auto& test : tests) {

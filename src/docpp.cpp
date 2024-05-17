@@ -290,7 +290,7 @@ void docpp::HTML::Section::set(const std::string& tag, const Properties& propert
 }
 
 std::pair<std::string, docpp::HTML::Type> docpp::HTML::resolve_tag(const Tag tag) {
-    static const std::unordered_map<Tag, std::pair<std::string, docpp::HTML::Type>> tag_map{
+    const std::unordered_map<docpp::HTML::Tag, std::pair<std::string, docpp::HTML::Type>> tag_map{
         {ELEMENT_EMPTY, {"", docpp::HTML::TYPE_TEXT_TAB}},
         {ELEMENT_ABBREVIATION, {"abbr", docpp::HTML::TYPE_NON_SELF_CLOSING}},
         {ELEMENT_ABBR, {"abbr", docpp::HTML::TYPE_NON_SELF_CLOSING}},
@@ -423,6 +423,7 @@ std::pair<std::string, docpp::HTML::Type> docpp::HTML::resolve_tag(const Tag tag
         {ELEMENT_TEMPLATE, {"template", docpp::HTML::TYPE_NON_SELF_CLOSING}},
         {ELEMENT_TFOOT, {"tfoot", docpp::HTML::TYPE_NON_SELF_CLOSING}},
         {ELEMENT_TH, {"th", docpp::HTML::TYPE_NON_SELF_CLOSING}},
+        {ELEMENT_TR, {"tr", docpp::HTML::TYPE_NON_SELF_CLOSING}},
         {ELEMENT_THEAD, {"thead", docpp::HTML::TYPE_NON_SELF_CLOSING}},
         {ELEMENT_TIME, {"time", docpp::HTML::TYPE_NON_SELF_CLOSING}},
         {ELEMENT_TITLE, {"title", docpp::HTML::TYPE_NON_SELF_CLOSING}},
@@ -440,9 +441,8 @@ std::pair<std::string, docpp::HTML::Type> docpp::HTML::resolve_tag(const Tag tag
         return tag_map.at(tag);
     }
 
-    throw docpp::invalid_argument{"Invalid tag"};
-
-    return {};
+    const std::string throwmsg{"Invalid tag: " + std::to_string(static_cast<int>(tag))};
+    throw docpp::invalid_argument{throwmsg.c_str()};
 }
 
 void docpp::HTML::Section::set(const Tag tag, const Properties& properties) {
