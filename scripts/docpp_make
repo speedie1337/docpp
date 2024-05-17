@@ -30,7 +30,7 @@ gen_pkg() {
 
     rm -f ${proj} ${proj}-${version}.tar.gz ${proj}-${version}.PKGBUILD *.o *zst*
     mkdir -p ${proj}-${version}
-    cp -rf $(git ls-files | cut -d/ -f1 | uniq) "${proj}-${version}"
+    cp -rf $(git ls-files | cut -d/ -f1 | uniq | grep -v "[.]git") "${proj}-${version}"
     tar -cf ${proj}-${version}.tar ${proj}-${version}
     gzip ${proj}-${version}.tar
     rm -rf ${proj}-${version}
