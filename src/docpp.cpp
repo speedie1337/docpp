@@ -247,6 +247,7 @@ void docpp::HTML::Section::set(const std::string& tag, const Properties& propert
 std::pair<std::string, docpp::HTML::Type> docpp::HTML::resolve_tag(const Tag tag) {
     const std::unordered_map<docpp::HTML::Tag, std::pair<std::string, docpp::HTML::Type>> tag_map{
         {ELEMENT_EMPTY, {"", docpp::HTML::TYPE_TEXT_TAB}},
+        {ELEMENT_EMPTY_NO_FORMAT, {"", docpp::HTML::TYPE_TEXT}},
         {ELEMENT_ABBREVIATION, {"abbr", docpp::HTML::TYPE_NON_SELF_CLOSING}},
         {ELEMENT_ABBR, {"abbr", docpp::HTML::TYPE_NON_SELF_CLOSING}},
         {ELEMENT_ACRONYM, {"acronym", docpp::HTML::TYPE_NON_SELF_CLOSING}},
@@ -855,6 +856,12 @@ std::string docpp::CSS::Element::get(const Formatting formatting, const int tabc
     std::string ret{};
 
     if (this->element.first.compare("")) {
+        if (formatting == docpp::CSS::FORMATTING_PRETTY) {
+            for (size_type i{0}; i < tabc; i++) {
+                ret += "\t";
+            }
+        }
+
         ret += this->element.first + " {";
 
         if (formatting == docpp::CSS::FORMATTING_PRETTY || formatting == docpp::CSS::FORMATTING_NEWLINE) {
@@ -875,6 +882,12 @@ std::string docpp::CSS::Element::get(const Formatting formatting, const int tabc
 
             if (formatting == docpp::CSS::FORMATTING_PRETTY || formatting == docpp::CSS::FORMATTING_NEWLINE) {
                 ret += "\n";
+            }
+        }
+
+        if (formatting == docpp::CSS::FORMATTING_PRETTY) {
+            for (size_type i{0}; i < tabc; i++) {
+                ret += "\t";
             }
         }
 

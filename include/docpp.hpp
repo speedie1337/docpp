@@ -55,6 +55,7 @@ namespace docpp {
          */
         enum Tag {
             ELEMENT_EMPTY,
+            ELEMENT_EMPTY_NO_FORMAT,
             ELEMENT_ABBREVIATION,
             ELEMENT_ABBR,
             ELEMENT_ACRONYM,
