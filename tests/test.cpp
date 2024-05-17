@@ -1,5 +1,4 @@
 #include <string>
-#include <include/docpp.hpp>
 #include <src/docpp.cpp>
 #include <catch2/catch_test_macros.hpp>
 
@@ -40,8 +39,8 @@ SCENARIO("Test HTML", "[HTML]") {
 
         const std::string expected_html{"<!DOCTYPE html><html><head><title>Test Title</title></head><body><h1>Test Header</h1><p>Test Paragraph</p><p id=\"test_id\">Test Paragraph With ID</p><div><p>Test Paragraph In Div</p></div><p id=\"test_id\" class=\"class1 class2 class3\">Test Paragraph With ID And Class</p></body><footer></footer></html>"};
 
-        REQUIRE(doc.get<std::string>() == expected_html);
-        REQUIRE(doc.get<std::string>(docpp::HTML::FORMATTING_NEWLINE) == "<!DOCTYPE html>\n<html>\n<head>\n<title>Test Title</title>\n</head>\n<body>\n<h1>Test Header</h1>\n<p>Test Paragraph</p>\n<p id=\"test_id\">Test Paragraph With ID</p>\n<div>\n<p>Test Paragraph In Div</p>\n</div>\n<p id=\"test_id\" class=\"class1 class2 class3\">Test Paragraph With ID And Class</p>\n</body>\n<footer>\n</footer>\n</html>");
+        REQUIRE(doc.get() == expected_html);
+        REQUIRE(doc.get(docpp::HTML::FORMATTING_NEWLINE) == "<!DOCTYPE html>\n<html>\n<head>\n<title>Test Title</title>\n</head>\n<body>\n<h1>Test Header</h1>\n<p>Test Paragraph</p>\n<p id=\"test_id\">Test Paragraph With ID</p>\n<div>\n<p>Test Paragraph In Div</p>\n</div>\n<p id=\"test_id\" class=\"class1 class2 class3\">Test Paragraph With ID And Class</p>\n</body>\n<footer>\n</footer>\n</html>");
     };
 
     const auto test2 = []() {
@@ -53,8 +52,8 @@ SCENARIO("Test HTML", "[HTML]") {
 
         section.erase(docpp::HTML::Element("p", {}, "Test 2"));
 
-        REQUIRE(section.get<std::string>() == "<html><p>Test 1</p><p>Test 3</p></html>");
-        REQUIRE(section.get<std::string>(docpp::HTML::FORMATTING_NEWLINE) == "<html>\n<p>Test 1</p>\n<p>Test 3</p>\n</html>");
+        REQUIRE(section.get() == "<html><p>Test 1</p><p>Test 3</p></html>");
+        REQUIRE(section.get(docpp::HTML::FORMATTING_NEWLINE) == "<html>\n<p>Test 1</p>\n<p>Test 3</p>\n</html>");
     };
 
     const auto test3 = []() {
@@ -67,8 +66,8 @@ SCENARIO("Test HTML", "[HTML]") {
         std::size_t pos = section.find(docpp::HTML::Element("p", {}, "Test 2"));
         section.insert(pos, docpp::HTML::Element("p", {}, "Test 2.5"));
 
-        REQUIRE(section.get<std::string>() == "<html><p>Test 1</p><p>Test 2.5</p><p>Test 3</p></html>");
-        REQUIRE(section.get<std::string>(docpp::HTML::FORMATTING_NEWLINE) == "<html>\n<p>Test 1</p>\n<p>Test 2.5</p>\n<p>Test 3</p>\n</html>");
+        REQUIRE(section.get() == "<html><p>Test 1</p><p>Test 2.5</p><p>Test 3</p></html>");
+        REQUIRE(section.get(docpp::HTML::FORMATTING_NEWLINE) == "<html>\n<p>Test 1</p>\n<p>Test 2.5</p>\n<p>Test 3</p>\n</html>");
     };
 
     const auto test4 = []() {
@@ -82,8 +81,8 @@ SCENARIO("Test HTML", "[HTML]") {
 
         section.erase(pos);
 
-        REQUIRE(section.get<std::string>() == "<html><p>Test 1</p><p>Test 3</p></html>");
-        REQUIRE(section.get<std::string>(docpp::HTML::FORMATTING_NEWLINE) == "<html>\n<p>Test 1</p>\n<p>Test 3</p>\n</html>");
+        REQUIRE(section.get() == "<html><p>Test 1</p><p>Test 3</p></html>");
+        REQUIRE(section.get(docpp::HTML::FORMATTING_NEWLINE) == "<html>\n<p>Test 1</p>\n<p>Test 3</p>\n</html>");
     };
 
     const auto test5 = []() {
@@ -102,8 +101,8 @@ SCENARIO("Test HTML", "[HTML]") {
         docpp::HTML::Document doc{};
         doc.set(section);
 
-        REQUIRE(doc.get<std::string>() == "<!DOCTYPE html><html><div><p>Test 1</p><div><p>Test 2</p></div></div></html>");
-        REQUIRE(doc.get<std::string>(docpp::HTML::FORMATTING_NEWLINE) == "<!DOCTYPE html>\n<html>\n<div>\n<p>Test 1</p>\n<div>\n<p>Test 2</p>\n</div>\n</div>\n</html>");
+        REQUIRE(doc.get() == "<!DOCTYPE html><html><div><p>Test 1</p><div><p>Test 2</p></div></div></html>");
+        REQUIRE(doc.get(docpp::HTML::FORMATTING_NEWLINE) == "<!DOCTYPE html>\n<html>\n<div>\n<p>Test 1</p>\n<div>\n<p>Test 2</p>\n</div>\n</div>\n</html>");
     };
 
     const auto test6 = []() {
@@ -112,8 +111,8 @@ SCENARIO("Test HTML", "[HTML]") {
 
         css.push_back(element);
 
-        REQUIRE(css.get<std::string>() == "p {color: red;font-size: 16px;font-family: Arial;}");
-        REQUIRE(css.get<std::string>(docpp::CSS::FORMATTING_NEWLINE) == "p {\ncolor: red;\nfont-size: 16px;\nfont-family: Arial;\n}\n");
+        REQUIRE(css.get() == "p {color: red;font-size: 16px;font-family: Arial;}");
+        REQUIRE(css.get(docpp::CSS::FORMATTING_NEWLINE) == "p {\ncolor: red;\nfont-size: 16px;\nfont-family: Arial;\n}\n");
     };
 
     const auto test7 = []() {
@@ -124,7 +123,7 @@ SCENARIO("Test HTML", "[HTML]") {
         css.push_back(element);
         css.push_front(element2);
 
-        REQUIRE(css.get<std::string>() == "div {color: blue;font-size: 12px;font-family: Arial;}p {color: red;font-size: 16px;font-family: Arial;}");
+        REQUIRE(css.get() == "div {color: blue;font-size: 12px;font-family: Arial;}p {color: red;font-size: 16px;font-family: Arial;}");
     };
 
     const auto test8 = []() {
@@ -137,7 +136,7 @@ SCENARIO("Test HTML", "[HTML]") {
 
         css.erase(css.find(element2));
 
-        REQUIRE(css.get<std::string>() == "p {color: red;font-size: 16px;font-family: Arial;}");
+        REQUIRE(css.get() == "p {color: red;font-size: 16px;font-family: Arial;}");
     };
 
     const auto test9 = []() {
@@ -153,11 +152,11 @@ SCENARIO("Test HTML", "[HTML]") {
 
         css.swap(css.find(element), css.find(element2));
 
-        REQUIRE(css.get<std::string>() == "p {color: red;font-size: 16px;font-family: Arial;}div {color: blue;font-size: 12px;font-family: Arial;}");
+        REQUIRE(css.get() == "p {color: red;font-size: 16px;font-family: Arial;}div {color: blue;font-size: 12px;font-family: Arial;}");
 
         element.push_front(docpp::CSS::Property("font-weight", "bold"));
 
-        REQUIRE(element.get<std::string>() == "p {font-weight: bold;color: red;font-size: 16px;font-family: Arial;}");
+        REQUIRE(element.get() == "p {font-weight: bold;color: red;font-size: 16px;font-family: Arial;}");
     };
 
     const auto test10 = []() {
@@ -169,7 +168,7 @@ SCENARIO("Test HTML", "[HTML]") {
 
         section.swap(section.find(docpp::HTML::Element("p", {}, "Test 2")), section.find(docpp::HTML::Element("p", {}, "Test 3")));
 
-        REQUIRE(section.get<std::string>() == "<html><p>Test 1</p><p>Test 3</p><p>Test 2</p></html>");
+        REQUIRE(section.get() == "<html><p>Test 1</p><p>Test 3</p><p>Test 2</p></html>");
     };
 
     const auto test11 = []() {
@@ -181,7 +180,7 @@ SCENARIO("Test HTML", "[HTML]") {
 
         section.swap(docpp::HTML::Element("p", {}, "Test 2"), docpp::HTML::Element("p", {}, "Test 3"));
 
-        REQUIRE(section.get<std::string>() == "<html><p>Test 1</p><p>Test 3</p><p>Test 2</p></html>");
+        REQUIRE(section.get() == "<html><p>Test 1</p><p>Test 3</p><p>Test 2</p></html>");
     };
 
     const auto test12 = []() {
@@ -193,7 +192,7 @@ SCENARIO("Test HTML", "[HTML]") {
 
         section.push_front(docpp::HTML::Element("p", {}, "Test 0"));
 
-        REQUIRE(section.get<std::string>() == "<html><p>Test 0</p><p>Test 1</p><p>Test 2</p><p>Test 3</p></html>");
+        REQUIRE(section.get() == "<html><p>Test 0</p><p>Test 1</p><p>Test 2</p><p>Test 3</p></html>");
     };
 
     const auto test13 = []() {
@@ -215,7 +214,7 @@ SCENARIO("Test HTML", "[HTML]") {
         section.erase(pos);
         section.erase(pos2);
 
-        REQUIRE(section.get<std::string>() == "<html><p>Test 1</p><p>Test 3</p><p>Test 4</p><p>Test 5</p></html>");
+        REQUIRE(section.get() == "<html><p>Test 1</p><p>Test 3</p><p>Test 4</p><p>Test 5</p></html>");
     };
 
     const auto test14 = []() {
@@ -231,11 +230,11 @@ SCENARIO("Test HTML", "[HTML]") {
 
         element.erase(red);
 
-        REQUIRE(element.get<std::string>() == "p {font-size: 16px;font-family: Arial;}");
+        REQUIRE(element.get() == "p {font-size: 16px;font-family: Arial;}");
 
         element.insert(red, docpp::CSS::Property("color", "red"));
 
-        REQUIRE(element.get<std::string>() == "p {color: red;font-size: 16px;font-family: Arial;}");
+        REQUIRE(element.get() == "p {color: red;font-size: 16px;font-family: Arial;}");
     };
 
     const auto test15 = []() {
@@ -244,7 +243,7 @@ SCENARIO("Test HTML", "[HTML]") {
         prop.push_back(docpp::HTML::Property(std::pair<std::string, std::string>("id", "test_id")));
         prop.push_back(docpp::HTML::Property(std::pair<std::string, std::string>("class", "class1 class2 class3")));
 
-        REQUIRE(docpp::HTML::Element("p", prop, {}).get<std::string>() == "<p id=\"test_id\" class=\"class1 class2 class3\"></p>");
+        REQUIRE(docpp::HTML::Element("p", prop, {}).get() == "<p id=\"test_id\" class=\"class1 class2 class3\"></p>");
 
         const int pos = prop.find("class");
 
@@ -263,7 +262,7 @@ SCENARIO("Test HTML", "[HTML]") {
 
         prop.erase(pos);
 
-        REQUIRE(docpp::HTML::Element("p", prop, {}).get<std::string>() == "<p id=\"test_id\"></p>");
+        REQUIRE(docpp::HTML::Element("p", prop, {}).get() == "<p id=\"test_id\"></p>");
     };
 
     const auto test16 = []() {
@@ -281,7 +280,7 @@ SCENARIO("Test HTML", "[HTML]") {
 
         doc.get_section() += docpp::HTML::Element("p", {}, "Test 7");
 
-        REQUIRE(doc.get<std::string>() == "<!DOCTYPE html><html><p>Test 4</p><p>Test 5</p><p>Test 6</p><p>Test 7</p></html>");
+        REQUIRE(doc.get() == "<!DOCTYPE html><html><p>Test 4</p><p>Test 5</p><p>Test 6</p><p>Test 7</p></html>");
     };
 
     const auto test17 = []() {
@@ -293,7 +292,7 @@ SCENARIO("Test HTML", "[HTML]") {
 
         docpp::HTML::Document doc{section};
 
-        REQUIRE(doc.get<std::string>(docpp::HTML::FORMATTING_PRETTY) == "<!DOCTYPE html>\n<html>\n\t<p>Test 1</p>\n\t<p>Test 2</p>\n\t<p>Test 3</p>\n</html>");
+        REQUIRE(doc.get(docpp::HTML::FORMATTING_PRETTY) == "<!DOCTYPE html>\n<html>\n\t<p>Test 1</p>\n\t<p>Test 2</p>\n\t<p>Test 3</p>\n</html>");
     };
 
     const auto test18 = []() {
@@ -303,7 +302,7 @@ SCENARIO("Test HTML", "[HTML]") {
         section.push_back(docpp::HTML::Element("p", {}, "Test 2"));
         section.push_back(docpp::HTML::Element("p", {}, "Test 3"));
 
-        REQUIRE(section.get<std::string>() == "<p>Test 1</p><p>Test 2</p><p>Test 3</p>");
+        REQUIRE(section.get() == "<p>Test 1</p><p>Test 2</p><p>Test 3</p>");
     };
 
     const auto test19 = []() {
@@ -313,8 +312,8 @@ SCENARIO("Test HTML", "[HTML]") {
         section.push_back(docpp::HTML::Element("p", {}, "Test 2"));
         section.push_back(docpp::HTML::Element("p", {}, "Test 3"));
 
-        REQUIRE(section.front().get<std::string>() == "<p>Test 1</p>");
-        REQUIRE(section.back().get<std::string>() == "<p>Test 3</p>");
+        REQUIRE(section.front().get() == "<p>Test 1</p>");
+        REQUIRE(section.back().get() == "<p>Test 3</p>");
     };
 
     const auto test20 = []() {
@@ -345,13 +344,13 @@ SCENARIO("Test HTML", "[HTML]") {
         sect.push_back(docpp::HTML::Element("p", {}, "Test 3"));
 
         for (const docpp::HTML::Element& elem : sect) {
-            REQUIRE(elem.get<std::string>() == "<p>Test 1</p>");
+            REQUIRE(elem.get() == "<p>Test 1</p>");
             break;
         }
 
         for (docpp::HTML::Section::iterator it = ++sect.begin(); it != sect.end(); ++it) {
             docpp::HTML::Element elem = *it;
-            REQUIRE(elem.get<std::string>() == "<p>Test 2</p>");
+            REQUIRE(elem.get() == "<p>Test 2</p>");
             break;
         }
     };
@@ -380,7 +379,7 @@ SCENARIO("Test HTML", "[HTML]") {
         sect.push_back(docpp::HTML::Element("p", {}, "Test 2"));
         sect.push_back(docpp::HTML::Element("p", {}, "Test 3"));
 
-        REQUIRE(sect.get<std::string>() == "<p>Test 1</p><p>Test 2</p><p>Test 3</p>");
+        REQUIRE(sect.get() == "<p>Test 1</p><p>Test 2</p><p>Test 3</p>");
     };
 
     const auto test24 = []() {

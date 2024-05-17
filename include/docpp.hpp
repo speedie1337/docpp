@@ -12,6 +12,7 @@
 #include <map>
 #include <exception>
 #include <utility>
+#include <type_traits>
 
 /**
  * @brief A namespace to represent HTML elements and documents
@@ -263,7 +264,13 @@ namespace docpp {
                  * @brief Get the key of the property in a specific type
                  * @return T The key of the property
                  */
-                template <typename T> T get_key() const;
+                template <typename T> T get_key() const {
+                    if (std::is_same<T, std::string>::value) {
+                        return this->property.first;
+                    }
+
+                    return T(this->property.first);
+                };
                 /**
                  * @brief Get the value of the property
                  * @return std::string The value of the property
@@ -273,7 +280,12 @@ namespace docpp {
                  * @brief Get the value of the property in a specific type
                  * @return T The value of the property
                  */
-                template <typename T> T get_value() const;
+                template <typename T> T get_value() const {
+                    if (std::is_same<T, std::string>::value) {
+                        return this->property.second;
+                    }
+                    return T(this->property.second);
+                }
                 /**
                  * @brief Get the property.
                  * @return std::pair<std::string, std::string> The value of the property
@@ -283,7 +295,13 @@ namespace docpp {
                  * @brief Get the property in a specific type.
                  * @return std::pair<T, T> The value of the property
                  */
-                template <typename T> std::pair<T, T> get() const;
+                template <typename T> std::pair<T, T> get() const {
+                    if (std::is_same<T, std::string>::value) {
+                        return this->property;
+                    }
+
+                    return T(this->property);
+                }
                 /**
                  * @brief Set the key of the property.
                  * @param key The key.
@@ -510,7 +528,12 @@ namespace docpp {
                  * @brief Get the element in the form of a specific type.
                  * @return T The element in the form of a specific type
                  */
-                template <typename T> T get(const Formatting formatting = FORMATTING_NONE, const int tabc = 0) const;
+                template <typename T> T get(const Formatting formatting = FORMATTING_NONE, const int tabc = 0) const {
+                    if (std::is_same<T, std::string>::value) {
+                        return this->get(formatting, tabc);
+                    }
+                    return T(this->get(formatting, tabc));
+                }
 
                 /**
                  * @brief Get the tag of the element
@@ -521,7 +544,12 @@ namespace docpp {
                  * @brief Get the tag of the element in a specific type
                  * @return T The tag of the element
                  */
-                template <typename T> T get_tag() const;
+                template <typename T> T get_tag() const {
+                    if (std::is_same<T, std::string>::value) {
+                        return this->tag;
+                    }
+                    return T(this->tag);
+                }
 
                 /**
                  * @brief Get the data of the element
@@ -532,7 +560,12 @@ namespace docpp {
                  * @brief Get the data of the element in a specific type
                  * @return T The data of the element
                  */
-                template <typename T> T get_data() const;
+                template <typename T> T get_data() const {
+                    if (std::is_same<T, std::string>::value) {
+                        return this->data;
+                    }
+                    return T(this->data);
+                }
 
                 Element operator=(const Element& element);
                 void operator+=(const std::string& data);
@@ -751,7 +784,12 @@ namespace docpp {
                  * @brief Get the element in the form of a specific type.
                  * @return T The element in the form of a specific type
                  */
-                template <typename T> T get(const Formatting formatting = FORMATTING_NONE, const int tabc = 0) const;
+                template <typename T> T get(const Formatting formatting = FORMATTING_NONE, const int tabc = 0) const {
+                    if (std::is_same<T, std::string>::value) {
+                        return this->get(formatting, tabc);
+                    }
+                    return T(this->get(formatting, tabc));
+                }
 
                 Section operator=(const Section& section);
                 void operator+=(const Element& element);
@@ -792,7 +830,12 @@ namespace docpp {
                  * @brief Get the document in the form of a specific type.
                  * @return T The document in the form of a specific type
                  */
-                template <typename T> T get(const Formatting formatting = FORMATTING_NONE, const int tabc = 0) const;
+                template <typename T> T get(const Formatting formatting, const int tabc) const {
+                    if (std::is_same<T, std::string>::value) {
+                        return this->get(formatting, tabc);
+                    }
+                    return T(this->get(formatting, tabc));
+                }
 
                 /**
                  * @brief Get the section
@@ -809,7 +852,12 @@ namespace docpp {
                  * @brief Get the doctype of the document in a specific type
                  * @return T The doctype of the document
                  */
-                template <typename T> T get_doctype() const;
+                template <typename T> T get_doctype() const {
+                    if (std::is_same<T, std::string>::value) {
+                        return this->doctype;
+                    }
+                    return T(this->doctype);
+                }
 
                 /**
                  * @brief Set the document
@@ -885,7 +933,12 @@ namespace docpp {
                  * @brief Get the key of the property in a specific type
                  * @return T The key of the property
                  */
-                template <typename T> T get_key() const;
+                template <typename T> T get_key() const {
+                    if (std::is_same<T, std::string>::value) {
+                        return this->property.first;
+                    }
+                    return T(this->property.first);
+                }
                 /**
                  * @brief Get the value of the property
                  * @return std::string The value of the property
@@ -895,7 +948,12 @@ namespace docpp {
                  * @brief Get the value of the property in a specific type
                  * @return T The value of the property
                  */
-                template <typename T> T get_value() const;
+                template <typename T> T get_value() const {
+                    if (std::is_same<T, std::string>::value) {
+                        return this->property.second;
+                    }
+                    return T(this->property.second);
+                }
                 /**
                  * @brief Get the property.
                  * @return std::pair<std::string, std::string> The value of the property
@@ -905,7 +963,12 @@ namespace docpp {
                  * @brief Get the property in a specific type.
                  * @return std::pair<T, T> The value of the property
                  */
-                template <typename T> std::pair<T, T> get() const;
+                template <typename T> std::pair<T, T> get() const {
+                    if (std::is_same<T, std::string>::value) {
+                        return std::make_pair(this->property.first, this->property.second);
+                    }
+                    return std::pair<T, T>(this->property.first, this->property.second);
+                }
                 /**
                  * @brief Set the key of the property.
                  * @param key The key.
@@ -1090,7 +1153,12 @@ namespace docpp {
                  * @brief Get the element in the form of a specific type.
                  * @return T The element in the form of a specific type
                  */
-                template <typename T> T get(const Formatting formatting = FORMATTING_NONE, const int tabc = 0) const;
+                template <typename T> T get(const Formatting formatting, const int tabc) const {
+                    if (std::is_same<T, std::string>::value) {
+                        return this->get(formatting, tabc);
+                    }
+                    return T(this->get(formatting, tabc));
+                }
                 /**
                  * @brief Get the tag of the element
                  * @return std::string The tag of the element
@@ -1100,7 +1168,12 @@ namespace docpp {
                  * @brief Get the tag of the element in a specific type
                  * @return T The tag of the element
                  */
-                template <typename T> T get_tag() const;
+                template <typename T> T get_tag() const {
+                    if (std::is_same<T, std::string>::value) {
+                        return this->element.first;
+                    }
+                    return T(this->element.first);
+                }
                 /**
                  * @brief Get the properties of the element
                  * @return std::vector<Property> The properties of the element
@@ -1265,7 +1338,12 @@ namespace docpp {
                  * @brief Get the stylesheet in the form of a specific type.
                  * @return T The stylesheet in the form of a specific type
                  */
-                template <typename T> T get(const Formatting formatting = FORMATTING_NONE, const int tabc = 0) const;
+                template <typename T> T get(const Formatting formatting = FORMATTING_NONE, const int tabc = 0) const {
+                    if (std::is_same<T, std::string>::value) {
+                        return this->get(formatting, tabc);
+                    }
+                    return T(this->get(formatting, tabc));
+                }
 
                 Stylesheet operator=(const Stylesheet& stylesheet);
                 void operator+=(const Element& element);
