@@ -291,7 +291,7 @@ void docpp::HTML::Section::set(const std::string& tag, const Properties& propert
 
 std::pair<std::string, docpp::HTML::Type> docpp::HTML::resolve_tag(const Tag tag) {
     static const std::unordered_map<Tag, std::pair<std::string, docpp::HTML::Type>> tag_map{
-        {ELEMENT_EMPTY, {"", docpp::HTML::TYPE_NON_SELF_CLOSING}},
+        {ELEMENT_EMPTY, {"", docpp::HTML::TYPE_TEXT}},
         {ELEMENT_ABBREVIATION, {"abbr", docpp::HTML::TYPE_NON_SELF_CLOSING}},
         {ELEMENT_ABBR, {"abbr", docpp::HTML::TYPE_NON_SELF_CLOSING}},
         {ELEMENT_ACRONYM, {"acronym", docpp::HTML::TYPE_NON_SELF_CLOSING}},
@@ -371,7 +371,7 @@ std::pair<std::string, docpp::HTML::Type> docpp::HTML::resolve_tag(const Tag tag
         {ELEMENT_LEGEND, {"legend", docpp::HTML::TYPE_NON_SELF_CLOSING}},
         {ELEMENT_LIST, {"li", docpp::HTML::TYPE_NON_SELF_CLOSING}},
         {ELEMENT_LI, {"li", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_LINK, {"link", docpp::HTML::TYPE_NON_SELF_CLOSING}},
+        {ELEMENT_LINK, {"link", docpp::HTML::TYPE_NON_CLOSED}},
         {ELEMENT_MAIN, {"main", docpp::HTML::TYPE_NON_SELF_CLOSING}},
         {ELEMENT_MARK, {"mark", docpp::HTML::TYPE_NON_SELF_CLOSING}},
         {ELEMENT_MARQUEE, {"marquee", docpp::HTML::TYPE_NON_SELF_CLOSING}},
