@@ -1,5 +1,5 @@
 /*
- * docpp - C++ library for generating XML, HTML and CSS.
+ * docpp - C++ library for generating HTML, CSS and SGML-like documents.
  *
  * SPDX-License-Identifier: LGPL-3.0-or-later
  * Copyright (c) 2024 speedie <speedie@speedie.site>
