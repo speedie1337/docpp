@@ -54,171 +54,171 @@ namespace docpp {
          * @brief Enum for element tags.
          */
         enum Tag {
-            ELEMENT_EMPTY,
-            ELEMENT_EMPTY_NO_FORMAT,
-            ELEMENT_ABBREVIATION,
-            ELEMENT_ABBR,
-            ELEMENT_ACRONYM,
-            ELEMENT_ADDRESS,
-            ELEMENT_ANCHOR,
-            ELEMENT_A,
-            ELEMENT_APPLET,
-            ELEMENT_ARTICLE,
-            ELEMENT_AREA,
-            ELEMENT_ASIDE,
-            ELEMENT_AUDIO,
-            ELEMENT_BASE,
-            ELEMENT_BASEFONT,
-            ELEMENT_BDI,
-            ELEMENT_BDO,
-            ELEMENT_BGSOUND,
-            ELEMENT_BIG,
-            ELEMENT_BLOCKQUOTE,
-            ELEMENT_BODY,
-            ELEMENT_BOLD,
-            ELEMENT_B,
-            ELEMENT_BR,
-            ELEMENT_BREAK,
-            ELEMENT_BUTTON,
-            ELEMENT_CAPTION,
-            ELEMENT_CANVAS,
-            ELEMENT_CENTER,
-            ELEMENT_CITE,
-            ELEMENT_CODE,
-            ELEMENT_COLGROUP,
-            ELEMENT_COL,
-            ELEMENT_COLUMN,
-            ELEMENT_DATA,
-            ELEMENT_DATALIST,
-            ELEMENT_DD,
-            ELEMENT_DFN,
-            ELEMENT_DEFINE,
-            ELEMENT_DELETE,
-            ELEMENT_DEL,
-            ELEMENT_DETAILS,
-            ELEMENT_DIALOG,
-            ELEMENT_DIR,
-            ELEMENT_DIV,
-            ELEMENT_DL,
-            ELEMENT_DT,
-            ELEMENT_EMBED,
-            ELEMENT_FIELDSET,
-            ELEMENT_FIGCAPTION,
-            ELEMENT_FIGURE,
-            ELEMENT_FONT,
-            ELEMENT_FOOTER,
-            ELEMENT_FORM,
-            ELEMENT_FRAME,
-            ELEMENT_FRAMESET,
-            ELEMENT_HEAD,
-            ELEMENT_HEADER,
-            ELEMENT_H1,
-            ELEMENT_H2,
-            ELEMENT_H3,
-            ELEMENT_H4,
-            ELEMENT_H5,
-            ELEMENT_H6,
-            ELEMENT_HGROUP,
-            ELEMENT_HR,
-            ELEMENT_HTML,
-            ELEMENT_IFRAME,
-            ELEMENT_IMAGE,
-            ELEMENT_IMG,
-            ELEMENT_INPUT,
-            ELEMENT_INS,
-            ELEMENT_ISINDEX,
-            ELEMENT_ITALIC,
-            ELEMENT_I,
-            ELEMENT_KBD,
-            ELEMENT_KEYGEN,
-            ELEMENT_LABEL,
-            ELEMENT_LEGEND,
-            ELEMENT_LIST,
-            ELEMENT_LI,
-            ELEMENT_LINK,
-            ELEMENT_MAIN,
-            ELEMENT_MARK,
-            ELEMENT_MARQUEE,
-            ELEMENT_MENUITEM,
-            ELEMENT_META,
-            ELEMENT_METER,
-            ELEMENT_NAV,
-            ELEMENT_NOBREAK,
-            ELEMENT_NOBR,
-            ELEMENT_NOEMBED,
-            ELEMENT_NOSCRIPT,
-            ELEMENT_OBJECT,
-            ELEMENT_OPTGROUP,
-            ELEMENT_OPTION,
-            ELEMENT_OUTPUT,
-            ELEMENT_PARAGRAPH,
-            ELEMENT_P,
-            ELEMENT_PARAM,
-            ELEMENT_PHRASE,
-            ELEMENT_PRE,
-            ELEMENT_PROGRESS,
-            ELEMENT_QUOTE,
-            ELEMENT_Q,
-            ELEMENT_RP,
-            ELEMENT_RT,
-            ELEMENT_RUBY,
-            ELEMENT_OUTDATED,
-            ELEMENT_S,
-            ELEMENT_SAMPLE,
-            ELEMENT_SAMP,
-            ELEMENT_SCRIPT,
-            ELEMENT_SECTION,
-            ELEMENT_SMALL,
-            ELEMENT_SOURCE,
-            ELEMENT_SPACER,
-            ELEMENT_SPAN,
-            ELEMENT_STRIKE,
-            ELEMENT_STRONG,
-            ELEMENT_STYLE,
-            ELEMENT_SUB,
-            ELEMENT_SUBSCRIPT,
-            ELEMENT_SUP,
-            ELEMENT_SUPERSCRIPT,
-            ELEMENT_SUMMARY,
-            ELEMENT_SVG,
-            ELEMENT_TABLE,
-            ELEMENT_TBODY,
-            ELEMENT_TD,
-            ELEMENT_TEMPLATE,
-            ELEMENT_TFOOT,
-            ELEMENT_TH,
-            ELEMENT_THEAD,
-            ELEMENT_TIME,
-            ELEMENT_TITLE,
-            ELEMENT_TR,
-            ELEMENT_TRACK,
-            ELEMENT_TT,
-            ELEMENT_UNDERLINE,
-            ELEMENT_U,
-            ELEMENT_VAR,
-            ELEMENT_VIDEO,
-            ELEMENT_WBR,
-            ELEMENT_XMP,
+            ELEMENT_EMPTY, /* Empty element */
+            ELEMENT_EMPTY_NO_FORMAT, /* Empty element, that ignores any formatting by get() calls. */
+            ELEMENT_ABBREVIATION, /* <abbr></abbr> */
+            ELEMENT_ABBR, /* <abbr></abbr> */
+            ELEMENT_ACRONYM, /* <acronym></acronym> */
+            ELEMENT_ADDRESS, /* <address></address> */
+            ELEMENT_ANCHOR, /* <a></a> */
+            ELEMENT_A, /* <a></a> */
+            ELEMENT_APPLET, /* <applet></applet> */
+            ELEMENT_ARTICLE, /* <article></article> */
+            ELEMENT_AREA, /* <area></area> */
+            ELEMENT_ASIDE, /* <aside></aside> */
+            ELEMENT_AUDIO, /* <audio></audio> */
+            ELEMENT_BASE, /* <base></base> */
+            ELEMENT_BASEFONT, /* <basefont></basefont> */
+            ELEMENT_BDI, /* <bdi></bdi> */
+            ELEMENT_BDO, /* <bdo></bdo> */
+            ELEMENT_BGSOUND, /* <bgsound></bgsound> */
+            ELEMENT_BIG, /* <big></big> */
+            ELEMENT_BLOCKQUOTE, /* <blockquote></blockquote> */
+            ELEMENT_BODY, /* <body></body> */
+            ELEMENT_BOLD, /* <b></b> */
+            ELEMENT_B, /* <b></b> */
+            ELEMENT_BR, /* <br> */
+            ELEMENT_BREAK, /* <br> */
+            ELEMENT_BUTTON, /* <button></button> */
+            ELEMENT_CAPTION, /* <caption></caption> */
+            ELEMENT_CANVAS, /* <canvas></canvas> */
+            ELEMENT_CENTER, /* <center></center> */
+            ELEMENT_CITE, /* <cite></cite> */
+            ELEMENT_CODE, /* <code></code> */
+            ELEMENT_COLGROUP, /* <colgroup></colgroup> */
+            ELEMENT_COL, /* <col></col> */
+            ELEMENT_COLUMN, /* <col></col> */
+            ELEMENT_DATA, /* <data></data> */
+            ELEMENT_DATALIST, /* <datalist></datalist> */
+            ELEMENT_DD, /* <dd></dd> */
+            ELEMENT_DFN, /* <dfn></dfn> */
+            ELEMENT_DEFINE, /* <dfn></dfn> */
+            ELEMENT_DELETE, /* <del></del> */
+            ELEMENT_DEL, /* <del></del> */
+            ELEMENT_DETAILS, /* <details></details> */
+            ELEMENT_DIALOG, /* <dialog></dialog> */
+            ELEMENT_DIR, /* <dir></dir> */
+            ELEMENT_DIV, /* <div></div> */
+            ELEMENT_DL, /* <dl></dl> */
+            ELEMENT_DT, /* <dt></dt> */
+            ELEMENT_EMBED, /* <embed></embed> */
+            ELEMENT_FIELDSET, /* <fieldset></fieldset> */
+            ELEMENT_FIGCAPTION, /* <figcaption></figcaption> */
+            ELEMENT_FIGURE, /* <figure></figure> */
+            ELEMENT_FONT, /* <font></font> */
+            ELEMENT_FOOTER, /* <footer></footer> */
+            ELEMENT_FORM, /* <form></form> */
+            ELEMENT_FRAME, /* <frame></frame> */
+            ELEMENT_FRAMESET, /* <frameset></frameset> */
+            ELEMENT_HEAD, /* <head></head> */
+            ELEMENT_HEADER, /* <header></header> */
+            ELEMENT_H1, /* <h1></h1> */
+            ELEMENT_H2, /* <h2></h2> */
+            ELEMENT_H3, /* <h3></h3> */
+            ELEMENT_H4, /* <h4></h4> */
+            ELEMENT_H5, /* <h5></h5> */
+            ELEMENT_H6, /* <h6></h6> */
+            ELEMENT_HGROUP, /* <hgroup></hgroup> */
+            ELEMENT_HR, /* <hr> */
+            ELEMENT_HTML, /* <html></html> */
+            ELEMENT_IFRAME, /* <iframe></iframe> */
+            ELEMENT_IMAGE, /* <img> */
+            ELEMENT_IMG, /* <img> */
+            ELEMENT_INPUT, /* <input> */
+            ELEMENT_INS, /* <ins></ins> */
+            ELEMENT_ISINDEX, /* <isindex></isindex> */
+            ELEMENT_ITALIC, /* <i></i> */
+            ELEMENT_I, /* <i></i> */
+            ELEMENT_KBD, /* <kbd></kbd> */
+            ELEMENT_KEYGEN, /* <keygen></keygen> */
+            ELEMENT_LABEL, /* <label></label> */
+            ELEMENT_LEGEND, /* <legend></legend> */
+            ELEMENT_LIST, /* <li></li> */
+            ELEMENT_LI, /* <li></li> */
+            ELEMENT_LINK, /* <link></link> */
+            ELEMENT_MAIN, /* <main></main> */
+            ELEMENT_MARK, /* <mark></mark> */
+            ELEMENT_MARQUEE, /* <marquee></marquee> */
+            ELEMENT_MENUITEM, /* <menuitem></menuitem> */
+            ELEMENT_META, /* <meta></meta> */
+            ELEMENT_METER, /* <meter></meter> */
+            ELEMENT_NAV, /* <nav></nav> */
+            ELEMENT_NOBREAK, /* <nobr></nobr> */
+            ELEMENT_NOBR, /* <nobr></nobr> */
+            ELEMENT_NOEMBED, /* <noembed></noembed> */
+            ELEMENT_NOSCRIPT, /* <noscript></noscript> */
+            ELEMENT_OBJECT, /* <object></object> */
+            ELEMENT_OPTGROUP, /* <optgroup></optgroup> */
+            ELEMENT_OPTION, /* <option></option> */
+            ELEMENT_OUTPUT, /* <output></output> */
+            ELEMENT_PARAGRAPH, /* <p></p> */
+            ELEMENT_P, /* <p></p> */
+            ELEMENT_PARAM, /* <param></param> */
+            ELEMENT_PHRASE, /* <pharse></pharse> */
+            ELEMENT_PRE, /* <pre></pre> */
+            ELEMENT_PROGRESS, /* <progress></progress> */
+            ELEMENT_QUOTE, /* <q></q> */
+            ELEMENT_Q, /* <q></q> */
+            ELEMENT_RP, /* <rp></rp> */
+            ELEMENT_RT, /* <rt></rt> */
+            ELEMENT_RUBY, /* <ruby></ruby> */
+            ELEMENT_OUTDATED, /* <s></s> */
+            ELEMENT_S, /* <s></s> */
+            ELEMENT_SAMPLE, /* <samp></samp> */
+            ELEMENT_SAMP, /* <samp></samp> */
+            ELEMENT_SCRIPT, /* <script></script> */
+            ELEMENT_SECTION, /* <section></section> */
+            ELEMENT_SMALL, /* <small></small> */
+            ELEMENT_SOURCE, /* <source></source> */
+            ELEMENT_SPACER, /* <spacer></spacer> */
+            ELEMENT_SPAN, /* <span></span> */
+            ELEMENT_STRIKE, /* <strike></strike> */
+            ELEMENT_STRONG, /* <strong></strong> */
+            ELEMENT_STYLE, /* <style></style> */
+            ELEMENT_SUB, /* <sub></sub> */
+            ELEMENT_SUBSCRIPT, /* <sub></sub> */
+            ELEMENT_SUP, /* <sup></sup> */
+            ELEMENT_SUPERSCRIPT, /* <sup></sup> */
+            ELEMENT_SUMMARY, /* <summary></summary> */
+            ELEMENT_SVG, /* <svg></svg> */
+            ELEMENT_TABLE, /* <table></table> */
+            ELEMENT_TBODY, /* <tbody></tbody> */
+            ELEMENT_TD, /* <td></td> */
+            ELEMENT_TEMPLATE, /* <template></template> */
+            ELEMENT_TFOOT, /* <tfoot></tfoot> */
+            ELEMENT_TH, /* <th></th> */
+            ELEMENT_THEAD, /* <thead></thead> */
+            ELEMENT_TIME, /* <time></time> */
+            ELEMENT_TITLE, /* <title></title> */
+            ELEMENT_TR, /* <tr></tr> */
+            ELEMENT_TRACK, /* <track></track> */
+            ELEMENT_TT, /* <tt></tt> */
+            ELEMENT_UNDERLINE, /* <u></u> */
+            ELEMENT_U, /* <u></u> */
+            ELEMENT_VAR, /* <var></var> */
+            ELEMENT_VIDEO, /* <video></video> */
+            ELEMENT_WBR, /* <wbr></wbr> */
+            ELEMENT_XMP, /* <xmp></xmp> */
         };
 
         /**
          * @brief Enum for element types.
          */
         enum Type {
-            TYPE_SELF_CLOSING,
-            TYPE_NON_SELF_CLOSING,
-            TYPE_NON_CLOSED,
-            TYPE_TEXT,
-            TYPE_TEXT_TAB,
+            TYPE_SELF_CLOSING, /* Self-closing element (<tag></tag>)*/
+            TYPE_NON_SELF_CLOSING, /* Non-self-closing element (<tag>) */
+            TYPE_NON_CLOSED, /* Non-closed element (<tag>) */
+            TYPE_TEXT, /* Text element (my text here). Note that this does *not* append a newline character. */
+            TYPE_TEXT_TAB, /* Text element with tab characters appropriately prepended (my text here). Note that this does *not* append a newline character. */
         };
 
         /**
          * @brief Enum for formatting options.
          */
         enum Formatting {
-            FORMATTING_NONE,
-            FORMATTING_PRETTY,
-            FORMATTING_NEWLINE,
+            FORMATTING_NONE, /* No formatting. Output is in the form of one long string of text, and a single newline character. */
+            FORMATTING_PRETTY, /* Pretty formatting. Output is formatted with newlines and tabs as deemed appropriate. */
+            FORMATTING_NEWLINE, /* Newline formatting. Each element has a newline appended. */
         };
 
         /**
@@ -513,12 +513,13 @@ namespace docpp {
                  */
                 Element() = default;
                 /**
-                 * @brief Set the tag, id, and classes of the element
+                 * @brief Set the tag, properties, and data of the element
                  * @param tag The tag of the element
-                 * @param id The id of the element
-                 * @param classes The classes of the element
+                 * @param properties The properties of the element
+                 * @param data The data of the element
+                 * @param type The close tag type.
                  */
-                void set(const std::string& tag, const Properties& properties = {}, const std::string& data = {}, const Type = TYPE_NON_SELF_CLOSING);
+                void set(const std::string& tag, const Properties& properties = {}, const std::string& data = {}, const Type type = TYPE_NON_SELF_CLOSING);
 
                 /**
                  * @brief Get the element in the form of an HTML tag.
