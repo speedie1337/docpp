@@ -67,6 +67,7 @@ End users should not run this script directly, this is for maintainers only.
 
 $0 clean         Clean up the source tree
 $0 dist          Create a distro package for ${proj}
+$0 dist_release  Create a distro package for ${proj} (release version)
 $0 help          Print this help
 EOF
 }
@@ -75,6 +76,7 @@ main() {
     case "$1" in
         "clean") action="clean" ;;
         "dist") action="dist" ;;
+        "dist_release") action="dist_release" ;;
         "help") action="help" ;;
         "") action="help" ;;
         *) [ -z "$action" ] && action="wrong" ;;
