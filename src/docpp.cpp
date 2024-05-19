@@ -34,23 +34,90 @@ void docpp::HTML::Property::set(const std::pair<std::string, std::string>& prope
     this->property = property;
 }
 
-docpp::HTML::Properties docpp::HTML::Properties::operator=(const docpp::HTML::Property& property) {
+docpp::HTML::Property& docpp::HTML::Property::operator=(const docpp::HTML::Property& property) {
+    this->set(property.get());
+    return *this;
+}
+
+docpp::HTML::Property& docpp::HTML::Property::operator=(const std::pair<std::string, std::string>& property) {
+    this->set(property);
+    return *this;
+}
+
+bool docpp::HTML::Property::operator==(const docpp::HTML::Property& property) const {
+    return this->property == property.get();
+}
+
+bool docpp::HTML::Property::operator!=(const docpp::HTML::Property& property) const {
+    return this->property != property.get();
+}
+
+void docpp::HTML::Property::clear() {
+    this->property = {};
+}
+
+bool docpp::HTML::Property::empty() const {
+    return this->property.first.empty() && this->property.second.empty();
+}
+
+docpp::HTML::Properties& docpp::HTML::Properties::operator=(const docpp::HTML::Property& property) {
     this->properties = {property};
     return *this;
 }
 
-docpp::HTML::Properties docpp::HTML::Properties::operator=(const docpp::HTML::Properties& properties) {
+docpp::HTML::Properties& docpp::HTML::Properties::operator=(const docpp::HTML::Properties& properties) {
     this->set(properties.get_properties());
     return *this;
 }
 
-docpp::HTML::Properties docpp::HTML::Properties::operator=(const std::vector<docpp::HTML::Property>& properties) {
+docpp::HTML::Properties& docpp::HTML::Properties::operator=(const std::vector<docpp::HTML::Property>& properties) {
     this->set(properties);
     return *this;
 }
 
-void docpp::HTML::Properties::operator+=(const docpp::HTML::Property& property) {
+docpp::HTML::Property docpp::HTML::Properties::operator[](const size_type& index) const {
+    return this->at(index);
+}
+
+bool docpp::HTML::Properties::operator==(const docpp::HTML::Properties& properties) const {
+    return this->properties == properties.get_properties();
+}
+
+bool docpp::HTML::Properties::operator==(const docpp::HTML::Property& property) const {
+    for (const docpp::HTML::Property& it : this->properties) {
+        if (it.get() == property.get()) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool docpp::HTML::Properties::operator!=(const docpp::HTML::Properties& properties) const {
+    return this->properties != properties.get_properties();
+}
+
+bool docpp::HTML::Properties::operator!=(const docpp::HTML::Property& property) const {
+    for (const docpp::HTML::Property& it : this->properties) {
+        if (it.get() == property.get()) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+docpp::HTML::Properties& docpp::HTML::Properties::operator+=(const docpp::HTML::Property& property) {
     this->push_back(property);
+    return *this;
+}
+
+docpp::HTML::Properties& docpp::HTML::Properties::operator+=(const docpp::HTML::Properties& properties) {
+    for (docpp::HTML::Properties::const_iterator it{properties.cbegin()}; it != properties.cend(); it++) {
+        this->push_back(*it);
+    }
+
+    return *this;
 }
 
 std::vector<docpp::HTML::Property> docpp::HTML::Properties::get_properties() const {
@@ -135,6 +202,14 @@ docpp::HTML::Properties::size_type docpp::HTML::Properties::size() const {
     return this->properties.size();
 }
 
+void docpp::HTML::Properties::clear() {
+    this->properties.clear();
+}
+
+bool docpp::HTML::Properties::empty() const {
+    return this->properties.empty();
+}
+
 void docpp::HTML::Properties::swap(const size_type index1, const size_type index2) {
     if (index1 < 0 || index1 >= this->properties.size() || index2 < 0 || index2 >= this->properties.size()) {
         throw docpp::out_of_range("Index out of range");
@@ -148,28 +223,65 @@ void docpp::HTML::Properties::swap(const docpp::HTML::Property& property1, const
 }
 
 
-docpp::HTML::Element docpp::HTML::Element::operator=(const docpp::HTML::Element& element) {
+docpp::HTML::Element& docpp::HTML::Element::operator=(const docpp::HTML::Element& element) {
     this->set(element.get_tag(), element.properties, element.get_data(), element.type);
     return *this;
 }
 
-void docpp::HTML::Element::operator+=(const std::string& data) {
+docpp::HTML::Element& docpp::HTML::Element::operator+=(const std::string& data) {
     this->data += data;
+    return *this;
+}
+
+bool docpp::HTML::Element::operator==(const docpp::HTML::Element& element) const {
+    return this->tag == element.get_tag() && this->properties == element.properties && this->data == element.get_data() && this->type == element.type;
+}
+
+bool docpp::HTML::Element::operator!=(const docpp::HTML::Element& element) const {
+    return this->tag != element.get_tag() || this->properties != element.properties || this->data != element.get_data() || this->type != element.type;
 }
 
 void docpp::HTML::Element::set(const std::string& tag, const Properties& properties, const std::string& data, const Type type) {
+    this->set_tag(tag);
+    this->set_properties(properties);
+    this->set_data(data);
+    this->set_type(type);
+}
+
+void docpp::HTML::Element::set(const Tag tag, const Properties& properties, const std::string& data) {
+    this->set_tag(tag);
+    this->set_properties(properties);
+    this->set_data(data);
+}
+
+void docpp::HTML::Element::set_tag(const std::string& tag) {
     this->tag = tag;
+}
+
+void docpp::HTML::Element::set_tag(const Tag tag) {
+    std::pair<std::string, docpp::HTML::Type> resolved{resolve_tag(tag)};
+    this->tag = resolved.first;
+    this->type = resolved.second;
+}
+
+void docpp::HTML::Element::set_data(const std::string& data) {
     this->data = data;
-    this->properties = properties;
+}
+
+void docpp::HTML::Element::set_type(const Type type) {
     this->type = type;
+}
+
+void docpp::HTML::Element::set_properties(const Properties& properties) {
+    this->properties = properties;
 }
 
 std::string docpp::HTML::Element::get(const Formatting formatting, const int tabc) const {
     std::string ret{};
 
-    if (this->type == docpp::HTML::TYPE_TEXT) {
+    if (this->type == docpp::HTML::Type::Text_No_Formatting) {
         return this->data;
-    } else if (this->type == docpp::HTML::TYPE_TEXT_TAB) {
+    } else if (this->type == docpp::HTML::Type::Text) {
         for (size_type i{0}; i < tabc; i++) {
             ret += "\t";
         }
@@ -177,7 +289,7 @@ std::string docpp::HTML::Element::get(const Formatting formatting, const int tab
         return ret + this->data;
     }
 
-    if (formatting == docpp::HTML::FORMATTING_PRETTY) {
+    if (formatting == docpp::HTML::Formatting::Pretty) {
         for (size_type i{0}; i < tabc; i++) {
             ret += "\t";
         }
@@ -192,17 +304,17 @@ std::string docpp::HTML::Element::get(const Formatting formatting, const int tab
         ret += " " + it.get_key() + "=\"" + it.get_value() + "\"";
     }
 
-    if (this->type != docpp::HTML::TYPE_SELF_CLOSING) {
+    if (this->type != docpp::HTML::Type::Self_Closing) {
         ret += ">";
     }
 
-    if (this->type == docpp::HTML::TYPE_NON_SELF_CLOSING) {
+    if (this->type == docpp::HTML::Type::Non_Self_Closing) {
         ret += this->data + "</" + this->tag + ">";
-    } else if (this->type == docpp::HTML::TYPE_SELF_CLOSING) {
+    } else if (this->type == docpp::HTML::Type::Self_Closing) {
         ret += this->data + "/>";
     }
 
-    if (formatting == docpp::HTML::FORMATTING_PRETTY || formatting == docpp::HTML::FORMATTING_NEWLINE) {
+    if (formatting == docpp::HTML::Formatting::Pretty || formatting == docpp::HTML::Formatting::Newline) {
         ret += "\n";
     }
 
@@ -217,7 +329,25 @@ std::string docpp::HTML::Element::get_data() const {
     return this->data;
 }
 
-docpp::HTML::Section docpp::HTML::Section::operator=(const docpp::HTML::Section& section) {
+docpp::HTML::Type docpp::HTML::Element::get_type() const {
+    return this->type;
+}
+
+docpp::HTML::Properties docpp::HTML::Element::get_properties() const {
+    return this->properties;
+}
+
+bool docpp::HTML::Element::empty() const {
+    return this->tag.empty() && this->data.empty() && this->properties.empty();
+}
+
+void docpp::HTML::Element::clear() {
+    this->tag.clear();
+    this->data.clear();
+    this->properties.clear();
+}
+
+docpp::HTML::Section& docpp::HTML::Section::operator=(const docpp::HTML::Section& section) {
     this->tag = section.tag;
     this->properties = section.properties;
     this->elements = section.elements;
@@ -227,16 +357,46 @@ docpp::HTML::Section docpp::HTML::Section::operator=(const docpp::HTML::Section&
     return *this;
 }
 
-void docpp::HTML::Section::operator+=(const docpp::HTML::Element& element) {
+docpp::HTML::Section& docpp::HTML::Section::operator+=(const docpp::HTML::Element& element) {
     this->push_back(element);
+    return *this;
 }
 
-void docpp::HTML::Section::operator+=(const docpp::HTML::Section& section) {
+docpp::HTML::Section& docpp::HTML::Section::operator+=(const docpp::HTML::Section& section) {
     this->push_back(section);
+    return *this;
 }
 
 docpp::HTML::Element docpp::HTML::Section::operator[](const int& index) const {
     return this->at(index);
+}
+
+bool docpp::HTML::Section::operator==(const docpp::HTML::Section& section) const {
+    return this->tag == section.tag && this->properties == section.properties && this->elements == section.elements && this->sections == section.sections && this->index == section.index;
+}
+
+bool docpp::HTML::Section::operator==(const docpp::HTML::Element& element) const {
+    for (const Element& it : this->get_elements()) {
+        if (it.get() == element.get()) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool docpp::HTML::Section::operator!=(const docpp::HTML::Section& section) const {
+    return this->tag != section.tag || this->properties != section.properties || this->elements != section.elements || this->sections != section.sections || this->index != section.index;
+}
+
+bool docpp::HTML::Section::operator!=(const docpp::HTML::Element& element) const {
+    for (const Element& it : this->get_elements()) {
+        if (it.get() == element.get()) {
+            return false;
+        }
+    }
+
+    return true;
 }
 
 void docpp::HTML::Section::set(const std::string& tag, const Properties& properties) {
@@ -244,153 +404,166 @@ void docpp::HTML::Section::set(const std::string& tag, const Properties& propert
     this->properties = properties;
 }
 
+void docpp::HTML::Section::set_tag(const std::string& tag) {
+    this->tag = tag;
+}
+
+void docpp::HTML::Section::set_tag(const Tag tag) {
+    std::pair<std::string, docpp::HTML::Type> resolved{resolve_tag(tag)};
+    this->tag = resolved.first;
+}
+
+void docpp::HTML::Section::set_properties(const Properties& properties) {
+    this->properties = properties;
+}
+
 std::pair<std::string, docpp::HTML::Type> docpp::HTML::resolve_tag(const Tag tag) {
-    const std::unordered_map<docpp::HTML::Tag, std::pair<std::string, docpp::HTML::Type>> tag_map{
-        {ELEMENT_EMPTY, {"", docpp::HTML::TYPE_TEXT_TAB}},
-        {ELEMENT_EMPTY_NO_FORMAT, {"", docpp::HTML::TYPE_TEXT}},
-        {ELEMENT_ABBREVIATION, {"abbr", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_ABBR, {"abbr", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_ACRONYM, {"acronym", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_ADDRESS, {"address", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_APPLET, {"applet", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_ANCHOR, {"a", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_A, {"a", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_ARTICLE, {"article", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_AREA, {"area", docpp::HTML::TYPE_NON_CLOSED}},
-        {ELEMENT_ASIDE, {"aside", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_AUDIO, {"audio", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_BASE, {"base", docpp::HTML::TYPE_NON_CLOSED}},
-        {ELEMENT_BASEFONT, {"basefont", docpp::HTML::TYPE_NON_CLOSED}},
-        {ELEMENT_BDI, {"bdi", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_BDO, {"bdo", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_BGSOUND, {"bgsound", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_BIG, {"big", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_BLOCKQUOTE, {"blockquote", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_BODY, {"body", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_B, {"b", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_BOLD, {"b", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_BR, {"br", docpp::HTML::TYPE_NON_CLOSED}},
-        {ELEMENT_BREAK, {"br", docpp::HTML::TYPE_NON_CLOSED}},
-        {ELEMENT_BUTTON, {"button", docpp::HTML::TYPE_NON_CLOSED}},
-        {ELEMENT_CAPTION, {"caption", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_CANVAS, {"canvas", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_CENTER, {"center", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_CITE, {"cite", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_CODE, {"code", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_COLGROUP, {"colgroup", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_COLUMN, {"col", docpp::HTML::TYPE_NON_CLOSED}},
-        {ELEMENT_COL, {"col", docpp::HTML::TYPE_NON_CLOSED}},
-        {ELEMENT_DATA, {"data", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_DATALIST, {"datalist", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_DD, {"dd", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_DFN, {"dfn", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_DEFINE, {"dfn", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_DELETE, {"del", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_DEL, {"del", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_DETAILS, {"details", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_DIALOG, {"dialog", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_DIR, {"dir", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_DIV, {"div", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_DL, {"dl", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_DT, {"dt", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_EMBED, {"embed", docpp::HTML::TYPE_NON_CLOSED}},
-        {ELEMENT_FIELDSET, {"fieldset", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_FIGCAPTION, {"figcaption", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_FIGURE, {"figure", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_FONT, {"font", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_FOOTER, {"footer", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_FORM, {"form", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_FRAME, {"frame", docpp::HTML::TYPE_SELF_CLOSING}},
-        {ELEMENT_FRAMESET, {"frameset", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_HEAD, {"head", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_HEADER, {"header", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_H1, {"h1", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_H2, {"h2", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_H3, {"h3", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_H4, {"h4", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_H5, {"h5", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_H6, {"h6", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_HR, {"hr", docpp::HTML::TYPE_NON_CLOSED}},
-        {ELEMENT_HGROUP, {"hgroup", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_HTML, {"html", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_IFRAME, {"iframe", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_IMAGE, {"img", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_IMG, {"img", docpp::HTML::TYPE_NON_CLOSED}},
-        {ELEMENT_INPUT, {"input", docpp::HTML::TYPE_SELF_CLOSING}},
-        {ELEMENT_INS, {"ins", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_ISINDEX, {"isindex", docpp::HTML::TYPE_NON_CLOSED}},
-        {ELEMENT_ITALIC, {"i", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_I, {"i", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_KBD, {"kbd", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_KEYGEN, {"keygen", docpp::HTML::TYPE_NON_CLOSED}},
-        {ELEMENT_LABEL, {"label", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_LEGEND, {"legend", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_LIST, {"li", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_LI, {"li", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_LINK, {"link", docpp::HTML::TYPE_NON_CLOSED}},
-        {ELEMENT_MAIN, {"main", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_MARK, {"mark", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_MARQUEE, {"marquee", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_MENUITEM, {"menuitem", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_META, {"meta", docpp::HTML::TYPE_NON_CLOSED}},
-        {ELEMENT_METER, {"meter", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_NAV, {"nav", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_NOBREAK, {"nobr", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_NOBR, {"nobr", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_NOEMBED, {"noembed", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_NOSCRIPT, {"noscript", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_OBJECT, {"object", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_OPTGROUP, {"optgroup", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_OPTION, {"option", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_OUTPUT, {"output", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_PARAGRAPH, {"p", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_P, {"p", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_PARAM, {"param", docpp::HTML::TYPE_NON_CLOSED}},
-        {ELEMENT_PHRASE, {"phrase", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_PRE, {"pre", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_PROGRESS, {"progress", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_QUOTE, {"q", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_Q, {"q", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_RP, {"rp", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_RT, {"rt", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_RUBY, {"ruby", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_OUTDATED, {"s", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_S, {"s", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_SAMPLE, {"samp", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_SAMP, {"samp", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_SCRIPT, {"script", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_SECTION, {"section", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_SMALL, {"small", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_SOURCE, {"source", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_SPACER, {"spacer", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_SPAN, {"span", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_STRIKE, {"strike", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_STRONG, {"strong", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_STYLE, {"style", docpp::HTML::TYPE_NON_CLOSED}},
-        {ELEMENT_SUB, {"sub", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_SUBSCRIPT, {"sub", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_SUP, {"sup", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_SUPERSCRIPT, {"sup", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_SUMMARY, {"summary", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_SVG, {"svg", docpp::HTML::TYPE_NON_CLOSED}},
-        {ELEMENT_TABLE, {"table", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_TBODY, {"tbody", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_TD, {"td", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_TEMPLATE, {"template", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_TFOOT, {"tfoot", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_TH, {"th", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_TR, {"tr", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_THEAD, {"thead", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_TIME, {"time", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_TITLE, {"title", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_TRACK, {"track", docpp::HTML::TYPE_NON_CLOSED}},
-        {ELEMENT_TT, {"tt", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_UNDERLINE, {"u", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_U, {"u", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_VAR, {"var", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_VIDEO, {"video", docpp::HTML::TYPE_NON_SELF_CLOSING}},
-        {ELEMENT_WBR, {"wbr", docpp::HTML::TYPE_NON_CLOSED}},
-        {ELEMENT_XMP, {"xmp", docpp::HTML::TYPE_NON_SELF_CLOSING}},
+    static const std::unordered_map<docpp::HTML::Tag, std::pair<std::string, docpp::HTML::Type>> tag_map{
+        {Tag::Empty, {"", docpp::HTML::Type::Text}},
+        {Tag::Empty_No_Formatting, {"", docpp::HTML::Type::Text_No_Formatting}},
+        {Tag::Abbreviation, {"abbr", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Abbr, {"abbr", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Acronym, {"acronym", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Address, {"address", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Applet, {"applet", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Anchor, {"a", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::A, {"a", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Article, {"article", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Area, {"area", docpp::HTML::Type::Non_Closed}},
+        {Tag::Aside, {"aside", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Audio, {"audio", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Base, {"base", docpp::HTML::Type::Non_Closed}},
+        {Tag::Basefont, {"basefont", docpp::HTML::Type::Non_Closed}},
+        {Tag::Bdi, {"bdi", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Bdo, {"bdo", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Bgsound, {"bgsound", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Big, {"big", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Blockquote, {"blockquote", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Body, {"body", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::B, {"b", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Bold, {"b", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Br, {"br", docpp::HTML::Type::Non_Closed}},
+        {Tag::Break, {"br", docpp::HTML::Type::Non_Closed}},
+        {Tag::Button, {"button", docpp::HTML::Type::Non_Closed}},
+        {Tag::Caption, {"caption", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Canvas, {"canvas", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Center, {"center", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Cite, {"cite", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Code, {"code", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Colgroup, {"colgroup", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Column, {"col", docpp::HTML::Type::Non_Closed}},
+        {Tag::Col, {"col", docpp::HTML::Type::Non_Closed}},
+        {Tag::Data, {"data", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Datalist, {"datalist", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Dd, {"dd", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Dfn, {"dfn", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Define, {"dfn", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Delete, {"del", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Del, {"del", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Details, {"details", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Dialog, {"dialog", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Dir, {"dir", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Div, {"div", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Dl, {"dl", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Dt, {"dt", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Embed, {"embed", docpp::HTML::Type::Non_Closed}},
+        {Tag::Fieldset, {"fieldset", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Figcaption, {"figcaption", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Figure, {"figure", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Font, {"font", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Footer, {"footer", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Form, {"form", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Frame, {"frame", docpp::HTML::Type::Self_Closing}},
+        {Tag::Frameset, {"frameset", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Head, {"head", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Header, {"header", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::H1, {"h1", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::H2, {"h2", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::H3, {"h3", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::H4, {"h4", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::H5, {"h5", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::H6, {"h6", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Hr, {"hr", docpp::HTML::Type::Non_Closed}},
+        {Tag::Hgroup, {"hgroup", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Html, {"html", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Iframe, {"iframe", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Image, {"img", docpp::HTML::Type::Non_Closed}},
+        {Tag::Img, {"img", docpp::HTML::Type::Non_Closed}},
+        {Tag::Input, {"input", docpp::HTML::Type::Self_Closing}},
+        {Tag::Ins, {"ins", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Isindex, {"isindex", docpp::HTML::Type::Non_Closed}},
+        {Tag::Italic, {"i", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::I, {"i", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Kbd, {"kbd", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Keygen, {"keygen", docpp::HTML::Type::Non_Closed}},
+        {Tag::Label, {"label", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Legend, {"legend", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::List, {"li", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Li, {"li", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Link, {"link", docpp::HTML::Type::Non_Closed}},
+        {Tag::Main, {"main", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Mark, {"mark", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Marquee, {"marquee", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Menuitem, {"menuitem", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Meta, {"meta", docpp::HTML::Type::Non_Closed}},
+        {Tag::Meter, {"meter", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Nav, {"nav", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Nobreak, {"nobr", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Nobr, {"nobr", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Noembed, {"noembed", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Noscript, {"noscript", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Object, {"object", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Optgroup, {"optgroup", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Option, {"option", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Output, {"output", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Paragraph, {"p", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::P, {"p", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Param, {"param", docpp::HTML::Type::Non_Closed}},
+        {Tag::Phrase, {"phrase", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Pre, {"pre", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Progress, {"progress", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Quote, {"q", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Q, {"q", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Rp, {"rp", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Rt, {"rt", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Ruby, {"ruby", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Outdated, {"s", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::S, {"s", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Sample, {"samp", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Samp, {"samp", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Script, {"script", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Section, {"section", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Small, {"small", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Source, {"source", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Spacer, {"spacer", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Span, {"span", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Strike, {"strike", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Strong, {"strong", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Style, {"style", docpp::HTML::Type::Non_Closed}},
+        {Tag::Sub, {"sub", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Subscript, {"sub", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Sup, {"sup", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Superscript, {"sup", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Summary, {"summary", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Svg, {"svg", docpp::HTML::Type::Non_Closed}},
+        {Tag::Table, {"table", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Tbody, {"tbody", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Td, {"td", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Template, {"template", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Tfoot, {"tfoot", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Th, {"th", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Tr, {"tr", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Thead, {"thead", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Time, {"time", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Title, {"title", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Track, {"track", docpp::HTML::Type::Non_Closed}},
+        {Tag::Tt, {"tt", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Underline, {"u", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::U, {"u", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Var, {"var", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Video, {"video", docpp::HTML::Type::Non_Self_Closing}},
+        {Tag::Wbr, {"wbr", docpp::HTML::Type::Non_Closed}},
+        {Tag::Xmp, {"xmp", docpp::HTML::Type::Non_Self_Closing}},
     };
 
     if (tag_map.find(tag) != tag_map.end()) {
@@ -530,18 +703,26 @@ docpp::HTML::Section::size_type docpp::HTML::Section::find(const Section& sectio
 }
 
 docpp::HTML::Section::size_type docpp::HTML::Section::find(const std::string& str) {
-    const std::vector<Element> elements = this->get_elements();
+    const std::vector<docpp::HTML::Element> elements{this->get_elements()};
 
-    for (size_type i{0}; i < elements.size(); i++) {
-        if (!elements.at(i).get().compare(str)) {
+    for (size_type i{0}; i < this->size(); i++) {
+        if (elements.size() <= i) {
+            break;
+        }
+
+        if (elements.at(i).get().find(str) != docpp::HTML::Section::npos) {
             return i;
         }
     }
 
-    const std::vector<Section> sections = this->get_sections();
+    const std::vector<docpp::HTML::Section> sections{this->get_sections()};
 
-    for (size_type i{0}; i < sections.size(); i++) {
-        if (!sections.at(i).get().compare(str)) {
+    for (size_type i{0}; i < this->size(); i++) {
+        if (elements.size() <= i) {
+            break;
+        }
+
+        if (elements.at(i).get().find(str) != docpp::HTML::Section::npos) {
             return i;
         }
     }
@@ -585,6 +766,18 @@ docpp::HTML::Section::size_type docpp::HTML::Section::size() const {
     return this->index;
 }
 
+void docpp::HTML::Section::clear() {
+    this->tag.clear();
+    this->properties.clear();
+    this->elements.clear();
+    this->sections.clear();
+    this->index = 0;
+}
+
+bool docpp::HTML::Section::empty() const {
+    return this->index == 0;
+}
+
 std::vector<docpp::HTML::Element> docpp::HTML::Section::get_elements() const {
     std::vector<docpp::HTML::Element> ret{};
     ret.reserve(this->index);
@@ -621,7 +814,7 @@ std::string docpp::HTML::Section::get(const Formatting formatting, const int tab
         }
     }
 
-    if (formatting == docpp::HTML::FORMATTING_PRETTY) {
+    if (formatting == docpp::HTML::Formatting::Pretty) {
         for (size_type i{0}; i < tabcount; i++) {
             ret += "\t";
         }
@@ -639,7 +832,7 @@ std::string docpp::HTML::Section::get(const Formatting formatting, const int tab
 
         ret += ">";
 
-        if (formatting == docpp::HTML::FORMATTING_PRETTY || formatting == docpp::HTML::FORMATTING_NEWLINE) {
+        if (formatting == docpp::HTML::Formatting::Pretty || formatting == docpp::HTML::Formatting::Newline) {
             ret += "\n";
         }
     }
@@ -650,13 +843,13 @@ std::string docpp::HTML::Section::get(const Formatting formatting, const int tab
         } else if (this->sections.find(i) != this->sections.end()) {
             ret += this->sections.at(i).get(formatting, tabcount + 1);
 
-            if (formatting == docpp::HTML::FORMATTING_PRETTY || formatting == docpp::HTML::FORMATTING_NEWLINE) {
+            if (formatting == docpp::HTML::Formatting::Pretty || formatting == docpp::HTML::Formatting::Newline) {
                 ret += "\n";
             }
         }
     }
 
-    if (formatting == docpp::HTML::FORMATTING_PRETTY) {
+    if (formatting == docpp::HTML::Formatting::Pretty) {
         for (size_type i{0}; i < tabcount; i++) {
             ret += "\t";
         }
@@ -665,6 +858,14 @@ std::string docpp::HTML::Section::get(const Formatting formatting, const int tab
     ret += this->tag.compare("") ? ("</" + this->tag + ">") : "";
 
     return std::move(ret);
+}
+
+std::string docpp::HTML::Section::get_tag() const {
+    return this->tag;
+}
+
+docpp::HTML::Properties docpp::HTML::Section::get_properties() const {
+    return this->properties;
 }
 
 void docpp::HTML::Section::swap(const size_type index1, const size_type index2) {
@@ -686,7 +887,7 @@ void docpp::HTML::Section::swap(const Section& section1, const Section& section2
 }
 
 std::string docpp::HTML::Document::get(const Formatting formatting, const int tabc) const {
-    return this->doctype + (formatting == FORMATTING_PRETTY ? "\n" : formatting == FORMATTING_NEWLINE ? "\n" : "") + this->document.get(formatting, tabc);
+    return this->doctype + (formatting == Formatting::Pretty ? "\n" : formatting == Formatting::Newline ? "\n" : "") + this->document.get(formatting, tabc);
 }
 
 docpp::HTML::Section& docpp::HTML::Document::get_section() {
@@ -701,15 +902,40 @@ void docpp::HTML::Document::set_doctype(const std::string& doctype) {
     this->doctype = doctype;
 }
 
-docpp::HTML::Document docpp::HTML::Document::operator=(const docpp::HTML::Document& document) {
+void docpp::HTML::Document::clear() {
+    this->doctype.clear();
+    this->document.clear();
+}
+
+bool docpp::HTML::Document::empty() const {
+    return this->doctype.empty() && this->document.empty();
+}
+
+docpp::HTML::Document& docpp::HTML::Document::operator=(const docpp::HTML::Document& document) {
     this->set(document.get());
     this->set_doctype(document.get_doctype());
     return *this;
 }
 
-docpp::HTML::Document docpp::HTML::Document::operator=(const docpp::HTML::Section& section) {
+docpp::HTML::Document& docpp::HTML::Document::operator=(const docpp::HTML::Section& section) {
     this->set(section);
     return *this;
+}
+
+bool docpp::HTML::Document::operator==(const docpp::HTML::Document& document) const {
+    return this->get() == document.get();
+}
+
+bool docpp::HTML::Document::operator==(const docpp::HTML::Section& section) const {
+    return this->document == section;
+}
+
+bool docpp::HTML::Document::operator!=(const docpp::HTML::Document& document) const {
+    return this->doctype != document.get_doctype() || this->document != document.document;
+}
+
+bool docpp::HTML::Document::operator!=(const docpp::HTML::Section& section) const {
+    return this->document != section;
 }
 
 std::string docpp::HTML::Document::get_doctype() const {
@@ -744,26 +970,27 @@ void docpp::CSS::Property::set(const std::string& key, const std::string& value)
     this->property = std::make_pair(key, value);
 }
 
-docpp::CSS::Property docpp::CSS::Property::operator=(const docpp::CSS::Property& property) {
+docpp::CSS::Property& docpp::CSS::Property::operator=(const docpp::CSS::Property& property) {
     this->set(property.get());
     return *this;
 }
 
-docpp::CSS::Property docpp::CSS::Property::operator=(const std::pair<std::string, std::string>& property) {
+docpp::CSS::Property& docpp::CSS::Property::operator=(const std::pair<std::string, std::string>& property) {
     this->set(property);
     return *this;
 }
 
-docpp::CSS::Element docpp::CSS::Element::operator=(const docpp::CSS::Element& element) {
+docpp::CSS::Element& docpp::CSS::Element::operator=(const docpp::CSS::Element& element) {
     this->set({element.get_tag(), element.get_properties()});
     return *this;
 }
 
-void docpp::CSS::Element::operator+=(const Property& property) {
+docpp::CSS::Element& docpp::CSS::Element::operator+=(const Property& property) {
     this->push_back(property);
+    return *this;
 }
 
-docpp::CSS::Property docpp::CSS::Element::operator[](const int& index) const {
+docpp::CSS::Property docpp::CSS::Element::operator[](const size_type& index) const {
     return this->at(index);
 }
 
@@ -856,7 +1083,7 @@ std::string docpp::CSS::Element::get(const Formatting formatting, const int tabc
     std::string ret{};
 
     if (this->element.first.compare("")) {
-        if (formatting == docpp::CSS::FORMATTING_PRETTY) {
+        if (formatting == docpp::CSS::Formatting::Pretty) {
             for (size_type i{0}; i < tabc; i++) {
                 ret += "\t";
             }
@@ -864,7 +1091,7 @@ std::string docpp::CSS::Element::get(const Formatting formatting, const int tabc
 
         ret += this->element.first + " {";
 
-        if (formatting == docpp::CSS::FORMATTING_PRETTY || formatting == docpp::CSS::FORMATTING_NEWLINE) {
+        if (formatting == docpp::CSS::Formatting::Pretty || formatting == docpp::CSS::Formatting::Newline) {
             ret += "\n";
         }
 
@@ -872,7 +1099,7 @@ std::string docpp::CSS::Element::get(const Formatting formatting, const int tabc
             if (!it.get_key().compare("")) continue;
             if (!it.get_value().compare("")) continue;
 
-            if (formatting == docpp::CSS::FORMATTING_PRETTY) {
+            if (formatting == docpp::CSS::Formatting::Pretty) {
                 for (size_type i{0}; i < tabc + 1; i++) {
                     ret += "\t";
                 }
@@ -880,12 +1107,12 @@ std::string docpp::CSS::Element::get(const Formatting formatting, const int tabc
 
             ret += it.get_key() + ": " + it.get_value() + ";";
 
-            if (formatting == docpp::CSS::FORMATTING_PRETTY || formatting == docpp::CSS::FORMATTING_NEWLINE) {
+            if (formatting == docpp::CSS::Formatting::Pretty || formatting == docpp::CSS::Formatting::Newline) {
                 ret += "\n";
             }
         }
 
-        if (formatting == docpp::CSS::FORMATTING_PRETTY) {
+        if (formatting == docpp::CSS::Formatting::Pretty) {
             for (size_type i{0}; i < tabc; i++) {
                 ret += "\t";
             }
@@ -893,7 +1120,7 @@ std::string docpp::CSS::Element::get(const Formatting formatting, const int tabc
 
         ret += "}";
 
-        if (formatting == docpp::CSS::FORMATTING_PRETTY || formatting == docpp::CSS::FORMATTING_NEWLINE) {
+        if (formatting == docpp::CSS::Formatting::Pretty || formatting == docpp::CSS::Formatting::Newline) {
             ret += "\n";
         }
     }
@@ -937,13 +1164,14 @@ void docpp::CSS::Stylesheet::erase(const size_type index) {
     this->elements.erase(this->elements.begin() + index);
 }
 
-docpp::CSS::Stylesheet docpp::CSS::Stylesheet::operator=(const docpp::CSS::Stylesheet& stylesheet) {
+docpp::CSS::Stylesheet& docpp::CSS::Stylesheet::operator=(const docpp::CSS::Stylesheet& stylesheet) {
     this->set(stylesheet.get_elements());
     return *this;
 }
 
-void docpp::CSS::Stylesheet::operator+=(const Element& element) {
+docpp::CSS::Stylesheet& docpp::CSS::Stylesheet::operator+=(const Element& element) {
     this->push_back(element);
+    return *this;
 }
 
 docpp::CSS::Element docpp::CSS::Stylesheet::operator[](const int& index) const {

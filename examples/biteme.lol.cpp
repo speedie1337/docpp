@@ -11,7 +11,7 @@
 #include <docpp/docpp.hpp>
 
 int main() {
-    docpp::HTML::Section html(docpp::HTML::ELEMENT_HTML, {});
+    docpp::HTML::Section html(docpp::HTML::Tag::Html, {});
 
     html.push_back({"title", {}, "Google"});
 
@@ -30,9 +30,9 @@ int main() {
         }},
     }};
 
-    html.push_back({"style", {}, sheet.get(docpp::CSS::FORMATTING_PRETTY)});
+    html.push_back({"style", {}, sheet.get(docpp::CSS::Formatting::Pretty)});
 
-    docpp::HTML::Section div{docpp::HTML::ELEMENT_DIV, {docpp::HTML::Property("class", "center")}};
+    docpp::HTML::Section div{docpp::HTML::Tag::Div, {docpp::HTML::Property("class", "center")}};
 
     div.push_back({"font", {docpp::HTML::Property("color", "blue")}, "G"});
     div.push_back({"font", {docpp::HTML::Property("color", "red")}, "o"});
@@ -43,11 +43,11 @@ int main() {
 
     html.push_back(div);
 
-    docpp::HTML::Section div2{docpp::HTML::ELEMENT_DIV, {docpp::HTML::Property("align", "center")}};
+    docpp::HTML::Section div2{docpp::HTML::Tag::Div, {docpp::HTML::Property("align", "center")}};
     docpp::HTML::Section form{"form", {{docpp::HTML::Property("action", "https://google.com/search"), docpp::HTML::Property("method", "get")}}};
 
-    form.push_back({"input", docpp::HTML::Properties({docpp::HTML::Property("type", "text"), docpp::HTML::Property("name", "q")}), "", docpp::HTML::TYPE_SELF_CLOSING});
-    form.push_back({"input", docpp::HTML::Properties({docpp::HTML::Property("type", "submit"), docpp::HTML::Property("value", "Search!")}), "", docpp::HTML::TYPE_SELF_CLOSING});
+    form.push_back({"input", docpp::HTML::Properties({docpp::HTML::Property("type", "text"), docpp::HTML::Property("name", "q")}), "", docpp::HTML::Type::Self_Closing});
+    form.push_back({"input", docpp::HTML::Properties({docpp::HTML::Property("type", "submit"), docpp::HTML::Property("value", "Search!")}), "", docpp::HTML::Type::Self_Closing});
 
     div2.push_back(form);
     html.push_back(div2);
@@ -56,7 +56,7 @@ int main() {
 
     std::ofstream file("biteme.lol.html");
 
-    file << doc.get(docpp::HTML::FORMATTING_PRETTY);
+    file << doc.get(docpp::HTML::Formatting::Pretty);
 
     file.close();
 

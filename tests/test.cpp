@@ -1,459 +1,1392 @@
 #include <string>
+#include <unordered_map>
 #include <src/docpp.cpp>
 #include <catch2/catch_test_macros.hpp>
+
+inline namespace HTML {
+    void test_tag() {
+        static const std::unordered_map<docpp::HTML::Tag, std::pair<std::string, docpp::HTML::Type>> expected_values{
+            {docpp::HTML::Tag::Empty, {"", docpp::HTML::Type::Text}},
+            {docpp::HTML::Tag::Empty_No_Formatting, {"", docpp::HTML::Type::Text_No_Formatting}},
+            {docpp::HTML::Tag::Abbreviation, {"abbr", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Abbr, {"abbr", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Acronym, {"acronym", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Address, {"address", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Applet, {"applet", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Anchor, {"a", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::A, {"a", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Article, {"article", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Area, {"area", docpp::HTML::Type::Non_Closed}},
+            {docpp::HTML::Tag::Aside, {"aside", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Audio, {"audio", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Base, {"base", docpp::HTML::Type::Non_Closed}},
+            {docpp::HTML::Tag::Basefont, {"basefont", docpp::HTML::Type::Non_Closed}},
+            {docpp::HTML::Tag::Bdi, {"bdi", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Bdo, {"bdo", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Bgsound, {"bgsound", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Big, {"big", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Blockquote, {"blockquote", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Body, {"body", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::B, {"b", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Bold, {"b", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Br, {"br", docpp::HTML::Type::Non_Closed}},
+            {docpp::HTML::Tag::Break, {"br", docpp::HTML::Type::Non_Closed}},
+            {docpp::HTML::Tag::Button, {"button", docpp::HTML::Type::Non_Closed}},
+            {docpp::HTML::Tag::Caption, {"caption", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Canvas, {"canvas", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Center, {"center", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Cite, {"cite", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Code, {"code", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Colgroup, {"colgroup", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Column, {"col", docpp::HTML::Type::Non_Closed}},
+            {docpp::HTML::Tag::Col, {"col", docpp::HTML::Type::Non_Closed}},
+            {docpp::HTML::Tag::Data, {"data", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Datalist, {"datalist", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Dd, {"dd", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Dfn, {"dfn", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Define, {"dfn", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Delete, {"del", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Del, {"del", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Details, {"details", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Dialog, {"dialog", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Dir, {"dir", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Div, {"div", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Dl, {"dl", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Dt, {"dt", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Embed, {"embed", docpp::HTML::Type::Non_Closed}},
+            {docpp::HTML::Tag::Fieldset, {"fieldset", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Figcaption, {"figcaption", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Figure, {"figure", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Font, {"font", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Footer, {"footer", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Form, {"form", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Frame, {"frame", docpp::HTML::Type::Self_Closing}},
+            {docpp::HTML::Tag::Frameset, {"frameset", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Head, {"head", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Header, {"header", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::H1, {"h1", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::H2, {"h2", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::H3, {"h3", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::H4, {"h4", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::H5, {"h5", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::H6, {"h6", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Hr, {"hr", docpp::HTML::Type::Non_Closed}},
+            {docpp::HTML::Tag::Hgroup, {"hgroup", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Html, {"html", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Iframe, {"iframe", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Image, {"img", docpp::HTML::Type::Non_Closed}},
+            {docpp::HTML::Tag::Img, {"img", docpp::HTML::Type::Non_Closed}},
+            {docpp::HTML::Tag::Input, {"input", docpp::HTML::Type::Self_Closing}},
+            {docpp::HTML::Tag::Ins, {"ins", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Isindex, {"isindex", docpp::HTML::Type::Non_Closed}},
+            {docpp::HTML::Tag::Italic, {"i", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::I, {"i", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Kbd, {"kbd", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Keygen, {"keygen", docpp::HTML::Type::Non_Closed}},
+            {docpp::HTML::Tag::Label, {"label", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Legend, {"legend", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::List, {"li", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Li, {"li", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Link, {"link", docpp::HTML::Type::Non_Closed}},
+            {docpp::HTML::Tag::Main, {"main", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Mark, {"mark", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Marquee, {"marquee", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Menuitem, {"menuitem", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Meta, {"meta", docpp::HTML::Type::Non_Closed}},
+            {docpp::HTML::Tag::Meter, {"meter", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Nav, {"nav", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Nobreak, {"nobr", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Nobr, {"nobr", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Noembed, {"noembed", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Noscript, {"noscript", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Object, {"object", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Optgroup, {"optgroup", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Option, {"option", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Output, {"output", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Paragraph, {"p", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::P, {"p", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Param, {"param", docpp::HTML::Type::Non_Closed}},
+            {docpp::HTML::Tag::Phrase, {"phrase", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Pre, {"pre", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Progress, {"progress", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Quote, {"q", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Q, {"q", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Rp, {"rp", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Rt, {"rt", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Ruby, {"ruby", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Outdated, {"s", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::S, {"s", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Sample, {"samp", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Samp, {"samp", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Script, {"script", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Section, {"section", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Small, {"small", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Source, {"source", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Spacer, {"spacer", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Span, {"span", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Strike, {"strike", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Strong, {"strong", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Style, {"style", docpp::HTML::Type::Non_Closed}},
+            {docpp::HTML::Tag::Sub, {"sub", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Subscript, {"sub", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Sup, {"sup", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Superscript, {"sup", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Summary, {"summary", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Svg, {"svg", docpp::HTML::Type::Non_Closed}},
+            {docpp::HTML::Tag::Table, {"table", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Tbody, {"tbody", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Td, {"td", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Template, {"template", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Tfoot, {"tfoot", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Th, {"th", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Tr, {"tr", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Thead, {"thead", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Time, {"time", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Title, {"title", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Track, {"track", docpp::HTML::Type::Non_Closed}},
+            {docpp::HTML::Tag::Tt, {"tt", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Underline, {"u", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::U, {"u", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Var, {"var", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Video, {"video", docpp::HTML::Type::Non_Self_Closing}},
+            {docpp::HTML::Tag::Wbr, {"wbr", docpp::HTML::Type::Non_Closed}},
+            {docpp::HTML::Tag::Xmp, {"xmp", docpp::HTML::Type::Non_Self_Closing}},
+        };
+
+        for (const auto& it : expected_values) {
+            REQUIRE((docpp::HTML::resolve_tag(it.first).first == it.second.first && docpp::HTML::resolve_tag(it.first).second == it.second.second));
+        }
+    }
+
+    void test_exceptions() {
+        try {
+            throw docpp::out_of_range{};
+        } catch (const docpp::out_of_range& e) {
+            REQUIRE(std::string(e.what()) == "Out of range");
+        }
+
+        try {
+            throw docpp::out_of_range{"Out of range, very very out of range"};
+        } catch (const docpp::out_of_range& e) {
+            REQUIRE(std::string(e.what()) == "Out of range, very very out of range");
+        }
+
+        try {
+            throw docpp::invalid_argument{};
+        } catch (const docpp::invalid_argument& e) {
+            REQUIRE(std::string(e.what()) == "Invalid argument");
+        }
+
+        try {
+            throw docpp::invalid_argument{"Invalid, very very invalid argument"};
+        } catch (const docpp::invalid_argument& e) {
+            REQUIRE(std::string(e.what()) == "Invalid, very very invalid argument");
+        }
+    }
+
+    void test_npos_values() {
+        REQUIRE(docpp::HTML::Property::npos == -1);
+        REQUIRE(docpp::HTML::Properties::npos == -1);
+        REQUIRE(docpp::HTML::Element::npos == -1);
+        REQUIRE(docpp::HTML::Section::npos == -1);
+        REQUIRE(docpp::HTML::Document::npos == -1);
+    }
+
+    void test_property() {
+        const auto test_get_and_set = []() {
+            using namespace docpp::HTML;
+
+            Property property;
+
+            REQUIRE(property.get().first == "");
+            REQUIRE(property.get().second == "");
+            REQUIRE(property.get_key() == "");
+            REQUIRE(property.get_value() == "");
+
+            property.set({"key", "value"});
+
+            REQUIRE(property.get().first == "key");
+            REQUIRE(property.get().second == "value");
+            REQUIRE(property.get_key() == "key");
+            REQUIRE(property.get_value() == "value");
+
+            property.set_key("new_key");
+            property.set_value("new_value");
+
+            REQUIRE(property.get().first == "new_key");
+            REQUIRE(property.get().second == "new_value");
+            REQUIRE(property.get_key() == "new_key");
+            REQUIRE(property.get_value() == "new_value");
+
+            property.set_key("newer_key");
+
+            REQUIRE(property.get().first == "newer_key");
+            REQUIRE(property.get().second == "new_value");
+            REQUIRE(property.get_key() == "newer_key");
+            REQUIRE(property.get_value() == "new_value");
+
+            property.set_value("newer_value");
+
+            REQUIRE(property.get().first == "newer_key");
+            REQUIRE(property.get().second == "newer_value");
+            REQUIRE(property.get_key() == "newer_key");
+            REQUIRE(property.get_value() == "newer_value");
+
+            REQUIRE(property.empty() == false);
+
+            property.clear();
+
+            REQUIRE(property.empty() == true);
+        };
+
+        const auto test_copy_property = []() {
+            using namespace docpp::HTML;
+
+            docpp::HTML::Property property;
+
+            property.set({"key", "value"});
+        };
+
+        test_get_and_set();
+        test_copy_property();
+    }
+
+    void test_properties() {
+        const auto test_get_and_set = []() {
+            using namespace docpp::HTML;
+
+            Properties properties;
+
+            REQUIRE(properties.size() == 0);
+
+            properties.push_back({"key1", "value1"});
+            properties.push_back({"key2", "value2"});
+            properties.push_back({"key3", "value3"});
+
+            REQUIRE(properties.size() == 3);
+
+            std::size_t index = 0;
+            for (const auto& it : properties) {
+                if (index == 0) {
+                    REQUIRE(it.get().first == "key1");
+                    REQUIRE(it.get().second == "value1");
+                } else if (index == 1) {
+                    REQUIRE(it.get().first == "key2");
+                    REQUIRE(it.get().second == "value2");
+                } else if (index == 2) {
+                    REQUIRE(it.get().first == "key3");
+                    REQUIRE(it.get().second == "value3");
+                }
+
+                ++index;
+            }
+
+            REQUIRE(properties.at(0).get().first == "key1");
+            REQUIRE(properties.at(0).get().second == "value1");
+            REQUIRE(properties.at(1).get().first == "key2");
+            REQUIRE(properties.at(1).get().second == "value2");
+            REQUIRE(properties.at(2).get().first == "key3");
+            REQUIRE(properties.at(2).get().second == "value3");
+
+            // should fail, out of range
+            try {
+                properties.at(3);
+            } catch (const out_of_range& e) {
+                REQUIRE(std::string(e.what()) == "Index out of range");
+            }
+
+            REQUIRE(properties[0] == properties.at(0));
+            REQUIRE(properties[1] == properties.at(1));
+            REQUIRE(properties[2] == properties.at(2));
+        };
+
+        const auto test_copy_properties = []() {
+            using namespace docpp::HTML;
+
+            Properties properties;
+
+            properties += {"key1", "value1"};
+            properties += {"key2", "value2"};
+            properties += {"key3", "value3"};
+
+            Properties new_properties = properties;
+
+            REQUIRE(properties == new_properties);
+
+            properties.clear();
+        };
+
+        const auto test_iterators = []() {
+            using namespace docpp::HTML;
+
+            Properties properties = {{{"key1", "value1"}, {"key2", "value2"}, {"key3", "value3"}}};
+
+            std::size_t index{0};
+            for (Properties::iterator it = properties.begin(); it != properties.end(); ++it) {
+                if (index == 0) {
+                    REQUIRE(it->get().first == "key1");
+                    REQUIRE(it->get().second == "value1");
+                } else if (index == 1) {
+                    REQUIRE(it->get().first == "key2");
+                    REQUIRE(it->get().second == "value2");
+                } else if (index == 2) {
+                    REQUIRE(it->get().first == "key3");
+                    REQUIRE(it->get().second == "value3");
+                }
+
+                ++index;
+            }
+
+            index = 0;
+            for (Properties::const_iterator it = properties.cbegin(); it != properties.cend(); ++it) {
+                if (index == 0) {
+                    REQUIRE(it->get().first == "key1");
+                    REQUIRE(it->get().second == "value1");
+                } else if (index == 1) {
+                    REQUIRE(it->get().first == "key2");
+                    REQUIRE(it->get().second == "value2");
+                } else if (index == 2) {
+                    REQUIRE(it->get().first == "key3");
+                    REQUIRE(it->get().second == "value3");
+                }
+
+                ++index;
+            }
+
+            index = 0;
+            for (Properties::reverse_iterator it = properties.rbegin(); it != properties.rend(); ++it) {
+                if (index == 0) {
+                    REQUIRE(it->get().first == "key3");
+                    REQUIRE(it->get().second == "value3");
+                } else if (index == 1) {
+                    REQUIRE(it->get().first == "key2");
+                    REQUIRE(it->get().second == "value2");
+                } else if (index == 2) {
+                    REQUIRE(it->get().first == "key1");
+                    REQUIRE(it->get().second == "value1");
+                }
+
+                ++index;
+            }
+
+            index = 0;
+            for (Properties::const_reverse_iterator it = properties.crbegin(); it != properties.crend(); ++it) {
+                if (index == 0) {
+                    REQUIRE(it->get().first == "key3");
+                    REQUIRE(it->get().second == "value3");
+                } else if (index == 1) {
+                    REQUIRE(it->get().first == "key2");
+                    REQUIRE(it->get().second == "value2");
+                } else if (index == 2) {
+                    REQUIRE(it->get().first == "key1");
+                    REQUIRE(it->get().second == "value1");
+                }
+
+                ++index;
+            }
+
+            index = 0;
+            for (const auto& it : properties) {
+                if (index == 0) {
+                    REQUIRE(it.get().first == "key1");
+                    REQUIRE(it.get().second == "value1");
+                } else if (index == 1) {
+                    REQUIRE(it.get().first == "key2");
+                    REQUIRE(it.get().second == "value2");
+                } else if (index == 2) {
+                    REQUIRE(it.get().first == "key3");
+                    REQUIRE(it.get().second == "value3");
+                }
+
+                ++index;
+            }
+        };
+
+        const auto test_find = []() {
+            using namespace docpp::HTML;
+
+            Properties properties = {{{"key1", "value1"}, {"key2", "value2"}, {"key3", "value3"}}};
+
+            REQUIRE(properties.find(Property("key1", "value1")) == 0);
+            REQUIRE(properties.find(Property("key2", "value2")) == 1);
+            REQUIRE(properties.find(Property("key3", "value3")) == 2);
+            REQUIRE(properties.find(Property("key4", "value4")) == Properties::npos);
+
+            REQUIRE(properties.find("key1") == 0);
+            REQUIRE(properties.find("key2") == 1);
+            REQUIRE(properties.find("key3") == 2);
+            REQUIRE(properties.find("key4") == Properties::npos);
+
+            REQUIRE(properties.find("value1") == 0);
+            REQUIRE(properties.find("value2") == 1);
+            REQUIRE(properties.find("value3") == 2);
+            REQUIRE(properties.find("value4") == Properties::npos);
+
+            std::size_t pos = properties.find("key1");
+
+            REQUIRE(properties[pos].get().first == "key1");
+            REQUIRE(properties.at(pos).get().first == "key1");
+            REQUIRE(properties[pos].get().second == "value1");
+            REQUIRE(properties.at(pos).get().second == "value1");
+
+            pos = properties.find("key2");
+
+            REQUIRE(properties[pos].get().first == "key2");
+            REQUIRE(properties.at(pos).get().first == "key2");
+            REQUIRE(properties[pos].get().second == "value2");
+            REQUIRE(properties.at(pos).get().second == "value2");
+
+            pos = properties.find("key3");
+
+            REQUIRE(properties[pos].get().first == "key3");
+            REQUIRE(properties.at(pos).get().first == "key3");
+            REQUIRE(properties[pos].get().second == "value3");
+            REQUIRE(properties.at(pos).get().second == "value3");
+
+            pos = properties.find("key4");
+
+            REQUIRE(pos == Properties::npos);
+
+            try {
+                properties.at(pos);
+            } catch (const out_of_range& e) {
+                REQUIRE(std::string(e.what()) == "Index out of range");
+            }
+        };
+
+        const auto test_insert = []() {
+            using namespace docpp::HTML;
+
+            Properties properties = {{{"key1", "value1"}, {"key2", "value2"}, {"key3", "value3"}}};
+
+            std::size_t pos = properties.find("key1");
+            Property found_property = properties[pos];
+
+            std::size_t pos2 = properties.find("value2");
+            properties.insert(pos2, found_property);
+
+            REQUIRE(properties.at(pos2) == found_property);
+            REQUIRE(properties.get_properties().at(pos2) == found_property);
+            REQUIRE(properties.get_properties().at(pos2).get().first == "key1");
+        };
+
+        const auto test_swap = []() {
+            using namespace docpp::HTML;
+
+            Properties properties = {{{"key1", "value1"}, {"key2", "value2"}, {"key3", "value3"}}};
+
+            std::size_t pos1 = properties.find("key1");
+            Property property1 = properties[pos1];
+
+            std::size_t pos2 = properties.find("key2");
+            Property property2 = properties[pos2];
+
+            properties.swap(pos1, pos2);
+
+            REQUIRE(properties[pos1] == property2);
+            REQUIRE(properties[pos2] == property1);
+
+            properties.swap(property1, property2);
+
+            REQUIRE(properties[pos1] == property1);
+            REQUIRE(properties[pos2] == property2);
+        };
+
+        const auto test_front_and_back = []() {
+            using namespace docpp::HTML;
+
+            Properties properties = {{{"key1", "value1"}, {"key2", "value2"}, {"key3", "value3"}}};
+
+            REQUIRE(properties.front().get().first == "key1");
+            REQUIRE(properties.front().get().second == "value1");
+
+            REQUIRE(properties.back().get().first == "key3");
+            REQUIRE(properties.back().get().second == "value3");
+        };
+
+        const auto test_size_empty_and_clear = []() {
+            using namespace docpp::HTML;
+
+            Properties properties = {{{"key1", "value1"}, {"key2", "value2"}, {"key3", "value3"}}};
+
+            REQUIRE(properties.size() == 3);
+            REQUIRE(properties.empty() == false);
+
+            properties.clear();
+
+            REQUIRE(properties.size() == 0);
+            REQUIRE(properties.empty() == true);
+        };
+
+        const auto test_push_front_and_back = []() {
+            using namespace docpp::HTML;
+
+            Properties properties;
+
+            properties.push_front({"key1", "value1"});
+            properties.push_back({"key2", "value2"});
+
+            REQUIRE(properties.front().get().first == "key1");
+            REQUIRE(properties.front().get().second == "value1");
+
+            REQUIRE(properties.back().get().first == "key2");
+            REQUIRE(properties.back().get().second == "value2");
+        };
+
+        const auto test_constructors = []() {
+            using namespace docpp::HTML;
+
+            Properties properties = {{{"key1", "value1"}, {"key2", "value2"}, {"key3", "value3"}}};
+
+            Properties new_properties = properties;
+
+            REQUIRE(properties == new_properties);
+
+            Properties new_properties2 = properties.get_properties();
+
+            REQUIRE(properties == new_properties2);
+
+            Property property1{"key1", "value1"};
+
+            Properties new_properties3 = {property1};
+
+            REQUIRE(new_properties3.size() == 1);
+        };
+
+        test_get_and_set();
+        test_copy_properties();
+        test_iterators();
+        test_find();
+        test_insert();
+        test_swap();
+        test_front_and_back();
+        test_size_empty_and_clear();
+        test_push_front_and_back();
+        test_constructors();
+    }
+
+    void test_element() {
+        const auto test_get_and_set = []() {
+            using namespace docpp::HTML;
+
+            Element element;
+
+            element.set("my_element", {}, {}, docpp::HTML::Type::Non_Self_Closing);
+
+            REQUIRE(element.get_tag() == "my_element");
+            REQUIRE(element.get_data() == "");
+            REQUIRE(element.get_properties() == Properties{});
+            REQUIRE(element.get_type() == docpp::HTML::Type::Non_Self_Closing);
+
+            element.set_tag("new_element");
+            element.set_data("new_data");
+            element.set_properties(Properties(std::vector<Property>{{"key", "value"}, {"key2", "value2"}}));
+            element.set_type(docpp::HTML::Type::Non_Closed);
+
+            REQUIRE(element.get_tag() == "new_element");
+            REQUIRE(element.get_data() == "new_data");
+            REQUIRE(element.get_properties().at(0).get().first == "key");
+            REQUIRE(element.get_properties().at(0).get().second == "value");
+            REQUIRE(element.get_properties().at(1).get().first == "key2");
+            REQUIRE(element.get_properties().at(1).get().second == "value2");
+            REQUIRE(element.get_type() == docpp::HTML::Type::Non_Closed);
+        };
+
+        const auto test_copy_element = []() {
+            using namespace docpp::HTML;
+
+            Element element;
+
+            element.set("my_element", {}, {}, docpp::HTML::Type::Non_Self_Closing);
+
+            Element new_element = element;
+
+            REQUIRE(element == new_element);
+            REQUIRE(element.empty() == false);
+
+            element.clear();
+
+            REQUIRE(element.empty() == true);
+
+            element = std::move(new_element);
+
+            REQUIRE(element.empty() == false);
+        };
+
+        const auto test_operators = []() {
+            using namespace docpp::HTML;
+
+            Element element1;
+            Element element2;
+
+            element1.set("my_element", {}, {}, docpp::HTML::Type::Non_Self_Closing);
+            element2.set("my_element", {}, {}, docpp::HTML::Type::Non_Self_Closing);
+
+            REQUIRE(element1 == element2);
+
+            element2.set("new_element", {}, {}, docpp::HTML::Type::Non_Self_Closing);
+
+            REQUIRE(element1 != element2);
+
+            element2 = element1;
+
+            REQUIRE(element1 == element2);
+        };
+
+        const auto test_constructors = []() {
+            using namespace docpp::HTML;
+
+            Element elem{};
+
+            REQUIRE(elem.get_tag() == "");
+            REQUIRE(elem.get_data() == "");
+            REQUIRE(elem.get_properties() == Properties{});
+            REQUIRE(elem.get_type() == docpp::HTML::Type::Non_Self_Closing);
+
+            Element elem2("my_element", {}, "data", docpp::HTML::Type::Non_Closed);
+
+            REQUIRE(elem2.get_tag() == "my_element");
+            REQUIRE(elem2.get_data() == "data");
+            REQUIRE(elem2.get_properties() == Properties{});
+            REQUIRE(elem2.get_type() == docpp::HTML::Type::Non_Closed);
+
+            Element elem3(docpp::HTML::Tag::H1, {}, "data");
+
+            REQUIRE(elem3.get_tag() == "h1");
+            REQUIRE(elem3.get_data() == "data");
+            REQUIRE(elem3.get_properties() == Properties{});
+            REQUIRE(elem3.get_type() == docpp::HTML::Type::Non_Self_Closing);
+        };
+
+        const auto test_string_get = []() {
+            using namespace docpp::HTML;
+
+            Element element(docpp::HTML::Tag::H1, {}, "data");
+
+            REQUIRE(element.get() == "<h1>data</h1>");
+            REQUIRE(element.get<std::string>() == "<h1>data</h1>");
+            REQUIRE(element.get<std::string>(docpp::HTML::Formatting::None) == "<h1>data</h1>");
+            REQUIRE(element.get<std::string>(docpp::HTML::Formatting::Pretty) == "<h1>data</h1>\n");
+            REQUIRE(element.get<std::string>(docpp::HTML::Formatting::Newline) == "<h1>data</h1>\n");
+        };
+
+        test_get_and_set();
+        test_copy_element();
+        test_operators();
+        test_constructors();
+        test_string_get();
+    }
+
+    void test_section() {
+        const auto test_get_and_set = []() {
+            using namespace docpp::HTML;
+
+            Section section;
+
+            section.set_tag("my_section");
+
+            REQUIRE(section.get_tag() == "my_section");
+            REQUIRE(section.get_sections().empty());
+            REQUIRE(section.get_elements().empty());
+            REQUIRE(section.get_properties().empty());
+
+            section.set_tag("new_section");
+            section.set_properties({{Property{"key", "value"}, Property{"key2", "value2"}}});
+
+            REQUIRE(section.get_tag() == "new_section");
+            REQUIRE(section.get_properties().at(0).get().first == "key");
+            REQUIRE(section.get_properties().at(0).get().second == "value");
+            REQUIRE(section.get_properties().at(1).get().first == "key2");
+            REQUIRE(section.get_properties().at(1).get().second == "value2");
+
+            section.set("new_section", {{Property{"key", "value"}, Property{"key2", "value2"}}});
+
+            REQUIRE(section.get_tag() == "new_section");
+            REQUIRE(section.get_properties().at(0).get().first == "key");
+            REQUIRE(section.get_properties().at(0).get().second == "value");
+            REQUIRE(section.get_properties().at(1).get().first == "key2");
+            REQUIRE(section.get_properties().at(1).get().second == "value2");
+
+            section.set_properties({{Property{"key3", "value3"}, Property{"key4", "value4"}}});
+
+            REQUIRE(section.get_properties().at(0).get().first == "key3");
+            REQUIRE(section.get_properties().at(0).get().second == "value3");
+            REQUIRE(section.get_properties().at(1).get().first == "key4");
+            REQUIRE(section.get_properties().at(1).get().second == "value4");
+        };
+
+        const auto test_copy_section = []() {
+            using namespace docpp::HTML;
+
+            Section section;
+
+            section.set("my_section", {{Property{"key", "value"}, Property{"key2", "value2"}}});
+
+            Section new_section = section;
+
+            REQUIRE(section == new_section);
+            REQUIRE(section.empty() == true); // should still be empty, because the
+                                              // section itself is not an element, it's more of a container element
+                                              // in the same vein as a <div> element
+
+            section.push_back(Element{});
+
+            REQUIRE(section.empty() == false);
+            REQUIRE(section != new_section);
+
+            section.clear();
+
+            REQUIRE(section.empty() == true);
+
+            section = std::move(new_section);
+
+            REQUIRE(section.empty() == true);
+        };
+
+        const auto test_operators = []() {
+            using namespace docpp::HTML;
+
+            Section section1;
+            Section section2;
+
+            section1.set("my_section", {{Property{"key", "value"}, Property{"key2", "value2"}}});
+            section2.set("my_section", {{Property{"key", "value"}, Property{"key2", "value2"}}});
+
+            REQUIRE(section1 == section2);
+
+            section2.set("new_section", {{Property{"key", "value"}, Property{"key2", "value2"}}});
+
+            REQUIRE(section1 != section2);
+
+            section2 = section1;
+
+            REQUIRE(section1 == section2);
+        };
+
+        const auto test_constructors = []() {
+            using namespace docpp::HTML;
+
+            Section section{};
+
+            REQUIRE(section.get_tag() == "");
+            REQUIRE(section.get_sections().empty());
+            REQUIRE(section.get_elements().empty());
+            REQUIRE(section.get_properties().empty());
+
+            Section section2("my_section", {{Property{"key", "value"}, Property{"key2", "value2"}}});
+
+            REQUIRE(section2.get_tag() == "my_section");
+            REQUIRE(section2.get_properties().at(0).get().first == "key");
+            REQUIRE(section2.get_properties().at(0).get().second == "value");
+            REQUIRE(section2.get_properties().at(1).get().first == "key2");
+            REQUIRE(section2.get_properties().at(1).get().second == "value2");
+
+            Section section3(docpp::HTML::Tag::H1, {{Property{"key", "value"}, Property{"key2", "value2"}}});
+
+            REQUIRE(section3.get_tag() == "h1");
+            REQUIRE(section3.get_properties().at(0).get().first == "key");
+            REQUIRE(section3.get_properties().at(0).get().second == "value");
+            REQUIRE(section3.get_properties().at(1).get().first == "key2");
+            REQUIRE(section3.get_properties().at(1).get().second == "value2");
+        };
+
+        const auto test_iterators = []() {
+            using namespace docpp::HTML;
+
+            Section section{docpp::HTML::Tag::Html, {}};
+
+            section.push_back(Element{docpp::HTML::Tag::H2, {}});
+            section.push_back(Element{docpp::HTML::Tag::H3, {}});
+            section.push_back(Element{docpp::HTML::Tag::H4, {}});
+            section.push_back(Element{docpp::HTML::Tag::H5, {}});
+            section.push_back(Element{docpp::HTML::Tag::H6, {}});
+
+            Element element;
+
+            std::size_t index{0};
+            for (Section::iterator it = section.begin(); it != section.end(); ++it) {
+                Element element = *it;
+
+                if (index == 0) {
+                    REQUIRE(element.get_tag() == "h2");
+                    REQUIRE(element.get_type() == docpp::HTML::Type::Non_Self_Closing);
+                    REQUIRE(element.get() == "<h2></h2>");
+                } else if (index == 1) {
+                    REQUIRE(element.get_tag() == "h3");
+                    REQUIRE(element.get_type() == docpp::HTML::Type::Non_Self_Closing);
+                    REQUIRE(element.get() == "<h3></h3>");
+                } else if (index == 2) {
+                    REQUIRE(element.get_tag() == "h4");
+                    REQUIRE(element.get_type() == docpp::HTML::Type::Non_Self_Closing);
+                    REQUIRE(element.get() == "<h4></h4>");
+                } else if (index == 3) {
+                    REQUIRE(element.get_tag() == "h5");
+                    REQUIRE(element.get_type() == docpp::HTML::Type::Non_Self_Closing);
+                    REQUIRE(element.get() == "<h5></h5>");
+                } else if (index == 4) {
+                    REQUIRE(element.get_tag() == "h6");
+                    REQUIRE(element.get_type() == docpp::HTML::Type::Non_Self_Closing);
+                    REQUIRE(element.get() == "<h6></h6>");
+                }
+
+                ++index;
+            }
+
+            index = 0;
+            for (Section::const_iterator it = section.cbegin(); it != section.cend(); ++it) {
+                Element element = *it;
+
+                if (index == 0) {
+                    REQUIRE(element.get_tag() == "h2");
+                    REQUIRE(element.get_type() == docpp::HTML::Type::Non_Self_Closing);
+                    REQUIRE(element.get() == "<h2></h2>");
+                } else if (index == 1) {
+                    REQUIRE(element.get_tag() == "h3");
+                    REQUIRE(element.get_type() == docpp::HTML::Type::Non_Self_Closing);
+                    REQUIRE(element.get() == "<h3></h3>");
+                } else if (index == 2) {
+                    REQUIRE(element.get_tag() == "h4");
+                    REQUIRE(element.get_type() == docpp::HTML::Type::Non_Self_Closing);
+                    REQUIRE(element.get() == "<h4></h4>");
+                } else if (index == 3) {
+                    REQUIRE(element.get_tag() == "h5");
+                    REQUIRE(element.get_type() == docpp::HTML::Type::Non_Self_Closing);
+                    REQUIRE(element.get() == "<h5></h5>");
+                } else if (index == 4) {
+                    REQUIRE(element.get_tag() == "h6");
+                    REQUIRE(element.get_type() == docpp::HTML::Type::Non_Self_Closing);
+                    REQUIRE(element.get() == "<h6></h6>");
+                }
+
+                ++index;
+            }
+
+            index = 0;
+            for (Section::reverse_iterator it = section.rbegin(); it != section.rend(); ++it) {
+                Element element = *it;
+
+                if (index == 0) {
+                    REQUIRE(element.get_tag() == "h6");
+                    REQUIRE(element.get_type() == docpp::HTML::Type::Non_Self_Closing);
+                    REQUIRE(element.get() == "<h6></h6>");
+                } else if (index == 1) {
+                    REQUIRE(element.get_tag() == "h5");
+                    REQUIRE(element.get_type() == docpp::HTML::Type::Non_Self_Closing);
+                    REQUIRE(element.get() == "<h5></h5>");
+                } else if (index == 2) {
+                    REQUIRE(element.get_tag() == "h4");
+                    REQUIRE(element.get_type() == docpp::HTML::Type::Non_Self_Closing);
+                    REQUIRE(element.get() == "<h4></h4>");
+                } else if (index == 3) {
+                    REQUIRE(element.get_tag() == "h3");
+                    REQUIRE(element.get_type() == docpp::HTML::Type::Non_Self_Closing);
+                    REQUIRE(element.get() == "<h3></h3>");
+                } else if (index == 4) {
+                    REQUIRE(element.get_tag() == "h2");
+                    REQUIRE(element.get_type() == docpp::HTML::Type::Non_Self_Closing);
+                    REQUIRE(element.get() == "<h2></h2>");
+                }
+
+                ++index;
+            }
+
+            index = 0;
+            for (Section::const_reverse_iterator it = section.crbegin(); it != section.crend(); ++it) {
+                Element element = *it;
+
+                if (index == 0) {
+                    REQUIRE(element.get_tag() == "h6");
+                    REQUIRE(element.get_type() == docpp::HTML::Type::Non_Self_Closing);
+                    REQUIRE(element.get() == "<h6></h6>");
+                } else if (index == 1) {
+                    REQUIRE(element.get_tag() == "h5");
+                    REQUIRE(element.get_type() == docpp::HTML::Type::Non_Self_Closing);
+                    REQUIRE(element.get() == "<h5></h5>");
+                } else if (index == 2) {
+                    REQUIRE(element.get_tag() == "h4");
+                    REQUIRE(element.get_type() == docpp::HTML::Type::Non_Self_Closing);
+                    REQUIRE(element.get() == "<h4></h4>");
+                } else if (index == 3) {
+                    REQUIRE(element.get_tag() == "h3");
+                    REQUIRE(element.get_type() == docpp::HTML::Type::Non_Self_Closing);
+                    REQUIRE(element.get() == "<h3></h3>");
+                } else if (index == 4) {
+                    REQUIRE(element.get_tag() == "h2");
+                    REQUIRE(element.get_type() == docpp::HTML::Type::Non_Self_Closing);
+                    REQUIRE(element.get() == "<h2></h2>");
+                }
+
+                ++index;
+            }
+        };
+
+        const auto test_find = []() {
+            using namespace docpp::HTML;
+
+            Section section{docpp::HTML::Tag::Html, {}};
+
+            section.push_back(Element{docpp::HTML::Tag::H2, {}, "data"});
+            section.push_back(Element{docpp::HTML::Tag::H3, {}, "data"});
+            section.push_back(Element{docpp::HTML::Tag::H4, {}, "data"});
+            section.push_back(Element{docpp::HTML::Tag::H5, {}, "data"});
+            section.push_back(Element{docpp::HTML::Tag::H6, {}, "data"});
+
+            REQUIRE(section.find(Element{docpp::HTML::Tag::H2, {}, "data"}) == 0);
+            REQUIRE(section.find(Element{docpp::HTML::Tag::H3, {}, "data"}) == 1);
+            REQUIRE(section.find(Element{docpp::HTML::Tag::H4, {}, "data"}) == 2);
+            REQUIRE(section.find(Element{docpp::HTML::Tag::H5, {}, "data"}) == 3);
+            REQUIRE(section.find(Element{docpp::HTML::Tag::H6, {}, "data"}) == 4);
+            REQUIRE(section.find(Element{docpp::HTML::Tag::H1, {}, "data"}) == Section::npos);
+
+            REQUIRE(section.find("h2") == 0);
+            REQUIRE(section.find("h3") == 1);
+            REQUIRE(section.find("h4") == 2);
+            REQUIRE(section.find("h5") == 3);
+            REQUIRE(section.find("h6") == 4);
+
+            REQUIRE(section.find("<h2>data</h2>") == 0);
+            REQUIRE(section.find("<h3>data</h3>") == 1);
+            REQUIRE(section.find("<h4>data</h4>") == 2);
+            REQUIRE(section.find("<h5>data</h5>") == 3);
+            REQUIRE(section.find("<h6>data</h6>") == 4);
+            REQUIRE(section.find("data") == 0);
+            REQUIRE(section.find("h1") == Section::npos);
+            REQUIRE(section.find("docpp sucks") == Section::npos);
+        };
+
+        const auto test_insert = []() {
+            using namespace docpp::HTML;
+
+            Section section{docpp::HTML::Tag::Html, {}};
+
+            section.push_back(Element{docpp::HTML::Tag::H2, {}, "data"});
+            section.push_back(Element{docpp::HTML::Tag::H3, {}, "data"});
+            section.push_back(Element{docpp::HTML::Tag::H4, {}, "data"});
+            section.push_back(Element{docpp::HTML::Tag::H5, {}, "data"});
+            section.push_back(Element{docpp::HTML::Tag::H6, {}, "data"});
+
+            std::size_t pos = section.find("h2");
+
+            Element element = section[pos];
+
+            std::size_t pos2 = section.find("h4");
+
+            section.insert(pos2, element);
+
+            REQUIRE(section.at(pos2) == element);
+            REQUIRE(section.get_elements().at(pos2) == element);
+            REQUIRE(section.get_elements().at(pos2).get_tag() == "h2");
+        };
+
+        const auto test_swap = []() {
+            using namespace docpp::HTML;
+
+            Section section{docpp::HTML::Tag::Html, {}};
+
+            section.push_back(Element{docpp::HTML::Tag::H2, {}, "data"});
+            section.push_back(Element{docpp::HTML::Tag::H3, {}, "data"});
+            section.push_back(Element{docpp::HTML::Tag::H4, {}, "data"});
+            section.push_back(Element{docpp::HTML::Tag::H5, {}, "data"});
+            section.push_back(Element{docpp::HTML::Tag::H6, {}, "data"});
+
+            std::size_t pos1 = section.find("h2");
+            Element element1 = section[pos1];
+
+            std::size_t pos2 = section.find("h4");
+            Element element2 = section[pos2];
+
+            section.swap(pos1, pos2);
+
+            REQUIRE(section[pos1] == element2);
+            REQUIRE(section[pos2] == element1);
+
+            section.swap(element1, element2);
+
+            REQUIRE(section[pos1] == element1);
+            REQUIRE(section[pos2] == element2);
+        };
+
+        const auto test_front_and_back = []() {
+            using namespace docpp::HTML;
+
+            Section section{docpp::HTML::Tag::Html, {}};
+
+            section.push_back(Element{docpp::HTML::Tag::H2, {}, "data"});
+            section.push_back(Element{docpp::HTML::Tag::H3, {}, "data"});
+            section.push_back(Element{docpp::HTML::Tag::H4, {}, "data"});
+            section.push_back(Element{docpp::HTML::Tag::H5, {}, "data"});
+            section.push_back(Element{docpp::HTML::Tag::H6, {}, "data"});
+
+            REQUIRE(section.front().get_tag() == "h2");
+            REQUIRE(section.front().get_data() == "data");
+
+            REQUIRE(section.back().get_tag() == "h6");
+            REQUIRE(section.back().get_data() == "data");
+        };
+
+        const auto test_size_empty_and_clear = []() {
+            using namespace docpp::HTML;
+
+            Section section{docpp::HTML::Tag::Html, {}};
+
+            section.push_back(Element{docpp::HTML::Tag::H2, {}, "data"});
+            section.push_back(Element{docpp::HTML::Tag::H3, {}, "data"});
+            section.push_back(Element{docpp::HTML::Tag::H4, {}, "data"});
+            section.push_back(Element{docpp::HTML::Tag::H5, {}, "data"});
+            section.push_back(Element{docpp::HTML::Tag::H6, {}, "data"});
+
+            REQUIRE(section.size() == 5);
+            REQUIRE(section.empty() == false);
+
+            section.clear();
+
+            REQUIRE(section.size() == 0);
+            REQUIRE(section.empty() == true);
+        };
+
+        const auto test_push_front_and_back = []() {
+            using namespace docpp::HTML;
+
+            Section section{docpp::HTML::Tag::Html, {}};
+
+            section.push_front(Element{docpp::HTML::Tag::H2, {}, "data"});
+            section.push_back(Element{docpp::HTML::Tag::H3, {}, "data"});
+
+            REQUIRE(section.front().get_tag() == "h2");
+            REQUIRE(section.front().get_data() == "data");
+
+            REQUIRE(section.back().get_tag() == "h3");
+            REQUIRE(section.back().get_data() == "data");
+        };
+
+        const auto test_string_get = []() {
+            using namespace docpp::HTML;
+
+            Section section{docpp::HTML::Tag::Html, {}};
+
+            section.push_back(Element{docpp::HTML::Tag::H2, {}, "data"});
+            section.push_back(Element{docpp::HTML::Tag::H3, {}, "data"});
+            section.push_back(Element{docpp::HTML::Tag::H4, {}, "data"});
+            section.push_back(Element{docpp::HTML::Tag::H5, {}, "data"});
+
+            const std::string expected_1 = "<html><h2>data</h2><h3>data</h3><h4>data</h4><h5>data</h5></html>";
+            const std::string expected_2 = "<html>\n<h2>data</h2>\n<h3>data</h3>\n<h4>data</h4>\n<h5>data</h5>\n</html>";
+            const std::string expected_3 = "<html>\n\t<h2>data</h2>\n\t<h3>data</h3>\n\t<h4>data</h4>\n\t<h5>data</h5>\n</html>";
+
+            REQUIRE(section.get() == expected_1);
+            REQUIRE(section.get<std::string>() == expected_1);
+            REQUIRE(section.get<std::string>(docpp::HTML::Formatting::None) == expected_1);
+            REQUIRE(section.get<std::string>(docpp::HTML::Formatting::Newline) == expected_2);
+            REQUIRE(section.get<std::string>(docpp::HTML::Formatting::Pretty) == expected_3);
+        };
+
+        const auto test_handle_elements = []() {
+            using namespace docpp::HTML;
+
+            Section section{docpp::HTML::Tag::Html, {}};
+
+            section.push_back(Element{docpp::HTML::Tag::H2, {}, "data"});
+            section.push_back(Element{docpp::HTML::Tag::H3, {}, "data"});
+            section.push_back(Element{docpp::HTML::Tag::H4, {}, "data"});
+            section.push_back(Element{docpp::HTML::Tag::H5, {}, "data"});
+
+            Element retrieved_elem1 = section.get_elements().at(0);
+            Element retrieved_elem2 = section.get_elements().at(1);
+            Element retrieved_elem3 = section.get_elements().at(2);
+            Element retrieved_elem4 = section.get_elements().at(3);
+
+            REQUIRE(retrieved_elem1.get_tag() == "h2");
+            REQUIRE(retrieved_elem1.get_data() == "data");
+            REQUIRE(retrieved_elem2.get_tag() == "h3");
+            REQUIRE(retrieved_elem2.get_data() == "data");
+            REQUIRE(retrieved_elem3.get_tag() == "h4");
+            REQUIRE(retrieved_elem3.get_data() == "data");
+            REQUIRE(retrieved_elem4.get_tag() == "h5");
+            REQUIRE(retrieved_elem4.get_data() == "data");
+        };
+
+        const auto test_handle_sections = []() {
+            using namespace docpp::HTML;
+
+            Section section{docpp::HTML::Tag::Html, {}};
+
+            section.push_back(Element{docpp::HTML::Tag::H2, {}, "data"});
+            section.push_back(Element{docpp::HTML::Tag::H3, {}, "data"});
+            section.push_back(Element{docpp::HTML::Tag::H4, {}, "data"});
+
+            Section new_section = section;
+
+            new_section.set_tag(docpp::HTML::Tag::Div);
+            section.push_back(new_section);
+
+            REQUIRE(section.get() == "<html><h2>data</h2><h3>data</h3><h4>data</h4><div><h2>data</h2><h3>data</h3><h4>data</h4></div></html>");
+
+            Section retrieved_section = section.get_sections().at(0);
+
+            REQUIRE(retrieved_section.get_tag() == "div");
+
+            Element retrieved_elem1 = retrieved_section.get_elements().at(0);
+            Element retrieved_elem2 = retrieved_section.get_elements().at(1);
+            Element retrieved_elem3 = retrieved_section.get_elements().at(2);
+
+            REQUIRE(retrieved_elem1.get_tag() == "h2");
+            REQUIRE(retrieved_elem1.get_data() == "data");
+            REQUIRE(retrieved_elem2.get_tag() == "h3");
+            REQUIRE(retrieved_elem2.get_data() == "data");
+            REQUIRE(retrieved_elem3.get_tag() == "h4");
+            REQUIRE(retrieved_elem3.get_data() == "data");
+        };
+
+        const auto the_test_to_end_all_tests = []() {
+            using namespace docpp::HTML;
+
+            Section base_section{docpp::HTML::Tag::Html, {}};
+
+            base_section.push_back(Element{docpp::HTML::Tag::H2, {}, "data"});
+            base_section.push_back(Element{docpp::HTML::Tag::H3, {}, "data"});
+            base_section.push_back(Element{docpp::HTML::Tag::H4, {}, "data"});
+            base_section.push_back(Element{docpp::HTML::Tag::H5, {}, "data"});
+
+            REQUIRE(base_section.get() == "<html><h2>data</h2><h3>data</h3><h4>data</h4><h5>data</h5></html>");
+
+            Section section{docpp::HTML::Tag::Html, {}};
+            Section section_plus_plus{docpp::HTML::Tag::Html, {}};
+
+            // just... why? because i can, that's why
+            for (std::size_t i = 0; i < 10; ++i) {
+                Section _section{docpp::HTML::Tag::Div, {}};
+
+                _section.push_back(Element{docpp::HTML::Tag::P, {}, "Data " + std::to_string(i)});
+
+                section_plus_plus += _section;
+                section_plus_plus += section_plus_plus;
+
+                REQUIRE(section_plus_plus.size() == (i + 1) * 2);
+            }
+        };
+
+        test_get_and_set();
+        test_copy_section();
+        test_operators();
+        test_constructors();
+        test_iterators();
+        test_find();
+        test_insert();
+        test_swap();
+        test_front_and_back();
+        test_size_empty_and_clear();
+        test_push_front_and_back();
+        test_string_get();
+        test_constructors();
+        test_handle_elements();
+        test_handle_sections();
+        the_test_to_end_all_tests();
+    }
+
+    void test_document() {
+        const auto test_get_and_set = []() {
+            using namespace docpp::HTML;
+
+            Document document;
+
+            document.set(Section {
+                docpp::HTML::Tag::Html, {},
+                {
+                    Element{docpp::HTML::Tag::H1, {}, "data1"},
+                    Element{docpp::HTML::Tag::H2, {}, "data2"},
+                    Element{docpp::HTML::Tag::H3, {}, "data3"},
+                    Element{docpp::HTML::Tag::H4, {}, "data4"},
+                    Element{docpp::HTML::Tag::H5, {}, "data5"},
+                    Element{docpp::HTML::Tag::H6, {}, "data6"}
+                }
+            });
+
+            REQUIRE(document.get() == "<!DOCTYPE html><html><h1>data1</h1><h2>data2</h2><h3>data3</h3><h4>data4</h4><h5>data5</h5><h6>data6</h6></html>");
+            REQUIRE(document.get<std::string>() == "<!DOCTYPE html><html><h1>data1</h1><h2>data2</h2><h3>data3</h3><h4>data4</h4><h5>data5</h5><h6>data6</h6></html>");
+            REQUIRE(document.get<std::string>(docpp::HTML::Formatting::None) == "<!DOCTYPE html><html><h1>data1</h1><h2>data2</h2><h3>data3</h3><h4>data4</h4><h5>data5</h5><h6>data6</h6></html>");
+            REQUIRE(document.get<std::string>(docpp::HTML::Formatting::Pretty) == "<!DOCTYPE html>\n<html>\n\t<h1>data1</h1>\n\t<h2>data2</h2>\n\t<h3>data3</h3>\n\t<h4>data4</h4>\n\t<h5>data5</h5>\n\t<h6>data6</h6>\n</html>");
+            REQUIRE(document.get<std::string>(docpp::HTML::Formatting::Newline) == "<!DOCTYPE html>\n<html>\n<h1>data1</h1>\n<h2>data2</h2>\n<h3>data3</h3>\n<h4>data4</h4>\n<h5>data5</h5>\n<h6>data6</h6>\n</html>");
+
+            REQUIRE(document.get_doctype() == "<!DOCTYPE html>");
+            REQUIRE(document.get_section() == Section {
+                docpp::HTML::Tag::Html, {},
+                {
+                    Element{docpp::HTML::Tag::H1, {}, "data1"},
+                    Element{docpp::HTML::Tag::H2, {}, "data2"},
+                    Element{docpp::HTML::Tag::H3, {}, "data3"},
+                    Element{docpp::HTML::Tag::H4, {}, "data4"},
+                    Element{docpp::HTML::Tag::H5, {}, "data5"},
+                    Element{docpp::HTML::Tag::H6, {}, "data6"}
+                }
+            });
+
+            REQUIRE(document.get_section().get() == "<html><h1>data1</h1><h2>data2</h2><h3>data3</h3><h4>data4</h4><h5>data5</h5><h6>data6</h6></html>");
+
+            document.set_doctype("<!NEW_DOCTYPE html>");
+
+            REQUIRE(document.get_doctype() == "<!NEW_DOCTYPE html>");
+            REQUIRE(document.get() == "<!NEW_DOCTYPE html><html><h1>data1</h1><h2>data2</h2><h3>data3</h3><h4>data4</h4><h5>data5</h5><h6>data6</h6></html>");
+        };
+
+        const auto test_copy_document = []() {
+            using namespace docpp::HTML;
+
+            Document document;
+
+            document.set(Section {
+                docpp::HTML::Tag::Html, {},
+                {
+                    Element{docpp::HTML::Tag::H1, {}, "data1"},
+                    Element{docpp::HTML::Tag::H2, {}, "data2"},
+                    Element{docpp::HTML::Tag::H3, {}, "data3"},
+                    Element{docpp::HTML::Tag::H4, {}, "data4"},
+                    Element{docpp::HTML::Tag::H5, {}, "data5"},
+                    Element{docpp::HTML::Tag::H6, {}, "data6"}
+                }
+            });
+
+            Document new_document = document;
+
+            REQUIRE(document == new_document);
+            REQUIRE(document.empty() == false);
+
+            document.clear();
+
+            REQUIRE(document.empty() == true);
+
+            document = std::move(new_document);
+
+            REQUIRE(document.empty() == false);
+        };
+
+        const auto test_operators = []() {
+            using namespace docpp::HTML;
+
+            Document document1;
+            Document document2;
+
+            document1.set(Section {
+                docpp::HTML::Tag::Html, {},
+                {
+                    Element{docpp::HTML::Tag::H1, {}, "data1"},
+                    Element{docpp::HTML::Tag::H2, {}, "data2"},
+                    Element{docpp::HTML::Tag::H3, {}, "data3"},
+                    Element{docpp::HTML::Tag::H4, {}, "data4"},
+                    Element{docpp::HTML::Tag::H5, {}, "data5"},
+                    Element{docpp::HTML::Tag::H6, {}, "data6"}
+                }
+            });
+
+            document2.set(Section {
+                docpp::HTML::Tag::Html, {},
+                {
+                    Element{docpp::HTML::Tag::H1, {}, "data1"},
+                    Element{docpp::HTML::Tag::H2, {}, "data2"},
+                    Element{docpp::HTML::Tag::H3, {}, "data3"},
+                    Element{docpp::HTML::Tag::H4, {}, "data4"},
+                    Element{docpp::HTML::Tag::H5, {}, "data5"},
+                    Element{docpp::HTML::Tag::H6, {}, "data6"}
+                }
+            });
+
+            REQUIRE(document1 == document2);
+
+            document2.set(Section {
+                docpp::HTML::Tag::Html, {},
+                {
+                    Element{docpp::HTML::Tag::H6, {}, "data1"},
+                    Element{docpp::HTML::Tag::H5, {}, "data2"},
+                    Element{docpp::HTML::Tag::H4, {}, "data3"},
+                    Element{docpp::HTML::Tag::H3, {}, "data4"},
+                    Element{docpp::HTML::Tag::H2, {}, "data5"},
+                    Element{docpp::HTML::Tag::H1, {}, "data6"}
+                }
+            });
+
+            REQUIRE(document1 != document2);
+        };
+
+        const auto test_constructors = []() {
+            using namespace docpp::HTML;
+
+            Document document{};
+
+            REQUIRE(document.get_doctype() == "<!DOCTYPE html>");
+            REQUIRE(document.get_section().get_tag() == "");
+            REQUIRE(document.get_section().get_sections().empty());
+            REQUIRE(document.get_section().get_elements().empty());
+            REQUIRE(document.get_section().get_properties().empty());
+
+            Document document2(Section {
+                docpp::HTML::Tag::Html, {},
+                {
+                    Element{docpp::HTML::Tag::H1, {}, "data1"},
+                    Element{docpp::HTML::Tag::H2, {}, "data2"},
+                    Element{docpp::HTML::Tag::H3, {}, "data3"},
+                    Element{docpp::HTML::Tag::H4, {}, "data4"},
+                    Element{docpp::HTML::Tag::H5, {}, "data5"},
+                    Element{docpp::HTML::Tag::H6, {}, "data6"}
+                }
+            });
+
+            REQUIRE(document2.get_doctype() == "<!DOCTYPE html>");
+            REQUIRE(document2.get_section().get_tag() == "html");
+            REQUIRE(document2.get_section().get_sections().empty());
+            REQUIRE(document2.get_section().get_elements().size() == 6);
+            REQUIRE(document2.get_section().get_properties().empty());
+
+            Document document3(Section(docpp::HTML::Tag::Html, {}, {
+                Section(docpp::HTML::Tag::Head, {}, {
+                    Element(docpp::HTML::Tag::Title, {}, "Title")
+                }),
+                Section(docpp::HTML::Tag::Body, {}, {
+                    Element(docpp::HTML::Tag::H1, {}, "Hello, World!")
+                }),
+            }), "<!NEW_DOCTYPE html>");
+
+            REQUIRE(document3.get_doctype() == "<!NEW_DOCTYPE html>");
+            REQUIRE(document3.get_section().get_tag() == "html");
+            REQUIRE(document3.get_section().get_sections().size() == 2);
+            REQUIRE(document3.get_section().get_elements().empty());
+            REQUIRE(document3.get_section().get_properties().empty());
+        };
+
+        test_get_and_set();
+        test_copy_document();
+        test_operators();
+        test_constructors();
+    }
+
+    void test_html() {
+        test_tag();
+        test_exceptions();
+        test_npos_values();
+        test_property();
+        test_properties();
+        test_element();
+        test_section();
+        test_document();
+    }
+} // namespace HTML
+
+inline namespace CSS {
+    void test_css() {
+        // TODO: Implement tests for CSS
+        // Previous tests were ran after the implementation of the CSS namespace, so CSS tests are not necessary at the moment and will be implemented soon
+    }
+
+} // namespace CSS
 
 /**
  * @brief Test cases for the docpp namespace.
  */
 SCENARIO("Test HTML", "[HTML]") {
-    const auto test1 = []() {
-        docpp::HTML::Document doc{};
-        docpp::HTML::Section html(docpp::HTML::ELEMENT_HTML, {});
-
-        docpp::HTML::Section head(docpp::HTML::ELEMENT_HEAD, {});
-        docpp::HTML::Section body(docpp::HTML::ELEMENT_BODY, {});
-        docpp::HTML::Section div(docpp::HTML::ELEMENT_DIV, {});
-        docpp::HTML::Section footer(docpp::HTML::ELEMENT_FOOTER, {});
-
-        head.push_back(docpp::HTML::Element("title", {}, "Test Title"));
-        body.push_back(docpp::HTML::Element("h1", {}, "Test Header"));
-        body.push_back(docpp::HTML::Element("p", {}, "Test Paragraph"));
-
-        docpp::HTML::Properties prop{};
-        prop.push_back(docpp::HTML::Property(std::pair<std::string, std::string>("id", "test_id")));
-
-        body.push_back(docpp::HTML::Element("p", prop, "Test Paragraph With ID"));
-
-        div.push_back(docpp::HTML::Element("p", {}, "Test Paragraph In Div"));
-        body.push_back(div);
-
-        prop.push_back(docpp::HTML::Property(std::pair<std::string, std::string>("class", "class1 class2 class3")));
-
-        body.push_back(docpp::HTML::Element("p", prop, "Test Paragraph With ID And Class"));
-
-        html.push_back(head);
-        html.push_back(body);
-        html.push_back(footer);
-
-        doc.set(html);
-
-        const std::string expected_html{"<!DOCTYPE html><html><head><title>Test Title</title></head><body><h1>Test Header</h1><p>Test Paragraph</p><p id=\"test_id\">Test Paragraph With ID</p><div><p>Test Paragraph In Div</p></div><p id=\"test_id\" class=\"class1 class2 class3\">Test Paragraph With ID And Class</p></body><footer></footer></html>"};
-
-        REQUIRE(doc.get() == expected_html);
-        REQUIRE(doc.get(docpp::HTML::FORMATTING_NEWLINE) == "<!DOCTYPE html>\n<html>\n<head>\n<title>Test Title</title>\n</head>\n<body>\n<h1>Test Header</h1>\n<p>Test Paragraph</p>\n<p id=\"test_id\">Test Paragraph With ID</p>\n<div>\n<p>Test Paragraph In Div</p>\n</div>\n<p id=\"test_id\" class=\"class1 class2 class3\">Test Paragraph With ID And Class</p>\n</body>\n<footer>\n</footer>\n</html>");
-    };
-
-    const auto test2 = []() {
-        docpp::HTML::Section section(docpp::HTML::ELEMENT_HTML, {});
-
-        section.push_back(docpp::HTML::Element("p", {}, "Test 1"));
-        section.push_back(docpp::HTML::Element("p", {}, "Test 2"));
-        section.push_back(docpp::HTML::Element("p", {}, "Test 3"));
-
-        section.erase(docpp::HTML::Element("p", {}, "Test 2"));
-
-        REQUIRE(section.get() == "<html><p>Test 1</p><p>Test 3</p></html>");
-        REQUIRE(section.get(docpp::HTML::FORMATTING_NEWLINE) == "<html>\n<p>Test 1</p>\n<p>Test 3</p>\n</html>");
-    };
-
-    const auto test3 = []() {
-        docpp::HTML::Section section = docpp::HTML::Section(docpp::HTML::ELEMENT_HTML, {});
-
-        section.push_back(docpp::HTML::Element("p", {}, "Test 1"));
-        section.push_back(docpp::HTML::Element("p", {}, "Test 2"));
-        section.push_back(docpp::HTML::Element("p", {}, "Test 3"));
-
-        std::size_t pos = section.find(docpp::HTML::Element("p", {}, "Test 2"));
-        section.insert(pos, docpp::HTML::Element("p", {}, "Test 2.5"));
-
-        REQUIRE(section.get() == "<html><p>Test 1</p><p>Test 2.5</p><p>Test 3</p></html>");
-        REQUIRE(section.get(docpp::HTML::FORMATTING_NEWLINE) == "<html>\n<p>Test 1</p>\n<p>Test 2.5</p>\n<p>Test 3</p>\n</html>");
-    };
-
-    const auto test4 = []() {
-        docpp::HTML::Section section = docpp::HTML::Section(docpp::HTML::ELEMENT_HTML, {});
-
-        section.push_back(docpp::HTML::Element("p", {}, "Test 1"));
-        section.push_back(docpp::HTML::Element("p", {}, "Test 2"));
-        section.push_back(docpp::HTML::Element("p", {}, "Test 3"));
-
-        std::size_t pos = section.find(docpp::HTML::Element("p", {}, "Test 2"));
-
-        section.erase(pos);
-
-        REQUIRE(section.get() == "<html><p>Test 1</p><p>Test 3</p></html>");
-        REQUIRE(section.get(docpp::HTML::FORMATTING_NEWLINE) == "<html>\n<p>Test 1</p>\n<p>Test 3</p>\n</html>");
-    };
-
-    const auto test5 = []() {
-        docpp::HTML::Section section = docpp::HTML::Section(docpp::HTML::ELEMENT_HTML, {});
-        docpp::HTML::Section subsection(docpp::HTML::ELEMENT_DIV, {});
-
-        subsection.push_back(docpp::HTML::Element("p", {}, "Test 1"));
-
-        docpp::HTML::Section subsection2(docpp::HTML::ELEMENT_DIV, {});
-        subsection2.push_back(docpp::HTML::Element("p", {}, "Test 2"));
-
-        subsection.push_back(subsection2);
-
-        section.push_back(subsection);
-
-        docpp::HTML::Document doc{};
-        doc.set(section);
-
-        REQUIRE(doc.get() == "<!DOCTYPE html><html><div><p>Test 1</p><div><p>Test 2</p></div></div></html>");
-        REQUIRE(doc.get(docpp::HTML::FORMATTING_NEWLINE) == "<!DOCTYPE html>\n<html>\n<div>\n<p>Test 1</p>\n<div>\n<p>Test 2</p>\n</div>\n</div>\n</html>");
-    };
-
-    const auto test6 = []() {
-        docpp::CSS::Stylesheet css{};
-        docpp::CSS::Element element{"p", {{"color", "red"}, {"font-size", "16px"}, {"font-family", "Arial"}}};
-
-        css.push_back(element);
-
-        REQUIRE(css.get() == "p {color: red;font-size: 16px;font-family: Arial;}");
-        REQUIRE(css.get(docpp::CSS::FORMATTING_NEWLINE) == "p {\ncolor: red;\nfont-size: 16px;\nfont-family: Arial;\n}\n");
-    };
-
-    const auto test7 = []() {
-        docpp::CSS::Stylesheet css = docpp::CSS::Stylesheet{};
-        docpp::CSS::Element element = docpp::CSS::Element{"p", {{"color", "red"}, {"font-size", "16px"}, {"font-family", "Arial"}}};
-        docpp::CSS::Element element2{"div", {{"color", "blue"}, {"font-size", "12px"}, {"font-family", "Arial"}}};
-
-        css.push_back(element);
-        css.push_front(element2);
-
-        REQUIRE(css.get() == "div {color: blue;font-size: 12px;font-family: Arial;}p {color: red;font-size: 16px;font-family: Arial;}");
-    };
-
-    const auto test8 = []() {
-        docpp::CSS::Stylesheet css = docpp::CSS::Stylesheet{};
-        docpp::CSS::Element element = docpp::CSS::Element{"p", {{"color", "red"}, {"font-size", "16px"}, {"font-family", "Arial"}}};
-        docpp::CSS::Element element2{"div", {{"color", "blue"}, {"font-size", "12px"}, {"font-family", "Arial"}}};
-
-        css.push_back(element);
-        css.push_front(element2);
-
-        css.erase(css.find(element2));
-
-        REQUIRE(css.get() == "p {color: red;font-size: 16px;font-family: Arial;}");
-    };
-
-    const auto test9 = []() {
-        docpp::CSS::Stylesheet css = docpp::CSS::Stylesheet{};
-        docpp::CSS::Element element = docpp::CSS::Element{"p", {{"color", "red"}, {"font-size", "16px"}, {"font-family", "Arial"}}};
-        docpp::CSS::Element element2{"div", {{"color", "blue"}, {"font-size", "12px"}, {"font-family", "Arial"}}};
-
-        css.push_back(element);
-        css.push_front(element2);
-
-        css.erase(css.find(element2));
-        css.push_front(element2);
-
-        css.swap(css.find(element), css.find(element2));
-
-        REQUIRE(css.get() == "p {color: red;font-size: 16px;font-family: Arial;}div {color: blue;font-size: 12px;font-family: Arial;}");
-
-        element.push_front(docpp::CSS::Property("font-weight", "bold"));
-
-        REQUIRE(element.get() == "p {font-weight: bold;color: red;font-size: 16px;font-family: Arial;}");
-    };
-
-    const auto test10 = []() {
-        docpp::HTML::Section section = docpp::HTML::Section(docpp::HTML::ELEMENT_HTML, {});
-
-        section.push_back(docpp::HTML::Element("p", {}, "Test 1"));
-        section.push_back(docpp::HTML::Element("p", {}, "Test 2"));
-        section.push_back(docpp::HTML::Element("p", {}, "Test 3"));
-
-        section.swap(section.find(docpp::HTML::Element("p", {}, "Test 2")), section.find(docpp::HTML::Element("p", {}, "Test 3")));
-
-        REQUIRE(section.get() == "<html><p>Test 1</p><p>Test 3</p><p>Test 2</p></html>");
-    };
-
-    const auto test11 = []() {
-        docpp::HTML::Section section = docpp::HTML::Section(docpp::HTML::ELEMENT_HTML, {});
-
-        section.push_back(docpp::HTML::Element("p", {}, "Test 1"));
-        section.push_back(docpp::HTML::Element("p", {}, "Test 2"));
-        section.push_back(docpp::HTML::Element("p", {}, "Test 3"));
-
-        section.swap(docpp::HTML::Element("p", {}, "Test 2"), docpp::HTML::Element("p", {}, "Test 3"));
-
-        REQUIRE(section.get() == "<html><p>Test 1</p><p>Test 3</p><p>Test 2</p></html>");
-    };
-
-    const auto test12 = []() {
-        docpp::HTML::Section section = docpp::HTML::Section(docpp::HTML::ELEMENT_HTML, {});
-
-        section.push_back(docpp::HTML::Element("p", {}, "Test 1"));
-        section.push_back(docpp::HTML::Element("p", {}, "Test 2"));
-        section.push_back(docpp::HTML::Element("p", {}, "Test 3"));
-
-        section.push_front(docpp::HTML::Element("p", {}, "Test 0"));
-
-        REQUIRE(section.get() == "<html><p>Test 0</p><p>Test 1</p><p>Test 2</p><p>Test 3</p></html>");
-    };
-
-    const auto test13 = []() {
-        docpp::HTML::Section section = docpp::HTML::Section(docpp::HTML::ELEMENT_HTML, {});
-
-        section.push_back(docpp::HTML::Element("p", {}, "Test 1"));
-        section.push_back(docpp::HTML::Element("p", {}, "Test 2"));
-        section.push_back(docpp::HTML::Element("p", {}, "Test 3"));
-        section.push_back(docpp::HTML::Element("p", {}, "Test 4"));
-        section.push_back(docpp::HTML::Element("p", {}, "Test 5"));
-        section.push_back(docpp::HTML::Element("p", {}, "Test 6"));
-
-        const std::size_t pos{section.find("<p>Test 2</p>")};
-
-        REQUIRE(pos != docpp::HTML::Section::npos);
-
-        const std::size_t pos2{section.find("<p>Test 6</p>")};
-
-        section.erase(pos);
-        section.erase(pos2);
-
-        REQUIRE(section.get() == "<html><p>Test 1</p><p>Test 3</p><p>Test 4</p><p>Test 5</p></html>");
-    };
-
-    const auto test14 = []() {
-        docpp::CSS::Element element{"p", {{"color", "red"}, {"font-size", "16px"}, {"font-family", "Arial"}}};
-
-        const int red = element.find("color");
-
-        REQUIRE(red != docpp::CSS::Element::npos);
-
-        const int blue = element.find("blue");
-
-        REQUIRE(blue == docpp::CSS::Element::npos);
-
-        element.erase(red);
-
-        REQUIRE(element.get() == "p {font-size: 16px;font-family: Arial;}");
-
-        element.insert(red, docpp::CSS::Property("color", "red"));
-
-        REQUIRE(element.get() == "p {color: red;font-size: 16px;font-family: Arial;}");
-    };
-
-    const auto test15 = []() {
-        docpp::HTML::Properties prop{};
-
-        prop.push_back(docpp::HTML::Property(std::pair<std::string, std::string>("id", "test_id")));
-        prop.push_back(docpp::HTML::Property(std::pair<std::string, std::string>("class", "class1 class2 class3")));
-
-        REQUIRE(docpp::HTML::Element("p", prop, {}).get() == "<p id=\"test_id\" class=\"class1 class2 class3\"></p>");
-
-        const int pos = prop.find("class");
-
-        REQUIRE(pos != docpp::HTML::Properties::npos);
-
-        const int pos2 = prop.find("class2");
-
-        REQUIRE(prop.at(pos2).get_key<std::string>() == "class");
-        REQUIRE(prop.at(pos2).get_value<std::string>() == "class1 class2 class3");
-
-        REQUIRE(pos2 != docpp::HTML::Properties::npos);
-
-        const int pos3 = prop.find("class4");
-
-        REQUIRE(pos3 == docpp::HTML::Properties::npos);
-
-        prop.erase(pos);
-
-        REQUIRE(docpp::HTML::Element("p", prop, {}).get() == "<p id=\"test_id\"></p>");
-    };
-
-    const auto test16 = []() {
-        docpp::HTML::Document doc = docpp::HTML::Section({});
-
-        doc.get_section().push_back(docpp::HTML::Element("p", {}, "Test 1"));
-        doc.get_section().push_back(docpp::HTML::Element("p", {}, "Test 2"));
-        doc.get_section().push_back(docpp::HTML::Element("p", {}, "Test 3"));
-
-        doc.get_section() = docpp::HTML::Section(docpp::HTML::ELEMENT_HTML, {});
-
-        doc.get_section().push_back(docpp::HTML::Element("p", {}, "Test 4"));
-        doc.get_section().push_back(docpp::HTML::Element("p", {}, "Test 5"));
-        doc.get_section().push_back(docpp::HTML::Element("p", {}, "Test 6"));
-
-        doc.get_section() += docpp::HTML::Element("p", {}, "Test 7");
-
-        REQUIRE(doc.get() == "<!DOCTYPE html><html><p>Test 4</p><p>Test 5</p><p>Test 6</p><p>Test 7</p></html>");
-    };
-
-    const auto test17 = []() {
-        docpp::HTML::Section section = docpp::HTML::Section(docpp::HTML::ELEMENT_HTML, {});
-
-        section.push_back(docpp::HTML::Element("p", {}, "Test 1"));
-        section.push_back(docpp::HTML::Element("p", {}, "Test 2"));
-        section.push_back(docpp::HTML::Element("p", {}, "Test 3"));
-
-        docpp::HTML::Document doc{section};
-
-        REQUIRE(doc.get(docpp::HTML::FORMATTING_PRETTY) == "<!DOCTYPE html>\n<html>\n\t<p>Test 1</p>\n\t<p>Test 2</p>\n\t<p>Test 3</p>\n</html>");
-    };
-
-    const auto test18 = []() {
-        docpp::HTML::Section section = docpp::HTML::Section(docpp::HTML::ELEMENT_EMPTY, {});
-
-        section.push_back(docpp::HTML::Element("p", {}, "Test 1"));
-        section.push_back(docpp::HTML::Element("p", {}, "Test 2"));
-        section.push_back(docpp::HTML::Element("p", {}, "Test 3"));
-
-        REQUIRE(section.get() == "<p>Test 1</p><p>Test 2</p><p>Test 3</p>");
-    };
-
-    const auto test19 = []() {
-        docpp::HTML::Section section = docpp::HTML::Section(docpp::HTML::ELEMENT_HTML, {});
-
-        section.push_back(docpp::HTML::Element("p", {}, "Test 1"));
-        section.push_back(docpp::HTML::Element("p", {}, "Test 2"));
-        section.push_back(docpp::HTML::Element("p", {}, "Test 3"));
-
-        REQUIRE(section.front().get() == "<p>Test 1</p>");
-        REQUIRE(section.back().get() == "<p>Test 3</p>");
-    };
-
-    const auto test20 = []() {
-        docpp::HTML::Properties prop{};
-
-        prop.push_back(docpp::HTML::Property(std::pair<std::string, std::string>("id", "test_id")));
-        prop.push_back(docpp::HTML::Property(std::pair<std::string, std::string>("class", "class1 class2 class3")));
-        prop.push_back(docpp::HTML::Property(std::pair<std::string, std::string>("style", "color: red; font-size: 16px; font-family: Arial;")));
-
-        for (const docpp::HTML::Property& p : prop) {
-            REQUIRE(p.get_key<std::string>() == "id");
-            REQUIRE(p.get_value<std::string>() == "test_id");
-            break;
-        }
-
-        for (docpp::HTML::Properties::iterator it = ++prop.begin(); it != prop.end(); ++it) {
-            REQUIRE(it->get_key<std::string>() == "class");
-            REQUIRE(it->get_value<std::string>() == "class1 class2 class3");
-            break;
-        }
-    };
-
-    const auto test21 = []() {
-        docpp::HTML::Section sect{};
-
-        sect.push_back(docpp::HTML::Element("p", {}, "Test 1"));
-        sect.push_back(docpp::HTML::Element("p", {}, "Test 2"));
-        sect.push_back(docpp::HTML::Element("p", {}, "Test 3"));
-
-        for (const docpp::HTML::Element& elem : sect) {
-            REQUIRE(elem.get() == "<p>Test 1</p>");
-            break;
-        }
-
-        for (docpp::HTML::Section::iterator it = ++sect.begin(); it != sect.end(); ++it) {
-            docpp::HTML::Element elem = *it;
-            REQUIRE(elem.get() == "<p>Test 2</p>");
-            break;
-        }
-    };
-
-    const auto test22 = []() {
-        docpp::HTML::Section sect{};
-
-        sect.push_back(docpp::HTML::Element("p", {}, "Test 1"));
-        sect.push_back(docpp::HTML::Element("p", {}, "Test 2"));
-        sect.push_back(docpp::HTML::Element("p", {}, "Test 3"));
-
-        bool caught{false};
-        try {
-            sect.at(1337);
-        } catch (const docpp::out_of_range& e) {
-            caught = true;
-        }
-
-        REQUIRE(caught);
-    };
-
-    const auto test23 = []() {
-        docpp::HTML::Section sect{};
-
-        sect.push_back(docpp::HTML::Element("p", {}, "Test 1"));
-        sect.push_back(docpp::HTML::Element("p", {}, "Test 2"));
-        sect.push_back(docpp::HTML::Element("p", {}, "Test 3"));
-
-        REQUIRE(sect.get() == "<p>Test 1</p><p>Test 2</p><p>Test 3</p>");
-    };
-
-    const auto test24 = []() {
-        const auto test = docpp::HTML::resolve_tag(docpp::HTML::ELEMENT_HTML);
-        const auto test2 = docpp::HTML::resolve_tag(docpp::HTML::ELEMENT_HEAD);
-        const auto test3 = docpp::HTML::resolve_tag(docpp::HTML::ELEMENT_BODY);
-        const auto test4 = docpp::HTML::resolve_tag(docpp::HTML::ELEMENT_DIV);
-        const auto test5 = docpp::HTML::resolve_tag(docpp::HTML::ELEMENT_NAV);
-        const auto test6 = docpp::HTML::resolve_tag(docpp::HTML::ELEMENT_FOOTER);
-        const auto test7 = docpp::HTML::resolve_tag(docpp::HTML::ELEMENT_P);
-        const auto test8 = docpp::HTML::resolve_tag(docpp::HTML::ELEMENT_H1);
-        const auto test9 = docpp::HTML::resolve_tag(docpp::HTML::ELEMENT_H2);
-        const auto test10 = docpp::HTML::resolve_tag(docpp::HTML::ELEMENT_H3);
-        const auto test11 = docpp::HTML::resolve_tag(docpp::HTML::ELEMENT_H4);
-        const auto test12 = docpp::HTML::resolve_tag(docpp::HTML::ELEMENT_H5);
-        const auto test13 = docpp::HTML::resolve_tag(docpp::HTML::ELEMENT_H6);
-
-        docpp::HTML::Section sect = docpp::HTML::Section(docpp::HTML::ELEMENT_HTML);
-        docpp::HTML::Section sect2 = docpp::HTML::Section(docpp::HTML::ELEMENT_HEAD);
-        docpp::HTML::Section sect3 = docpp::HTML::Section(docpp::HTML::ELEMENT_BODY);
-        docpp::HTML::Section sect4 = docpp::HTML::Section(docpp::HTML::ELEMENT_DIV);
-        docpp::HTML::Section sect5 = docpp::HTML::Section(docpp::HTML::ELEMENT_NAV);
-        docpp::HTML::Section sect6 = docpp::HTML::Section(docpp::HTML::ELEMENT_FOOTER);
-        docpp::HTML::Section sect7 = docpp::HTML::Section(docpp::HTML::ELEMENT_P);
-        docpp::HTML::Section sect8 = docpp::HTML::Section(docpp::HTML::ELEMENT_H1);
-        docpp::HTML::Section sect9 = docpp::HTML::Section(docpp::HTML::ELEMENT_H2);
-        docpp::HTML::Section sect10 = docpp::HTML::Section(docpp::HTML::ELEMENT_H3);
-        docpp::HTML::Section sect11 = docpp::HTML::Section(docpp::HTML::ELEMENT_H4);
-        docpp::HTML::Section sect12 = docpp::HTML::Section(docpp::HTML::ELEMENT_H5);
-        docpp::HTML::Section sect13 = docpp::HTML::Section(docpp::HTML::ELEMENT_H6);
-
-        docpp::HTML::Element elem = docpp::HTML::Element(docpp::HTML::ELEMENT_HTML);;
-        docpp::HTML::Element elem2 = docpp::HTML::Element(docpp::HTML::ELEMENT_HEAD);
-        docpp::HTML::Element elem3 = docpp::HTML::Element(docpp::HTML::ELEMENT_BODY);
-        docpp::HTML::Element elem4 = docpp::HTML::Element(docpp::HTML::ELEMENT_DIV);
-        docpp::HTML::Element elem5 = docpp::HTML::Element(docpp::HTML::ELEMENT_NAV);
-        docpp::HTML::Element elem6 = docpp::HTML::Element(docpp::HTML::ELEMENT_FOOTER);
-        docpp::HTML::Element elem7 = docpp::HTML::Element(docpp::HTML::ELEMENT_P);
-        docpp::HTML::Element elem8 = docpp::HTML::Element(docpp::HTML::ELEMENT_H1);
-        docpp::HTML::Element elem9 = docpp::HTML::Element(docpp::HTML::ELEMENT_H2);
-        docpp::HTML::Element elem10 = docpp::HTML::Element(docpp::HTML::ELEMENT_H3);
-        docpp::HTML::Element elem11 = docpp::HTML::Element(docpp::HTML::ELEMENT_H4);
-        docpp::HTML::Element elem12 = docpp::HTML::Element(docpp::HTML::ELEMENT_H5);
-        docpp::HTML::Element elem13 = docpp::HTML::Element(docpp::HTML::ELEMENT_H6);
-    };
-
-    std::vector<void (*)()> tests{
-        test1,
-        test2,
-        test3,
-        test4,
-        test5,
-        test6,
-        test7,
-        test8,
-        test9,
-        test10,
-        test11,
-        test12,
-        test13,
-        test14,
-        test15,
-        test16,
-        test17,
-        test18,
-        test19,
-        test20,
-        test21,
-        test22,
-        test23,
-        test24,
-    };
-
-    for (const auto& test : tests) {
-        test();
-    }
+    HTML::test_html();
+}
+
+/**
+ * @brief Test cases for the docpp namespace.
+ */
+SCENARIO("Test CSS", "[CSS]") {
+    CSS::test_css();
 }

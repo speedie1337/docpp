@@ -15,9 +15,9 @@
 #include <type_traits>
 
 /**
- * @brief A namespace to represent HTML elements and documents
+ * @brief A inline namespace to represent HTML elements and documents
  */
-namespace docpp {
+inline namespace docpp {
     /**
      * @brief A class to represent an exception when an index is out of range
      */
@@ -47,178 +47,178 @@ namespace docpp {
     };
 
     /**
-     * @brief A namespace to represent HTML elements and documents
+     * @brief A inline namespace to represent HTML elements and documents
      */
-    namespace HTML {
+    inline namespace HTML {
         /**
          * @brief Enum for element tags.
          */
-        enum Tag {
-            ELEMENT_EMPTY, /* Empty element */
-            ELEMENT_EMPTY_NO_FORMAT, /* Empty element, that ignores any formatting by get() calls. */
-            ELEMENT_ABBREVIATION, /* <abbr></abbr> */
-            ELEMENT_ABBR, /* <abbr></abbr> */
-            ELEMENT_ACRONYM, /* <acronym></acronym> */
-            ELEMENT_ADDRESS, /* <address></address> */
-            ELEMENT_ANCHOR, /* <a></a> */
-            ELEMENT_A, /* <a></a> */
-            ELEMENT_APPLET, /* <applet></applet> */
-            ELEMENT_ARTICLE, /* <article></article> */
-            ELEMENT_AREA, /* <area></area> */
-            ELEMENT_ASIDE, /* <aside></aside> */
-            ELEMENT_AUDIO, /* <audio></audio> */
-            ELEMENT_BASE, /* <base></base> */
-            ELEMENT_BASEFONT, /* <basefont></basefont> */
-            ELEMENT_BDI, /* <bdi></bdi> */
-            ELEMENT_BDO, /* <bdo></bdo> */
-            ELEMENT_BGSOUND, /* <bgsound></bgsound> */
-            ELEMENT_BIG, /* <big></big> */
-            ELEMENT_BLOCKQUOTE, /* <blockquote></blockquote> */
-            ELEMENT_BODY, /* <body></body> */
-            ELEMENT_BOLD, /* <b></b> */
-            ELEMENT_B, /* <b></b> */
-            ELEMENT_BR, /* <br> */
-            ELEMENT_BREAK, /* <br> */
-            ELEMENT_BUTTON, /* <button></button> */
-            ELEMENT_CAPTION, /* <caption></caption> */
-            ELEMENT_CANVAS, /* <canvas></canvas> */
-            ELEMENT_CENTER, /* <center></center> */
-            ELEMENT_CITE, /* <cite></cite> */
-            ELEMENT_CODE, /* <code></code> */
-            ELEMENT_COLGROUP, /* <colgroup></colgroup> */
-            ELEMENT_COL, /* <col></col> */
-            ELEMENT_COLUMN, /* <col></col> */
-            ELEMENT_DATA, /* <data></data> */
-            ELEMENT_DATALIST, /* <datalist></datalist> */
-            ELEMENT_DD, /* <dd></dd> */
-            ELEMENT_DFN, /* <dfn></dfn> */
-            ELEMENT_DEFINE, /* <dfn></dfn> */
-            ELEMENT_DELETE, /* <del></del> */
-            ELEMENT_DEL, /* <del></del> */
-            ELEMENT_DETAILS, /* <details></details> */
-            ELEMENT_DIALOG, /* <dialog></dialog> */
-            ELEMENT_DIR, /* <dir></dir> */
-            ELEMENT_DIV, /* <div></div> */
-            ELEMENT_DL, /* <dl></dl> */
-            ELEMENT_DT, /* <dt></dt> */
-            ELEMENT_EMBED, /* <embed></embed> */
-            ELEMENT_FIELDSET, /* <fieldset></fieldset> */
-            ELEMENT_FIGCAPTION, /* <figcaption></figcaption> */
-            ELEMENT_FIGURE, /* <figure></figure> */
-            ELEMENT_FONT, /* <font></font> */
-            ELEMENT_FOOTER, /* <footer></footer> */
-            ELEMENT_FORM, /* <form></form> */
-            ELEMENT_FRAME, /* <frame></frame> */
-            ELEMENT_FRAMESET, /* <frameset></frameset> */
-            ELEMENT_HEAD, /* <head></head> */
-            ELEMENT_HEADER, /* <header></header> */
-            ELEMENT_H1, /* <h1></h1> */
-            ELEMENT_H2, /* <h2></h2> */
-            ELEMENT_H3, /* <h3></h3> */
-            ELEMENT_H4, /* <h4></h4> */
-            ELEMENT_H5, /* <h5></h5> */
-            ELEMENT_H6, /* <h6></h6> */
-            ELEMENT_HGROUP, /* <hgroup></hgroup> */
-            ELEMENT_HR, /* <hr> */
-            ELEMENT_HTML, /* <html></html> */
-            ELEMENT_IFRAME, /* <iframe></iframe> */
-            ELEMENT_IMAGE, /* <img> */
-            ELEMENT_IMG, /* <img> */
-            ELEMENT_INPUT, /* <input> */
-            ELEMENT_INS, /* <ins></ins> */
-            ELEMENT_ISINDEX, /* <isindex></isindex> */
-            ELEMENT_ITALIC, /* <i></i> */
-            ELEMENT_I, /* <i></i> */
-            ELEMENT_KBD, /* <kbd></kbd> */
-            ELEMENT_KEYGEN, /* <keygen></keygen> */
-            ELEMENT_LABEL, /* <label></label> */
-            ELEMENT_LEGEND, /* <legend></legend> */
-            ELEMENT_LIST, /* <li></li> */
-            ELEMENT_LI, /* <li></li> */
-            ELEMENT_LINK, /* <link></link> */
-            ELEMENT_MAIN, /* <main></main> */
-            ELEMENT_MARK, /* <mark></mark> */
-            ELEMENT_MARQUEE, /* <marquee></marquee> */
-            ELEMENT_MENUITEM, /* <menuitem></menuitem> */
-            ELEMENT_META, /* <meta></meta> */
-            ELEMENT_METER, /* <meter></meter> */
-            ELEMENT_NAV, /* <nav></nav> */
-            ELEMENT_NOBREAK, /* <nobr></nobr> */
-            ELEMENT_NOBR, /* <nobr></nobr> */
-            ELEMENT_NOEMBED, /* <noembed></noembed> */
-            ELEMENT_NOSCRIPT, /* <noscript></noscript> */
-            ELEMENT_OBJECT, /* <object></object> */
-            ELEMENT_OPTGROUP, /* <optgroup></optgroup> */
-            ELEMENT_OPTION, /* <option></option> */
-            ELEMENT_OUTPUT, /* <output></output> */
-            ELEMENT_PARAGRAPH, /* <p></p> */
-            ELEMENT_P, /* <p></p> */
-            ELEMENT_PARAM, /* <param></param> */
-            ELEMENT_PHRASE, /* <pharse></pharse> */
-            ELEMENT_PRE, /* <pre></pre> */
-            ELEMENT_PROGRESS, /* <progress></progress> */
-            ELEMENT_QUOTE, /* <q></q> */
-            ELEMENT_Q, /* <q></q> */
-            ELEMENT_RP, /* <rp></rp> */
-            ELEMENT_RT, /* <rt></rt> */
-            ELEMENT_RUBY, /* <ruby></ruby> */
-            ELEMENT_OUTDATED, /* <s></s> */
-            ELEMENT_S, /* <s></s> */
-            ELEMENT_SAMPLE, /* <samp></samp> */
-            ELEMENT_SAMP, /* <samp></samp> */
-            ELEMENT_SCRIPT, /* <script></script> */
-            ELEMENT_SECTION, /* <section></section> */
-            ELEMENT_SMALL, /* <small></small> */
-            ELEMENT_SOURCE, /* <source></source> */
-            ELEMENT_SPACER, /* <spacer></spacer> */
-            ELEMENT_SPAN, /* <span></span> */
-            ELEMENT_STRIKE, /* <strike></strike> */
-            ELEMENT_STRONG, /* <strong></strong> */
-            ELEMENT_STYLE, /* <style></style> */
-            ELEMENT_SUB, /* <sub></sub> */
-            ELEMENT_SUBSCRIPT, /* <sub></sub> */
-            ELEMENT_SUP, /* <sup></sup> */
-            ELEMENT_SUPERSCRIPT, /* <sup></sup> */
-            ELEMENT_SUMMARY, /* <summary></summary> */
-            ELEMENT_SVG, /* <svg></svg> */
-            ELEMENT_TABLE, /* <table></table> */
-            ELEMENT_TBODY, /* <tbody></tbody> */
-            ELEMENT_TD, /* <td></td> */
-            ELEMENT_TEMPLATE, /* <template></template> */
-            ELEMENT_TFOOT, /* <tfoot></tfoot> */
-            ELEMENT_TH, /* <th></th> */
-            ELEMENT_THEAD, /* <thead></thead> */
-            ELEMENT_TIME, /* <time></time> */
-            ELEMENT_TITLE, /* <title></title> */
-            ELEMENT_TR, /* <tr></tr> */
-            ELEMENT_TRACK, /* <track></track> */
-            ELEMENT_TT, /* <tt></tt> */
-            ELEMENT_UNDERLINE, /* <u></u> */
-            ELEMENT_U, /* <u></u> */
-            ELEMENT_VAR, /* <var></var> */
-            ELEMENT_VIDEO, /* <video></video> */
-            ELEMENT_WBR, /* <wbr></wbr> */
-            ELEMENT_XMP, /* <xmp></xmp> */
+        enum class Tag {
+            Empty, /* Empty element */
+            Empty_No_Formatting, /* Empty element, that ignores any formatting by get() calls. */
+            Abbreviation, /* <abbr></abbr> */
+            Abbr, /* <abbr></abbr> */
+            Acronym, /* <acronym></acronym> */
+            Address, /* <address></address> */
+            Anchor, /* <a></a> */
+            A, /* <a></a> */
+            Applet, /* <applet></applet> */
+            Article, /* <article></article> */
+            Area, /* <area></area> */
+            Aside, /* <aside></aside> */
+            Audio, /* <audio></audio> */
+            Base, /* <base></base> */
+            Basefont, /* <basefont></basefont> */
+            Bdi, /* <bdi></bdi> */
+            Bdo, /* <bdo></bdo> */
+            Bgsound, /* <bgsound></bgsound> */
+            Big, /* <big></big> */
+            Blockquote, /* <blockquote></blockquote> */
+            Body, /* <body></body> */
+            Bold, /* <b></b> */
+            B, /* <b></b> */
+            Br, /* <br> */
+            Break, /* <br> */
+            Button, /* <button></button> */
+            Caption, /* <caption></caption> */
+            Canvas, /* <canvas></canvas> */
+            Center, /* <center></center> */
+            Cite, /* <cite></cite> */
+            Code, /* <code></code> */
+            Colgroup, /* <colgroup></colgroup> */
+            Col, /* <col></col> */
+            Column, /* <col></col> */
+            Data, /* <data></data> */
+            Datalist, /* <datalist></datalist> */
+            Dd, /* <dd></dd> */
+            Dfn, /* <dfn></dfn> */
+            Define, /* <dfn></dfn> */
+            Delete, /* <del></del> */
+            Del, /* <del></del> */
+            Details, /* <details></details> */
+            Dialog, /* <dialog></dialog> */
+            Dir, /* <dir></dir> */
+            Div, /* <div></div> */
+            Dl, /* <dl></dl> */
+            Dt, /* <dt></dt> */
+            Embed, /* <embed></embed> */
+            Fieldset, /* <fieldset></fieldset> */
+            Figcaption, /* <figcaption></figcaption> */
+            Figure, /* <figure></figure> */
+            Font, /* <font></font> */
+            Footer, /* <footer></footer> */
+            Form, /* <form></form> */
+            Frame, /* <frame></frame> */
+            Frameset, /* <frameset></frameset> */
+            Head, /* <head></head> */
+            Header, /* <header></header> */
+            H1, /* <h1></h1> */
+            H2, /* <h2></h2> */
+            H3, /* <h3></h3> */
+            H4, /* <h4></h4> */
+            H5, /* <h5></h5> */
+            H6, /* <h6></h6> */
+            Hgroup, /* <hgroup></hgroup> */
+            Hr, /* <hr> */
+            Html, /* <html></html> */
+            Iframe, /* <iframe></iframe> */
+            Image, /* <img> */
+            Img, /* <img> */
+            Input, /* <input> */
+            Ins, /* <ins></ins> */
+            Isindex, /* <isindex></isindex> */
+            Italic, /* <i></i> */
+            I, /* <i></i> */
+            Kbd, /* <kbd></kbd> */
+            Keygen, /* <keygen></keygen> */
+            Label, /* <label></label> */
+            Legend, /* <legend></legend> */
+            List, /* <li></li> */
+            Li, /* <li></li> */
+            Link, /* <link></link> */
+            Main, /* <main></main> */
+            Mark, /* <mark></mark> */
+            Marquee, /* <marquee></marquee> */
+            Menuitem, /* <menuitem></menuitem> */
+            Meta, /* <meta></meta> */
+            Meter, /* <meter></meter> */
+            Nav, /* <nav></nav> */
+            Nobreak, /* <nobr></nobr> */
+            Nobr, /* <nobr></nobr> */
+            Noembed, /* <noembed></noembed> */
+            Noscript, /* <noscript></noscript> */
+            Object, /* <object></object> */
+            Optgroup, /* <optgroup></optgroup> */
+            Option, /* <option></option> */
+            Output, /* <output></output> */
+            Paragraph, /* <p></p> */
+            P, /* <p></p> */
+            Param, /* <param></param> */
+            Phrase, /* <pharse></pharse> */
+            Pre, /* <pre></pre> */
+            Progress, /* <progress></progress> */
+            Quote, /* <q></q> */
+            Q, /* <q></q> */
+            Rp, /* <rp></rp> */
+            Rt, /* <rt></rt> */
+            Ruby, /* <ruby></ruby> */
+            Outdated, /* <s></s> */
+            S, /* <s></s> */
+            Sample, /* <samp></samp> */
+            Samp, /* <samp></samp> */
+            Script, /* <script></script> */
+            Section, /* <section></section> */
+            Small, /* <small></small> */
+            Source, /* <source></source> */
+            Spacer, /* <spacer></spacer> */
+            Span, /* <span></span> */
+            Strike, /* <strike></strike> */
+            Strong, /* <strong></strong> */
+            Style, /* <style></style> */
+            Sub, /* <sub></sub> */
+            Subscript, /* <sub></sub> */
+            Sup, /* <sup></sup> */
+            Superscript, /* <sup></sup> */
+            Summary, /* <summary></summary> */
+            Svg, /* <svg></svg> */
+            Table, /* <table></table> */
+            Tbody, /* <tbody></tbody> */
+            Td, /* <td></td> */
+            Template, /* <template></template> */
+            Tfoot, /* <tfoot></tfoot> */
+            Th, /* <th></th> */
+            Thead, /* <thead></thead> */
+            Time, /* <time></time> */
+            Title, /* <title></title> */
+            Tr, /* <tr></tr> */
+            Track, /* <track></track> */
+            Tt, /* <tt></tt> */
+            Underline, /* <u></u> */
+            U, /* <u></u> */
+            Var, /* <var></var> */
+            Video, /* <video></video> */
+            Wbr, /* <wbr></wbr> */
+            Xmp, /* <xmp></xmp> */
         };
 
         /**
          * @brief Enum for element types.
          */
-        enum Type {
-            TYPE_SELF_CLOSING, /* Self-closing element (<tag></tag>)*/
-            TYPE_NON_SELF_CLOSING, /* Non-self-closing element (<tag>) */
-            TYPE_NON_CLOSED, /* Non-closed element (<tag>) */
-            TYPE_TEXT, /* Text element (my text here). Note that this does *not* append a newline character. */
-            TYPE_TEXT_TAB, /* Text element with tab characters appropriately prepended (my text here). Note that this does *not* append a newline character. */
+        enum class Type {
+            Self_Closing, /* Self-closing element (<tag></tag>)*/
+            Non_Self_Closing, /* Non-self-closing element (<tag>) */
+            Non_Closed, /* Non-closed element (<tag>) */
+            Text_No_Formatting, /* Text element with no formatting (my text here). */
+            Text, /* Text element with tab characters appropriately prepended (my text here). Note that this does *not* append a newline character. */
         };
 
         /**
          * @brief Enum for formatting options.
          */
-        enum Formatting {
-            FORMATTING_NONE, /* No formatting. Output is in the form of one long string of text, and a single newline character. */
-            FORMATTING_PRETTY, /* Pretty formatting. Output is formatted with newlines and tabs as deemed appropriate. */
-            FORMATTING_NEWLINE, /* Newline formatting. Each element has a newline appended. */
+        enum class Formatting {
+            None, /* No formatting. Output is in the form of one long string of text, and a single newline character. */
+            Pretty, /* Pretty formatting. Output is formatted with newlines and tabs as deemed appropriate. */
+            Newline, /* Newline formatting. Each element has a newline appended. */
         };
 
         /**
@@ -318,6 +318,21 @@ namespace docpp {
                  * @param property The property.
                  */
                 void set(const std::pair<std::string, std::string>& property);
+                /**
+                 * @brief Clear the property
+                 */
+                void clear();
+                /**
+                 * @brief Check if the property is empty
+                 * @return bool True if the property is empty, false otherwise
+                 */
+                bool empty() const;
+
+                Property& operator=(const Property& property);
+                Property& operator=(const std::pair<std::string, std::string>& property);
+                bool operator==(const Property& property) const;
+                bool operator!=(const Property& property) const;
+
         };
 
         /**
@@ -447,6 +462,15 @@ namespace docpp {
                  */
                 size_type size() const;
                 /**
+                 * @brief Clear the properties
+                 */
+                void clear();
+                /**
+                 * @brief Check if the properties are empty
+                 * @return bool True if the properties are empty, false otherwise
+                 */
+                bool empty() const;
+                /**
                  * @brief Prepend a property to the element
                  * @param property The property to add
                  */
@@ -470,10 +494,16 @@ namespace docpp {
                  * @brief Construct a new Properties object
                  */
                 Properties() = default;
-                Properties operator=(const Properties& properties);
-                Properties operator=(const std::vector<Property>& properties);
-                Properties operator=(const Property& property);
-                void operator+=(const Property& property);
+                Properties& operator=(const Properties& properties);
+                Properties& operator=(const std::vector<Property>& properties);
+                Properties& operator=(const Property& property);
+                bool operator==(const Properties& properties) const;
+                bool operator==(const Property& property) const;
+                bool operator!=(const Properties& properties) const;
+                bool operator!=(const Property& property) const;
+                Property operator[](const size_type& index) const;
+                Properties& operator+=(const Property& property);
+                Properties& operator+=(const Properties& properties);
         };
 
         /**
@@ -483,7 +513,7 @@ namespace docpp {
             private:
                 std::string tag{};
                 std::string data{};
-                Type type{TYPE_NON_SELF_CLOSING};
+                Type type{Type::Non_Self_Closing};
                 Properties properties{};
             protected:
             public:
@@ -500,7 +530,7 @@ namespace docpp {
                  * @param data The data of the element
                  * @param type The close tag type.
                  */
-                Element(const std::string& tag, const Properties& properties = {}, const std::string& data = {}, const Type type = TYPE_NON_SELF_CLOSING) : tag(tag), properties(properties), data(data), type(type) {};
+                Element(const std::string& tag, const Properties& properties = {}, const std::string& data = {}, const Type type = Type::Non_Self_Closing) : tag(tag), properties(properties), data(data), type(type) {};
                 /**
                  * @brief Construct a new Element object
                  * @param tag The tag of the element
@@ -519,18 +549,50 @@ namespace docpp {
                  * @param data The data of the element
                  * @param type The close tag type.
                  */
-                void set(const std::string& tag, const Properties& properties = {}, const std::string& data = {}, const Type type = TYPE_NON_SELF_CLOSING);
+                void set(const std::string& tag, const Properties& properties = {}, const std::string& data = {}, const Type type = Type::Non_Self_Closing);
+                /**
+                 * @brief Set the tag, properties, and data of the element
+                 * @param tag The tag of the element
+                 * @param properties The properties of the element
+                 * @param data The data of the element
+                 */
+                void set(const Tag tag, const Properties& properties = {}, const std::string& data = {});
+                /**
+                 * @brief Set the tag of the element
+                 * @param tag The tag of the element
+                 */
+                void set_tag(const std::string& tag);
+                /**
+                 * @brief Set the tag of the element
+                 * @param tag The tag of the element
+                 */
+                void set_tag(const Tag tag);
+                /**
+                 * @brief Set the data of the element
+                 * @param data The data of the element
+                 */
+                void set_data(const std::string& data);
+                /**
+                 * @brief Set the properties of the element
+                 * @param properties The properties of the element
+                 */
+                void set_properties(const Properties& properties);
+                /**
+                 * @brief Set the type of the element
+                 * @param type The type of the element
+                 */
+                void set_type(const Type type);
 
                 /**
                  * @brief Get the element in the form of an HTML tag.
                  * @return std::string The tag of the element
                  */
-                std::string get(const Formatting formatting = FORMATTING_NONE, const int tabc = 0) const;
+                std::string get(const Formatting formatting = Formatting::None, const int tabc = 0) const;
                 /**
                  * @brief Get the element in the form of a specific type.
                  * @return T The element in the form of a specific type
                  */
-                template <typename T> T get(const Formatting formatting = FORMATTING_NONE, const int tabc = 0) const {
+                template <typename T> T get(const Formatting formatting = Formatting::None, const int tabc = 0) const {
                     if (std::is_same<T, std::string>::value) {
                         return this->get(formatting, tabc);
                     }
@@ -568,9 +630,30 @@ namespace docpp {
                     }
                     return T(this->data);
                 }
+                /**
+                 * @brief Get the properties of the element
+                 * @return Properties The properties of the element
+                 */
+                Properties get_properties() const;
+                /**
+                 * @brief Get the type of the element
+                 * @return Type The type of the element
+                 */
+                Type get_type() const;
+                /**
+                 * @brief Clear the element
+                 */
+                void clear();
+                /**
+                 * @brief Check if the element is empty.
+                 * @return bool True if the element is empty, false otherwise.
+                 */
+                bool empty() const;
 
-                Element operator=(const Element& element);
-                void operator+=(const std::string& data);
+                Element& operator=(const Element& element);
+                Element& operator+=(const std::string& data);
+                bool operator==(const Element& element) const;
+                bool operator!=(const Element& element) const;
         };
 
         /**
@@ -717,19 +800,52 @@ namespace docpp {
                  * @return size_type The size of the section
                  */
                 size_type size() const;
+                /**
+                 * @brief Clear the section
+                 */
+                void clear();
+                /**
+                 * @brief Check if the section is empty
+                 * @return bool True if the section is empty, false otherwise
+                 */
+                bool empty() const;
 
                 /**
                  * @brief Construct a new Section object
                  * @param tag The tag of the section
                  * @param properties The properties of the section
+                 * @param elements The elements of the section
                  */
-                Section(const std::string& tag, const Properties& properties = {}) : tag(tag), properties(properties) {};
+                Section(const std::string& tag, const Properties& properties = {}, const std::vector<Element>& elements = {}) : tag(tag), properties(properties) {
+                    for (const auto& element : elements) this->push_back(element);
+                };
                 /**
                  * @brief Construct a new Section object
                  * @param tag The tag of the section
                  * @param properties The properties of the section
+                 * @param elements The elements of the section
                  */
-                Section(const Tag tag, const Properties& properties = {}) : tag(resolve_tag(tag).first), properties(properties) {};
+                Section(const Tag tag, const Properties& properties = {}, const std::vector<Element>& elements = {}) : tag(resolve_tag(tag).first), properties(properties) {
+                    for (const auto& element : elements) this->push_back(element);
+                };
+                /**
+                 * @brief Construct a new Section object
+                 * @param tag The tag of the section
+                 * @param properties The properties of the section
+                 * @param sections The sections of the section
+                 */
+                Section(const std::string& tag, const Properties& properties, const std::vector<Section>& sections) : tag(tag), properties(properties) {
+                    for (const auto& section : sections) this->push_back(section);
+                };
+                /**
+                 * @brief Construct a new Section object
+                 * @param tag The tag of the section
+                 * @param properties The properties of the section
+                 * @param sections The sections of the section
+                 */
+                Section(const Tag tag, const Properties& properties, const std::vector<Section>& sections) : tag(resolve_tag(tag).first), properties(properties) {
+                    for (const auto& section : sections) this->push_back(section);
+                };
                 /**
                  * @brief Construct a new Section object
                  */
@@ -748,6 +864,21 @@ namespace docpp {
                  * @param classes The classes of the section
                  */
                 void set(const Tag tag, const Properties& properties = {});
+                /**
+                 * @brief Set the tag of the section
+                 * @param tag The tag of the section
+                 */
+                void set_tag(const std::string& tag);
+                /**
+                 * @brief Set the tag of the section
+                 * @param tag The tag of the section
+                 */
+                void set_tag(const Tag tag);
+                /**
+                 * @brief Set the properties of the section
+                 * @param properties The properties of the section
+                 */
+                void set_properties(const Properties& properties);
                 /**
                  * @brief Swap two elements in the section
                  * @param index1 The index of the first element
@@ -781,21 +912,46 @@ namespace docpp {
                  * @brief Dump the entire section.
                  * @return std::string The section
                  */
-                std::string get(const Formatting formatting = FORMATTING_NONE, const int tabc = 0) const;
+                std::string get(const Formatting formatting = Formatting::None, const int tabc = 0) const;
                 /**
                  * @brief Get the element in the form of a specific type.
                  * @return T The element in the form of a specific type
                  */
-                template <typename T> T get(const Formatting formatting = FORMATTING_NONE, const int tabc = 0) const {
+                template <typename T> T get(const Formatting formatting = Formatting::None, const int tabc = 0) const {
                     if (std::is_same<T, std::string>::value) {
                         return this->get(formatting, tabc);
                     }
                     return T(this->get(formatting, tabc));
                 }
 
-                Section operator=(const Section& section);
-                void operator+=(const Element& element);
-                void operator+=(const Section& section);
+                /**
+                 * @brief Get the tag of the section
+                 * @return std::string The tag of the section
+                 */
+                std::string get_tag() const;
+                /**
+                 * @brief Get the tag of the section in a specific type
+                 * @return T The tag of the section
+                 */
+                template <typename T> T get_tag() const {
+                    if (std::is_same<T, std::string>::value) {
+                        return this->tag;
+                    }
+                    return T(this->tag);
+                }
+                /**
+                 * @brief Get the properties of the section
+                 * @return Properties The properties of the section
+                 */
+                Properties get_properties() const;
+
+                Section& operator=(const Section& section);
+                Section& operator+=(const Element& element);
+                Section& operator+=(const Section& section);
+                bool operator==(const Element& element) const;
+                bool operator==(const Section& section) const;
+                bool operator!=(const Element& element) const;
+                bool operator!=(const Section& section) const;
                 Element operator[](const int& index) const;
             private:
                 size_type index{};
@@ -827,12 +983,12 @@ namespace docpp {
                  * @param std::string The type to return
                  * @return std::string The document
                  */
-                std::string get(const Formatting formatting = FORMATTING_NONE, const int tabc = 0) const;
+                std::string get(const Formatting formatting = Formatting::None, const int tabc = 0) const;
                 /**
                  * @brief Get the document in the form of a specific type.
                  * @return T The document in the form of a specific type
                  */
-                template <typename T> T get(const Formatting formatting = FORMATTING_NONE, const int tabc = 0) const {
+                template <typename T> T get(const Formatting formatting = Formatting::None, const int tabc = 0) const {
                     if (std::is_same<T, std::string>::value) {
                         return this->get(formatting, tabc);
                     }
@@ -872,6 +1028,14 @@ namespace docpp {
                  */
                 void set_doctype(const std::string& doctype);
                 /**
+                 * @brief Check if the document is empty
+                 */
+                bool empty() const;
+                /**
+                 * @brief Clear the document
+                 */
+                void clear();
+                /**
                  * @brief Construct a new Document object
                  */
                 Document() = default;
@@ -881,22 +1045,26 @@ namespace docpp {
                  */
                 Document(const Section& document, const std::string& doctype = "<!DOCTYPE html>") : document(document), doctype(doctype) {};
 
-                Document operator=(const Document& document);
-                Document operator=(const Section& section);
+                Document& operator=(const Document& document);
+                Document& operator=(const Section& section);
+                bool operator==(const Document& document) const;
+                bool operator==(const Section& section) const;
+                bool operator!=(const Document& document) const;
+                bool operator!=(const Section& section) const;
         };
-    } // namespace HTML
+    } // inline namespace HTML
 
     /**
-     * @brief A namespace to represent CSS elements and documents
+     * @brief A inline namespace to represent CSS elements and documents
      */
-    namespace CSS {
+    inline namespace CSS {
         /**
          * @brief Enum for formatting options.
          */
-        enum Formatting {
-            FORMATTING_NONE,
-            FORMATTING_PRETTY,
-            FORMATTING_NEWLINE,
+        enum class Formatting {
+            None,
+            Pretty,
+            Newline,
         };
 
         /**
@@ -993,8 +1161,8 @@ namespace docpp {
                  */
                 void set(const std::string& key, const std::string& value);
 
-                Property operator=(const Property& property);
-                Property operator=(const std::pair<std::string, std::string>& property);
+                Property& operator=(const Property& property);
+                Property& operator=(const std::pair<std::string, std::string>& property);
         };
 
         /**
@@ -1150,12 +1318,12 @@ namespace docpp {
                  * @brief Get the element
                  * @return std::pair<std::string, std::vector<Property>> The element
                  */
-                std::string get(const Formatting formatting = FORMATTING_NONE, const int tabc = 0) const;
+                std::string get(const Formatting formatting = Formatting::None, const int tabc = 0) const;
                 /**
                  * @brief Get the element in the form of a specific type.
                  * @return T The element in the form of a specific type
                  */
-                template <typename T> T get(const Formatting formatting = FORMATTING_NONE, const int tabc = 0) const {
+                template <typename T> T get(const Formatting formatting = Formatting::None, const int tabc = 0) const {
                     if (std::is_same<T, std::string>::value) {
                         return this->get(formatting, tabc);
                     }
@@ -1182,10 +1350,10 @@ namespace docpp {
                  */
                 std::vector<Property> get_properties() const;
 
-                Element operator=(const Element& element);
-                Element operator=(const std::pair<std::string, std::vector<Property>>& element);
-                void operator+=(const Property& property);
-                Property operator[](const int& index) const;
+                Element& operator=(const Element& element);
+                Element& operator=(const std::pair<std::string, std::vector<Property>>& element);
+                Element& operator+=(const Property& property);
+                Property operator[](const size_type& index) const;
         };
 
         /**
@@ -1335,21 +1503,21 @@ namespace docpp {
                  * @brief Get the stylesheet
                  * @return std::string The stylesheet
                  */
-                std::string get(const Formatting formatting = FORMATTING_NONE, const int tabc = 0) const;
+                std::string get(const Formatting formatting = Formatting::None, const int tabc = 0) const;
                 /**
                  * @brief Get the stylesheet in the form of a specific type.
                  * @return T The stylesheet in the form of a specific type
                  */
-                template <typename T> T get(const Formatting formatting = FORMATTING_NONE, const int tabc = 0) const {
+                template <typename T> T get(const Formatting formatting = Formatting::None, const int tabc = 0) const {
                     if (std::is_same<T, std::string>::value) {
                         return this->get(formatting, tabc);
                     }
                     return T(this->get(formatting, tabc));
                 }
 
-                Stylesheet operator=(const Stylesheet& stylesheet);
-                void operator+=(const Element& element);
+                Stylesheet& operator=(const Stylesheet& stylesheet);
+                Stylesheet& operator+=(const Element& element);
                 Element operator[](const int& index) const;
         };
-    } // namespace CSS
-} // namespace docpp
+    } // inline namespace CSS
+} // inline namespace docpp

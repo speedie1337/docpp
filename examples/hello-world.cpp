@@ -19,7 +19,7 @@ int main() {
     docpp::HTML::Document doc{};
 
     /* This is an HTML section. It can hold any number of elements and/or sections.
-     * The first argument is the type of section, and this can either be a predefined value (e.g., docpp::HTML::ELEMENT_HTML) or a
+     * The first argument is the type of section, and this can either be a predefined value (e.g., docpp::HTML::Tag::Html) or a
      * custom value in the form of an std::string object.
      *
      * The second argument is an HTMLProperties object, which is a collection of Property objects. Each property is a std::pair of an
@@ -32,10 +32,10 @@ int main() {
      *
      * To get the section as an std::string object, call section.get().
      */
-    docpp::HTML::Section htmlSection(docpp::HTML::ELEMENT_HTML, {}); // <html></html>
-    docpp::HTML::Section headSection(docpp::HTML::ELEMENT_HEAD, {}); // <head></head>
-    docpp::HTML::Section bodySection(docpp::HTML::ELEMENT_BODY, {}); // <body></body>
-    docpp::HTML::Section footerSection(docpp::HTML::ELEMENT_FOOTER, {}); // <footer></footer>
+    docpp::HTML::Section htmlSection(docpp::HTML::Tag::Html, {}); // <html></html>
+    docpp::HTML::Section headSection(docpp::HTML::Tag::Head, {}); // <head></head>
+    docpp::HTML::Section bodySection(docpp::HTML::Tag::Body, {}); // <body></body>
+    docpp::HTML::Section footerSection(docpp::HTML::Tag::Footer, {}); // <footer></footer>
 
     /* This is an HTML element. Unlike a section, an element cannot hold any other elements or sections, rather it holds text and/or attributes.
      * The first argument is the type of element, and this should simply be the tag name (e.g., "p", "h1", "a", etc.).
@@ -48,7 +48,7 @@ int main() {
      *
      * The fourth argument is an integer representing the closing tag type. This can be one of the following:
      *
-     * - docpp::HTML::TYPE_NON_CLOSED: No closing tag will be appended.
+     * - docpp::HTML::Type::Non_Closed: No closing tag will be appended.
      *   Example: <img src="example.jpg">
      * - docpp::HTML::TYPE_NON_SELF_CLOSING: A closing tag will be appended.
      *   Example: <p>Hello world</p>
@@ -61,7 +61,7 @@ int main() {
 
     /* Add the title and meta elements to the head section. */
     headSection.push_back(titleElement);
-    headSection.push_back(docpp::HTML::Element("meta", {{docpp::HTML::Property("name", "description"), docpp::HTML::Property("content", "Hello world document description!")}}, "", docpp::HTML::TYPE_NON_CLOSED));
+    headSection.push_back(docpp::HTML::Element("meta", {{docpp::HTML::Property("name", "description"), docpp::HTML::Property("content", "Hello world document description!")}}, "", docpp::HTML::Type::Non_Closed));
 
     /* This is a CSS document. It is essentially the CSS equivalent of an HTML section.
      * It is essentially a collection of Element objects, which is a collection of Property objects.
@@ -84,14 +84,14 @@ int main() {
     stylesheet.push_back(bodyStyling);
 
     /* To get the stylesheet as an std::string object, call stylesheet.get(). It can then be used in an Element object. */
-    const std::string& css = stylesheet.get(docpp::CSS::FORMATTING_PRETTY); // body { background-color: black; color: white; }
+    const std::string& css = stylesheet.get(docpp::CSS::Formatting::Pretty); // body { background-color: black; color: white; }
 
     headSection.push_back(docpp::HTML::Element("style", {}, css)); // <style>body { background-color: black; color: white; }</style>
 
     /* Add a paragraph element to the footer section. */
     footerSection.push_back(docpp::HTML::Element("p", {}, "This is the footer.")); // <p>This is the footer.</p>
 
-    docpp::HTML::Section divSection(docpp::HTML::ELEMENT_DIV, {{docpp::HTML::Property("id", "main")}}); // <div id="main"></div>
+    docpp::HTML::Section divSection(docpp::HTML::Tag::Div, {{docpp::HTML::Property("id", "main")}}); // <div id="main"></div>
 
     /* Add a header element and a paragraph element to the div section. */
     divSection.push_back(docpp::HTML::Element("h1", {}, "Hello world!")); // <h1>Hello world!</h1>
@@ -113,10 +113,10 @@ int main() {
     /* Finally, let's output the document to a file and print it to standard output. */
     std::ofstream file("hello-world.html");
 
-    /* Optionally, you can use the get() method with the docpp::HTML::FORMATTING_PRETTY argument to get a *slightly* more readable document.
+    /* Optionally, you can use the get() method with the docpp::HTML::Formatting::Pretty argument to get a *slightly* more readable document.
      * The same goes for the CSS document. Or, you can use docpp::HTML::FORMATTING_NEWLINE to get a document with elements separated by newlines.
      */
-    file << doc.get(docpp::HTML::FORMATTING_PRETTY);
+    file << doc.get(docpp::HTML::Formatting::Pretty);
 
     file.close();
 
