@@ -44,6 +44,10 @@ If you use Gentoo Linux, you can specify -DGENERATE_EBUILD=ON to generate an ebu
 
 Just include docpp.hpp in your project and link against the library. Examples can be found in the examples directory.
 
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for details on how to contribute to this project.
+
 ## License
 
 This project is licensed under the GNU Lesser General Public License v3.0 - see the [LICENSE](LICENSE) file for details.
