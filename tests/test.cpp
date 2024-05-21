@@ -158,40 +158,6 @@ inline namespace HTML {
         }
     }
 
-    void test_exceptions() {
-        try {
-            throw docpp::out_of_range{};
-        } catch (const docpp::out_of_range& e) {
-            REQUIRE(std::string(e.what()) == "Out of range");
-        }
-
-        try {
-            throw docpp::out_of_range{"Out of range, very very out of range"};
-        } catch (const docpp::out_of_range& e) {
-            REQUIRE(std::string(e.what()) == "Out of range, very very out of range");
-        }
-
-        try {
-            throw docpp::invalid_argument{};
-        } catch (const docpp::invalid_argument& e) {
-            REQUIRE(std::string(e.what()) == "Invalid argument");
-        }
-
-        try {
-            throw docpp::invalid_argument{"Invalid, very very invalid argument"};
-        } catch (const docpp::invalid_argument& e) {
-            REQUIRE(std::string(e.what()) == "Invalid, very very invalid argument");
-        }
-    }
-
-    void test_npos_values() {
-        REQUIRE(docpp::HTML::Property::npos == -1);
-        REQUIRE(docpp::HTML::Properties::npos == -1);
-        REQUIRE(docpp::HTML::Element::npos == -1);
-        REQUIRE(docpp::HTML::Section::npos == -1);
-        REQUIRE(docpp::HTML::Document::npos == -1);
-    }
-
     void test_property() {
         const auto test_get_and_set = []() {
             using namespace docpp::HTML;
@@ -1359,8 +1325,6 @@ inline namespace HTML {
 
     void test_html() {
         test_tag();
-        test_exceptions();
-        test_npos_values();
         test_property();
         test_properties();
         test_element();
@@ -1370,12 +1334,693 @@ inline namespace HTML {
 } // namespace HTML
 
 inline namespace CSS {
+    void test_property() {
+        const auto test_get_and_set = []() {
+            using namespace docpp::CSS;
+
+            Property property;
+
+            property.set("key", "value");
+
+            REQUIRE(property.get().first == "key");
+            REQUIRE(property.get().second == "value");
+            REQUIRE(property.get_key() == "key");
+            REQUIRE(property.get_value() == "value");
+
+            property.set_key("new_key");
+
+            REQUIRE(property.get().first == "new_key");
+            REQUIRE(property.get().second == "value");
+            REQUIRE(property.get_key() == "new_key");
+            REQUIRE(property.get_value() == "value");
+
+            property.set_value("new_value");
+
+            REQUIRE(property.get().first == "new_key");
+            REQUIRE(property.get().second == "new_value");
+            REQUIRE(property.get_key() == "new_key");
+            REQUIRE(property.get_value() == "new_value");
+
+            REQUIRE(property.get_key<std::string>() == "new_key");
+            REQUIRE(property.get_value<std::string>() == "new_value");
+        };
+
+        const auto test_operators = []() {
+            using namespace docpp::CSS;
+
+            Property property1;
+            Property property2;
+
+            property1.set("key", "value");
+            property2.set("key", "value2");
+
+            REQUIRE(property1 == property1);
+            REQUIRE(property1 != property2);
+
+            property2 = property1;
+
+            REQUIRE(property1 == property2);
+
+            property2.set("key2", "value2");
+
+            REQUIRE(property1 != property2);
+        };
+
+        test_get_and_set();
+        test_operators();
+    }
+
+    void test_element() {
+        const auto test_get_and_set = []() {
+            using namespace docpp::CSS;
+
+            Element element;
+
+            element.set_tag("my_element");
+
+            REQUIRE(element.get_tag() == "my_element");
+            REQUIRE(element.get_properties().empty());
+
+            element.set_properties({{Property{"key", "value"}, Property{"key2", "value2"}}});
+
+            REQUIRE(element.get_properties().at(0).get().first == "key");
+            REQUIRE(element.get_properties().at(0).get().second == "value");
+            REQUIRE(element.get_properties().at(1).get().first == "key2");
+            REQUIRE(element.get_properties().at(1).get().second == "value2");
+
+            element.set("new_element", {{Property{"key", "value"}, Property{"key2", "value2"}}});
+
+            REQUIRE(element.get_tag() == "new_element");
+            REQUIRE(element.get_properties().at(0).get().first == "key");
+            REQUIRE(element.get_properties().at(0).get().second == "value");
+            REQUIRE(element.get_properties().at(1).get().first == "key2");
+            REQUIRE(element.get_properties().at(1).get().second == "value2");
+
+            element.set_properties({{Property{"key3", "value3"}, Property{"key4", "value4"}}});
+
+            REQUIRE(element.get_properties().at(0).get().first == "key3");
+            REQUIRE(element.get_properties().at(0).get().second == "value3");
+            REQUIRE(element.get_properties().at(1).get().first == "key4");
+            REQUIRE(element.get_properties().at(1).get().second == "value4");
+        };
+
+        const auto test_operators = []() {
+            using namespace docpp::CSS;
+
+            Element element1;
+            Element element2;
+
+            element1.set("my_element", {{Property{"key", "value"}, Property{"key2", "value2"}}});
+            element2.set("my_element", {{Property{"key", "value"}, Property{"key2", "value2"}}});
+
+            REQUIRE(element1 == element2);
+
+            element2.set("new_element", {{Property{"key", "value"}, Property{"key2", "value2"}}});
+
+            REQUIRE(element1 != element2);
+
+            element2 = element1;
+
+            REQUIRE(element1 == element2);
+        };
+
+        const auto test_constructors = []() {
+            using namespace docpp::CSS;
+
+            Element element{};
+
+            REQUIRE(element.get_tag() == "");
+            REQUIRE(element.get_properties().empty());
+            REQUIRE(element.get().empty());
+
+            Element element2{"my_element", {{Property{"key", "value"}, Property{"key2", "value2"}}}};
+
+            REQUIRE(element2.get_tag() == "my_element");
+            REQUIRE(element2.get_properties().at(0).get().first == "key");
+            REQUIRE(element2.get_properties().at(0).get().second == "value");
+            REQUIRE(element2.get_properties().at(1).get().first == "key2");
+            REQUIRE(element2.get_properties().at(1).get().second == "value2");
+        };
+
+        const auto test_copy_section = []() {
+            using namespace docpp::CSS;
+
+            Element element;
+
+            element.set("my_element", {{Property{"key", "value"}, Property{"key2", "value2"}}});
+
+            Element element2 = element;
+
+            REQUIRE(element == element2);
+
+            element2.set("new_element", {{Property{"key", "value"}, Property{"key2", "value2"}}});
+
+            REQUIRE(element != element2);
+
+            element2 = std::move(element);
+
+            REQUIRE(element2.get_tag() == "my_element");
+        };
+
+        const auto test_iterators = []() {
+            using namespace docpp::CSS;
+
+            Element element;
+
+            element.set("my_element", {{Property{"key", "value"}, Property{"key2", "value2"}}});
+
+            std::size_t index{0};
+            for (Element::iterator it = element.begin(); it != element.end(); ++it) {
+                Property property = *it;
+
+                if (index == 0) {
+                    REQUIRE(property.get().first == "key");
+                    REQUIRE(property.get().second == "value");
+                } else if (index == 1) {
+                    REQUIRE(property.get().first == "key2");
+                    REQUIRE(property.get().second == "value2");
+                }
+
+                ++index;
+            }
+
+            index = 0;
+            for (Element::const_iterator it = element.cbegin(); it != element.cend(); ++it) {
+                Property property = *it;
+
+                if (index == 0) {
+                    REQUIRE(property.get().first == "key");
+                    REQUIRE(property.get().second == "value");
+                } else if (index == 1) {
+                    REQUIRE(property.get().first == "key2");
+                    REQUIRE(property.get().second == "value2");
+                }
+
+                ++index;
+            }
+
+            index = 0;
+            for (Element::reverse_iterator it = element.rbegin(); it != element.rend(); ++it) {
+                Property property = *it;
+
+                if (index == 0) {
+                    REQUIRE(property.get().first == "key2");
+                    REQUIRE(property.get().second == "value2");
+                } else if (index == 1) {
+                    REQUIRE(property.get().first == "key");
+                    REQUIRE(property.get().second == "value");
+                }
+
+                ++index;
+            }
+
+            index = 0;
+            for (Element::const_reverse_iterator it = element.crbegin(); it != element.crend(); ++it) {
+                Property property = *it;
+
+                if (index == 0) {
+                    REQUIRE(property.get().first == "key2");
+                    REQUIRE(property.get().second == "value2");
+                } else if (index == 1) {
+                    REQUIRE(property.get().first == "key");
+                    REQUIRE(property.get().second == "value");
+                }
+
+                ++index;
+            }
+        };
+
+        const auto test_find = []() {
+            using namespace docpp::CSS;
+
+            Element element;
+
+            element.set("my_element", {{Property{"key", "value"}, Property{"key2", "value2"}}});
+
+            REQUIRE(element.find(Property{"key", "value"}) == 0);
+            REQUIRE(element.find("key") == 0);
+            REQUIRE(element.find(Property{"key2", "value2"}) == 1);
+            REQUIRE(element.find("key2") == 1);
+            REQUIRE(element.find("key3") == Element::npos);
+            REQUIRE(element.find(Property{"key3", "value3"}) == Element::npos);
+
+            Property property = element.at(element.find("key2"));
+
+            REQUIRE(property.get().first == "key2");
+        };
+
+        const auto test_insert = []() {
+            using namespace docpp::CSS;
+
+            Element element;
+
+            element.set("my_element", {{Property{"key", "value"}, Property{"key2", "value2"}}});
+
+            std::size_t pos = element.find("key");
+
+            Property property = element.at(pos);
+
+            std::size_t pos2 = element.find("key2");
+
+            element.insert(pos2, property);
+
+            REQUIRE(element.at(pos2) == property);
+            REQUIRE(element.get_properties().at(pos2) == property);
+            REQUIRE(element.get_properties().at(pos2).get().first == "key");
+        };
+
+        const auto test_swap = []() {
+            using namespace docpp::CSS;
+
+            Element element;
+
+            element.set("my_element", {{Property{"key", "value"}, Property{"key2", "value2"}}});
+
+            std::size_t pos1 = element.find("key");
+            Property property1 = element.at(pos1);
+
+            std::size_t pos2 = element.find("key2");
+            Property property2 = element.at(pos2);
+
+            element.swap(pos1, pos2);
+
+            REQUIRE(element[pos1] == property2);
+            REQUIRE(element[pos2] == property1);
+        };
+
+        const auto test_front_and_back = []() {
+            using namespace docpp::CSS;
+
+            Element element;
+
+            element.set("my_element", {{Property{"key", "value"}, Property{"key2", "value2"}}});
+
+            REQUIRE(element.front().get().first == "key");
+            REQUIRE(element.back().get().first == "key2");
+        };
+
+        const auto test_size_empty_and_clear = []() {
+            using namespace docpp::CSS;
+
+            Element element;
+
+            element.set("my_element", {{Property{"key", "value"}, Property{"key2", "value2"}}});
+
+            REQUIRE(element.size() == 2);
+            REQUIRE(element.empty() == false);
+
+            element.clear();
+
+            REQUIRE(element.size() == 0);
+            REQUIRE(element.empty() == true);
+        };
+
+        const auto test_push_front_and_back = []() {
+            using namespace docpp::CSS;
+
+            Element element;
+
+            element.push_front(Property{"key", "value"});
+            element.push_back(Property{"key2", "value2"});
+
+            REQUIRE(element.front().get().first == "key");
+            REQUIRE(element.back().get().first == "key2");
+        };
+
+        const auto test_string_get = []() {
+            using namespace docpp::CSS;
+
+            Element element;
+
+            element.set("my_element", {{Property{"key", "value"}, Property{"key2", "value2"}}});
+
+            const std::string expected_1 = "my_element {key: value;key2: value2;}";
+            const std::string expected_2 = "my_element {\nkey: value;\nkey2: value2;\n}\n";
+            const std::string expected_3 = "my_element {\n\tkey: value;\n\tkey2: value2;\n}\n";
+
+            REQUIRE(element.get() == expected_1);
+            REQUIRE(element.get<std::string>() == expected_1);
+            REQUIRE(element.get<std::string>(docpp::CSS::Formatting::None) == expected_1);
+            REQUIRE(element.get<std::string>(docpp::CSS::Formatting::Newline) == expected_2);
+            REQUIRE(element.get<std::string>(docpp::CSS::Formatting::Pretty) == expected_3);
+        };
+
+        const auto test_handle_elements = []() {
+            using namespace docpp::CSS;
+
+            Element element;
+
+            element.set("my_element", {{Property{"key", "value"}, Property{"key2", "value2"}}});
+
+            Property retrieved_prop1 = element.get_properties().at(0);
+            Property retrieved_prop2 = element.get_properties().at(1);
+
+            REQUIRE(retrieved_prop1.get().first == "key");
+            REQUIRE(retrieved_prop1.get().second == "value");
+            REQUIRE(retrieved_prop2.get().first == "key2");
+            REQUIRE(retrieved_prop2.get().second == "value2");
+        };
+
+        test_get_and_set();
+        test_operators();
+        test_get_and_set();
+        test_constructors();
+        test_copy_section();
+        test_iterators();
+        test_find();
+        test_insert();
+        test_swap();
+        test_front_and_back();
+        test_size_empty_and_clear();
+        test_push_front_and_back();
+        test_string_get();
+        test_handle_elements();
+    }
+
+    void test_stylesheet() {
+        const auto test_get_and_set = []() {
+            using namespace docpp::CSS;
+
+            Stylesheet stylesheet;
+
+            stylesheet.set({Element{"my_element", {{Property{"key", "value"}, Property{"key2", "value2"}}}}});
+
+            REQUIRE(stylesheet.at(0).get_tag() == "my_element");
+            REQUIRE(stylesheet.at(0).get_properties().at(0).get().first == "key");
+            REQUIRE(stylesheet.at(0).get_properties().at(0).get().second == "value");
+            REQUIRE(stylesheet.at(0).get_properties().at(1).get().first == "key2");
+            REQUIRE(stylesheet.at(0).get_properties().at(1).get().second == "value2");
+
+            stylesheet.set({Element{"my_element2", {{Property{"key3", "value3"}, Property{"key4", "value4"}}}}});
+
+            REQUIRE(stylesheet.at(0).get_tag() == "my_element2");
+            REQUIRE(stylesheet.at(0).get_properties().at(0).get().first == "key3");
+            REQUIRE(stylesheet.at(0).get_properties().at(0).get().second == "value3");
+            REQUIRE(stylesheet.at(0).get_properties().at(1).get().first == "key4");
+            REQUIRE(stylesheet.at(0).get_properties().at(1).get().second == "value4");
+
+            try {
+                stylesheet.at(1);
+            } catch (const docpp::out_of_range& e) {
+                REQUIRE(true);
+            }
+
+            try {
+                stylesheet.at(0).at(2);
+            } catch (const docpp::out_of_range& e) {
+                REQUIRE(true);
+            }
+        };
+
+        const auto test_copy_section = []() {
+            using namespace docpp::CSS;
+
+            Stylesheet stylesheet;
+
+            stylesheet.set({Element{"my_element", {{Property{"key", "value"}, Property{"key2", "value2"}}}}});
+
+            Stylesheet new_stylesheet = stylesheet;
+
+            REQUIRE(stylesheet == new_stylesheet);
+            REQUIRE(stylesheet.empty() == false);
+
+            stylesheet.clear();
+
+            REQUIRE(stylesheet.empty() == true);
+
+            stylesheet = std::move(new_stylesheet);
+
+            REQUIRE(stylesheet.empty() == false);
+        };
+
+        const auto test_operators = []() {
+            using namespace docpp::CSS;
+
+            Stylesheet stylesheet1;
+            Stylesheet stylesheet2;
+
+            Element element{"my_element", {{Property{"key", "value"}, Property{"key2", "value2"}}}};
+            Element element2{"my_element", {{Property{"key", "value"}, Property{"key2", "value2"}}}};
+
+            stylesheet1.set({element});
+            stylesheet2.set({element2});
+
+            REQUIRE(stylesheet1 == stylesheet2);
+
+            element2.set("my_element2", {{Property{"key3", "value3"}, Property{"key4", "value4"}}});
+            stylesheet2.set({element2});
+
+            REQUIRE(stylesheet1 != stylesheet2);
+        };
+
+        const auto test_constructors = []() {
+            using namespace docpp::CSS;
+
+            Stylesheet stylesheet{};
+
+            REQUIRE(stylesheet.empty() == true);
+
+            Stylesheet stylesheet2{{Element{"my_element", {{Property{"key", "value"}, Property{"key2", "value2"}}}}}};
+
+            REQUIRE(stylesheet2.size() == 1);
+        };
+
+        const auto test_push_front_and_back = []() {
+            using namespace docpp::CSS;
+
+            Stylesheet stylesheet;
+
+            stylesheet.push_front(Element{"my_element", {{Property{"key", "value"}, Property{"key2", "value2"}}}});
+            stylesheet.push_back(Element{"my_element2", {{Property{"key3", "value3"}, Property{"key4", "value4"}}}});
+
+            REQUIRE(stylesheet.front().get_tag() == "my_element");
+            REQUIRE(stylesheet.back().get_tag() == "my_element2");
+        };
+
+        const auto test_swap = []() {
+            using namespace docpp::CSS;
+
+            Stylesheet stylesheet;
+
+            stylesheet.push_back(Element{"my_element", {{Property{"key", "value"}, Property{"key2", "value2"}}}});
+            stylesheet.push_back(Element{"my_element2", {{Property{"key3", "value3"}, Property{"key4", "value4"}}}});
+
+            std::size_t pos1 = stylesheet.find("my_element");
+            Element element1 = stylesheet.at(pos1);
+
+            std::size_t pos2 = stylesheet.find("my_element2");
+            Element element2 = stylesheet.at(pos2);
+
+            stylesheet.swap(pos1, pos2);
+
+            REQUIRE(stylesheet.at(pos1) == element2);
+            REQUIRE(stylesheet.at(pos2) == element1);
+
+            stylesheet.swap(element1, element2);
+
+            REQUIRE(stylesheet.at(pos1) == element1);
+            REQUIRE(stylesheet.at(pos2) == element2);
+        };
+
+        const auto test_size_empty_and_clear = []() {
+            using namespace docpp::CSS;
+
+            Stylesheet stylesheet;
+
+            stylesheet.push_back(Element{"my_element", {{Property{"key", "value"}, Property{"key2", "value2"}}}});
+            stylesheet.push_back(Element{"my_element2", {{Property{"key3", "value3"}, Property{"key4", "value4"}}}});
+
+            REQUIRE(stylesheet.size() == 2);
+            REQUIRE(stylesheet.empty() == false);
+
+            stylesheet.clear();
+
+            REQUIRE(stylesheet.size() == 0);
+            REQUIRE(stylesheet.empty() == true);
+        };
+
+        const auto test_insert = []() {
+            using namespace docpp::CSS;
+
+            Stylesheet stylesheet;
+
+            stylesheet.push_back(Element{"my_element", {{Property{"key", "value"}, Property{"key2", "value2"}}}});
+            stylesheet.push_back(Element{"my_element2", {{Property{"key3", "value3"}, Property{"key4", "value4"}}}});
+
+            std::size_t pos = stylesheet.find("my_element");
+
+            Element element = stylesheet.at(pos);
+
+            std::size_t pos2 = stylesheet.find("my_element2");
+
+            stylesheet.insert(pos2, element);
+
+            REQUIRE(stylesheet.at(pos2) == element);
+            REQUIRE(stylesheet.at(pos2).get_tag() == "my_element");
+        };
+
+        const auto test_iterators = []() {
+            using namespace docpp::CSS;
+
+            Stylesheet stylesheet;
+
+            stylesheet.push_back(Element{"my_element", {{Property{"key", "value"}, Property{"key2", "value2"}}}});
+            stylesheet.push_back(Element{"my_element2", {{Property{"key3", "value3"}, Property{"key4", "value4"}}}});
+            stylesheet.push_back(Element{"my_element3", {{Property{"key5", "value5"}, Property{"key6", "value6"}}}});
+            stylesheet.push_back(Element{"my_element4", {{Property{"key7", "value7"}, Property{"key8", "value8"}}}});
+
+            std::size_t index{0};
+            for (Stylesheet::iterator it = stylesheet.begin(); it != stylesheet.end(); ++it) {
+                Element element = *it;
+
+                if (index == 0) {
+                    REQUIRE(element.get_tag() == "my_element");
+                } else if (index == 1) {
+                    REQUIRE(element.get_tag() == "my_element2");
+                } else if (index == 2) {
+                    REQUIRE(element.get_tag() == "my_element3");
+                } else if (index == 3) {
+                    REQUIRE(element.get_tag() == "my_element4");
+                }
+
+                ++index;
+            }
+
+            index = 0;
+            for (Stylesheet::const_iterator it = stylesheet.cbegin(); it != stylesheet.cend(); ++it) {
+                Element element = *it;
+
+                if (index == 0) {
+                    REQUIRE(element.get_tag() == "my_element");
+                } else if (index == 1) {
+                    REQUIRE(element.get_tag() == "my_element2");
+                } else if (index == 2) {
+                    REQUIRE(element.get_tag() == "my_element3");
+                } else if (index == 3) {
+                    REQUIRE(element.get_tag() == "my_element4");
+                }
+
+                ++index;
+            }
+
+            index = 0;
+            for (Stylesheet::reverse_iterator it = stylesheet.rbegin(); it != stylesheet.rend(); ++it) {
+                Element element = *it;
+
+                if (index == 0) {
+                    REQUIRE(element.get_tag() == "my_element4");
+                } else if (index == 1) {
+                    REQUIRE(element.get_tag() == "my_element3");
+                } else if (index == 2) {
+                    REQUIRE(element.get_tag() == "my_element2");
+                } else if (index == 3) {
+                    REQUIRE(element.get_tag() == "my_element");
+                }
+
+                ++index;
+            }
+
+            index = 0;
+            for (Stylesheet::const_reverse_iterator it = stylesheet.crbegin(); it != stylesheet.crend(); ++it) {
+                Element element = *it;
+
+                if (index == 0) {
+                    REQUIRE(element.get_tag() == "my_element4");
+                } else if (index == 1) {
+                    REQUIRE(element.get_tag() == "my_element3");
+                } else if (index == 2) {
+                    REQUIRE(element.get_tag() == "my_element2");
+                } else if (index == 3) {
+                    REQUIRE(element.get_tag() == "my_element");
+                }
+
+                ++index;
+            }
+
+            index = 0;
+
+            for (const auto& it : stylesheet) {
+                Element element = it;
+
+                if (index == 0) {
+                    REQUIRE(element.get_tag() == "my_element");
+                } else if (index == 1) {
+                    REQUIRE(element.get_tag() == "my_element2");
+                } else if (index == 2) {
+                    REQUIRE(element.get_tag() == "my_element3");
+                } else if (index == 3) {
+                    REQUIRE(element.get_tag() == "my_element4");
+                }
+
+                ++index;
+            }
+        };
+
+        test_get_and_set();
+        test_copy_section();
+        test_operators();
+        test_constructors();
+        test_push_front_and_back();
+        test_swap();
+        test_size_empty_and_clear();
+        test_insert();
+        test_iterators();
+    }
+
     void test_css() {
-        // TODO: Implement tests for CSS
-        // Previous tests were ran after the implementation of the CSS namespace, so CSS tests are not necessary at the moment and will be implemented soon
+        test_property();
+        test_element();
+        test_stylesheet();
     }
 
 } // namespace CSS
+
+inline namespace General {
+    void test_exceptions() {
+        try {
+            throw docpp::out_of_range{};
+        } catch (const docpp::out_of_range& e) {
+            REQUIRE(std::string(e.what()) == "Out of range");
+        }
+
+        try {
+            throw docpp::out_of_range{"Out of range, very very out of range"};
+        } catch (const docpp::out_of_range& e) {
+            REQUIRE(std::string(e.what()) == "Out of range, very very out of range");
+        }
+
+        try {
+            throw docpp::invalid_argument{};
+        } catch (const docpp::invalid_argument& e) {
+            REQUIRE(std::string(e.what()) == "Invalid argument");
+        }
+
+        try {
+            throw docpp::invalid_argument{"Invalid, very very invalid argument"};
+        } catch (const docpp::invalid_argument& e) {
+            REQUIRE(std::string(e.what()) == "Invalid, very very invalid argument");
+        }
+    }
+
+    void test_npos_values() {
+        REQUIRE(docpp::HTML::Property::npos == -1);
+        REQUIRE(docpp::HTML::Properties::npos == -1);
+        REQUIRE(docpp::HTML::Element::npos == -1);
+        REQUIRE(docpp::HTML::Section::npos == -1);
+        REQUIRE(docpp::HTML::Document::npos == -1);
+        REQUIRE(docpp::CSS::Property::npos == -1);
+        REQUIRE(docpp::CSS::Element::npos == -1);
+        REQUIRE(docpp::CSS::Stylesheet::npos == -1);
+    }
+}
+
+/**
+ * @brief Test cases for the docpp namespace.
+ */
+SCENARIO("Test general", "[GENERAL]") {
+    General::test_exceptions();
+    General::test_npos_values();
+}
 
 /**
  * @brief Test cases for the docpp namespace.

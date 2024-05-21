@@ -898,6 +898,10 @@ void docpp::HTML::Document::set(const docpp::HTML::Section& document) {
     this->document = document;
 }
 
+docpp::HTML::Document::size_type docpp::HTML::Document::size() const {
+    return this->document.size();
+}
+
 void docpp::HTML::Document::set_doctype(const std::string& doctype) {
     this->doctype = doctype;
 }
@@ -980,8 +984,16 @@ docpp::CSS::Property& docpp::CSS::Property::operator=(const std::pair<std::strin
     return *this;
 }
 
+bool docpp::CSS::Property::operator==(const docpp::CSS::Property& property) const {
+    return this->get() == property.get();
+}
+
+bool docpp::CSS::Property::operator!=(const docpp::CSS::Property& property) const {
+    return this->get() != property.get();
+}
+
 docpp::CSS::Element& docpp::CSS::Element::operator=(const docpp::CSS::Element& element) {
-    this->set({element.get_tag(), element.get_properties()});
+    this->set(element.get_tag(), element.get_properties());
     return *this;
 }
 
@@ -994,13 +1006,29 @@ docpp::CSS::Property docpp::CSS::Element::operator[](const size_type& index) con
     return this->at(index);
 }
 
+bool docpp::CSS::Element::operator==(const docpp::CSS::Element& element) const {
+    return this->get() == element.get();
+}
+
+bool docpp::CSS::Element::operator!=(const docpp::CSS::Element& element) const {
+    return this->get() != element.get();
+}
+
 void docpp::CSS::Element::set(const std::string& tag, const std::vector<Property>& properties) {
     this->element.first = tag;
     this->element.second = properties;
 }
 
-void docpp::CSS::Element::set(const std::pair<std::string, std::vector<Property>>& element) {
-    this->element = element;
+void docpp::CSS::Element::set_tag(const std::string& tag) {
+    this->element.first = tag;
+}
+
+void docpp::CSS::Element::set_tag(const Tag tag) {
+    this->element.first = resolve_tag(tag).first;
+}
+
+void docpp::CSS::Element::set_properties(const std::vector<Property>& properties) {
+    this->element.second = properties;
 }
 
 void docpp::CSS::Element::push_front(const Property& property) {
@@ -1065,6 +1093,15 @@ docpp::CSS::Property docpp::CSS::Element::back() const {
 
 docpp::CSS::Element::size_type docpp::CSS::Element::size() const {
     return this->element.second.size();
+}
+
+bool docpp::CSS::Element::empty() const {
+    return this->element.second.empty();
+}
+
+void docpp::CSS::Element::clear() {
+    this->element.first.clear();
+    this->element.second.clear();
 }
 
 void docpp::CSS::Element::swap(const size_type index1, const size_type index2) {
@@ -1178,6 +1215,14 @@ docpp::CSS::Element docpp::CSS::Stylesheet::operator[](const int& index) const {
     return this->at(index);
 }
 
+bool docpp::CSS::Stylesheet::operator==(const docpp::CSS::Stylesheet& stylesheet) const {
+    return this->get_elements() == stylesheet.get_elements();
+}
+
+bool docpp::CSS::Stylesheet::operator!=(const docpp::CSS::Stylesheet& stylesheet) const {
+    return this->get_elements() != stylesheet.get_elements();
+}
+
 docpp::CSS::Element docpp::CSS::Stylesheet::at(const size_type index) const {
     if (index < 0 || index >= this->elements.size()) {
         throw docpp::out_of_range("Index out of range");
@@ -1208,6 +1253,14 @@ docpp::CSS::Stylesheet::size_type docpp::CSS::Stylesheet::find(const std::string
 
 docpp::CSS::Stylesheet::size_type docpp::CSS::Stylesheet::size() const {
     return this->elements.size();
+}
+
+bool docpp::CSS::Stylesheet::empty() const {
+    return this->elements.empty();
+}
+
+void docpp::CSS::Stylesheet::clear() {
+    this->elements.clear();
 }
 
 docpp::CSS::Element docpp::CSS::Stylesheet::front() const {

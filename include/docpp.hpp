@@ -1028,6 +1028,11 @@ inline namespace docpp {
                  */
                 void set_doctype(const std::string& doctype);
                 /**
+                 * @brief Get the size of the document
+                 * @return size_type The size of the document
+                 */
+                size_type size() const;
+                /**
                  * @brief Check if the document is empty
                  */
                 bool empty() const;
@@ -1163,6 +1168,8 @@ inline namespace docpp {
 
                 Property& operator=(const Property& property);
                 Property& operator=(const std::pair<std::string, std::string>& property);
+                bool operator==(const Property& property) const;
+                bool operator!=(const Property& property) const;
         };
 
         /**
@@ -1231,11 +1238,6 @@ inline namespace docpp {
                  * @param properties The properties of the element
                  */
                 Element(const std::string& tag, const std::vector<Property>& properties) : element(std::make_pair(tag, properties)) {};
-                /**
-                 * @brief Construct a new Element object
-                 * @param element The element to set
-                 */
-                explicit Element(const std::pair<std::string, std::vector<Property>>& element) : element(element) {};
                 Element() = default;
 
                 /**
@@ -1305,15 +1307,41 @@ inline namespace docpp {
                  */
                 size_type size() const;
                 /**
+                 * @brief Clear the element
+                 */
+                void clear();
+                /**
+                 * @brief Check if the element is empty
+                 * @return bool True if the element is empty, false otherwise
+                 */
+                bool empty() const;
+                /**
                  * @brief Set the properties of the element
+                 * @param tag The tag of the element
                  * @param properties The properties to set
                  */
                 void set(const std::string& tag, const std::vector<Property>& properties);
                 /**
                  * @brief Set the properties of the element
-                 * @param element The element to set
+                 * @param tag The tag of the element
+                 * @param properties The properties to set
                  */
-                void set(const std::pair<std::string, std::vector<Property>>& element);
+                void set(const Tag tag, const std::vector<Property>& properties);
+                /**
+                 * @brief Set the tag of the element
+                 * @param tag The tag to set
+                 */
+                void set_tag(const std::string& tag);
+                /**
+                 * @brief Set the tag of the element
+                 * @param tag The tag to set
+                 */
+                void set_tag(const Tag tag);
+                /**
+                 * @brief Set the properties of the element
+                 * @param properties The properties to set
+                 */
+                void set_properties(const std::vector<Property>& properties);
                 /**
                  * @brief Get the element
                  * @return std::pair<std::string, std::vector<Property>> The element
@@ -1354,6 +1382,8 @@ inline namespace docpp {
                 Element& operator=(const std::pair<std::string, std::vector<Property>>& element);
                 Element& operator+=(const Property& property);
                 Property operator[](const size_type& index) const;
+                bool operator==(const Element& element) const;
+                bool operator!=(const Element& element) const;
         };
 
         /**
@@ -1468,6 +1498,15 @@ inline namespace docpp {
                  */
                 size_type size() const;
                 /**
+                 * @brief Clear the stylesheet
+                 */
+                void clear();
+                /**
+                 * @brief Check if the stylesheet is empty
+                 * @return bool True if the stylesheet is empty, false otherwise
+                 */
+                bool empty() const;
+                /**
                  * @brief Get the first element of the stylesheet
                  * @return Element The first element of the stylesheet
                  */
@@ -1518,6 +1557,8 @@ inline namespace docpp {
                 Stylesheet& operator=(const Stylesheet& stylesheet);
                 Stylesheet& operator+=(const Element& element);
                 Element operator[](const int& index) const;
+                bool operator==(const Stylesheet& stylesheet) const;
+                bool operator!=(const Stylesheet& stylesheet) const;
         };
     } // inline namespace CSS
 } // inline namespace docpp
