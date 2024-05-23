@@ -257,7 +257,7 @@ inline namespace HTML {
             // should fail, out of range
             try {
                 properties.at(3);
-            } catch (const out_of_range& e) {
+            } catch (const docpp::out_of_range& e) {
                 REQUIRE(std::string(e.what()) == "Index out of range");
             }
 
@@ -415,7 +415,7 @@ inline namespace HTML {
 
             try {
                 properties.at(pos);
-            } catch (const out_of_range& e) {
+            } catch (const docpp::out_of_range& e) {
                 REQUIRE(std::string(e.what()) == "Index out of range");
             }
         };

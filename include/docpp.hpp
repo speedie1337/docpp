@@ -15,9 +15,9 @@
 #include <type_traits>
 
 /**
- * @brief A inline namespace to represent HTML elements and documents
+ * @brief A namespace to represent HTML elements and documents
  */
-inline namespace docpp {
+namespace docpp {
     /**
      * @brief A class to represent an exception when an index is out of range
      */
@@ -47,9 +47,9 @@ inline namespace docpp {
     };
 
     /**
-     * @brief A inline namespace to represent HTML elements and documents
+     * @brief A namespace to represent HTML elements and documents
      */
-    inline namespace HTML {
+    namespace HTML {
         /**
          * @brief Enum for element tags.
          */
@@ -254,7 +254,19 @@ inline namespace docpp {
                  * @param property The property to set
                  */
                 explicit Property(const std::pair<std::string, std::string>& property) : property(property) {};
+                /**
+                 * @brief Construct a new Property object
+                 * @param property The property to set
+                 */
+                Property(const Property& property) : property(property.property) {};
+                /**
+                 * @brief Construct a new Property object
+                 */
                 Property() = default;
+                /**
+                 * @brief Destroy the Property object
+                 */
+                ~Property() = default;
 
                 /**
                  * @brief Get the key of the property
@@ -492,8 +504,18 @@ inline namespace docpp {
                 Properties(const Property& property) : properties({property}) {};
                 /**
                  * @brief Construct a new Properties object
+                 * @param properties The properties to set
+                 */
+                Properties(const Properties& properties) : properties(properties.properties) {};
+                /**
+                 * @brief Construct a new Properties object
                  */
                 Properties() = default;
+                /**
+                 * @brief Destroy the Properties object
+                 */
+                ~Properties() = default;
+
                 Properties& operator=(const Properties& properties);
                 Properties& operator=(const std::vector<Property>& properties);
                 Properties& operator=(const Property& property);
@@ -540,8 +562,17 @@ inline namespace docpp {
                 Element(const Tag tag, const Properties& properties = {}, const std::string& data = {}) : tag(resolve_tag(tag).first), properties(properties), data(data), type(resolve_tag(tag).second) {};
                 /**
                  * @brief Construct a new Element object
+                 * @param element The element to set
+                 */
+                Element(const Element& element) : tag(element.tag), properties(element.properties), data(element.data), type(element.type) {};
+                /**
+                 * @brief Construct a new Element object
                  */
                 Element() = default;
+                /**
+                 * @brief Destroy the Element object
+                 */
+                ~Element() = default;
                 /**
                  * @brief Set the tag, properties, and data of the element
                  * @param tag The tag of the element
@@ -684,13 +715,45 @@ inline namespace docpp {
                 using reverse_iterator = sect_iterator<std::map<int, Element>::reverse_iterator>;
                 using const_reverse_iterator = sect_iterator<std::map<int, Element>::const_reverse_iterator>;
 
+                /**
+                 * @brief Return an iterator to the beginning.
+                 * @return iterator The iterator to the beginning.
+                 */
                 iterator begin() { return iterator(elements.begin()); }
+                /**
+                 * @brief Return an iterator to the end.
+                 * @return iterator The iterator to the end.
+                 */
                 iterator end() { return iterator(elements.end()); }
+                /**
+                 * @brief Return a const iterator to the beginning.
+                 * @return const_iterator The const iterator to the beginning.
+                 */
                 const_iterator cbegin() const { return const_iterator(elements.cbegin()); }
+                /**
+                 * @brief Return a const iterator to the end.
+                 * @return const_iterator The const iterator to the end.
+                 */
                 const_iterator cend() const { return const_iterator(elements.cend()); }
+                /**
+                 * @brief Return a reverse iterator to the beginning.
+                 * @return reverse_iterator The reverse iterator to the beginning.
+                 */
                 reverse_iterator rbegin() { return reverse_iterator(elements.rbegin()); }
+                /**
+                 * @brief Return a reverse iterator to the end.
+                 * @return reverse_iterator The reverse iterator to the end.
+                 */
                 reverse_iterator rend() { return reverse_iterator(elements.rend()); }
+                /**
+                 * @brief Return a const reverse iterator to the beginning.
+                 * @return const_reverse_iterator The const reverse iterator to the beginning.
+                 */
                 const_reverse_iterator crbegin() { return const_reverse_iterator(elements.crbegin()); }
+                /**
+                 * @brief Return a const reverse iterator to the end.
+                 * @return const_reverse_iterator The const reverse iterator to the end.
+                 */
                 const_reverse_iterator crend() { return const_reverse_iterator(elements.crend()); }
 
                 /**
@@ -848,8 +911,23 @@ inline namespace docpp {
                 };
                 /**
                  * @brief Construct a new Section object
+                 * @param section The section to set
+                 */
+                Section(const Section& section) {
+                    this->tag = section.tag;
+                    this->properties = section.properties;
+                    this->elements = section.elements;
+                    this->sections = section.sections;
+                    this->index = section.index;
+                }
+                /**
+                 * @brief Construct a new Section object
                  */
                 Section() = default;
+                /**
+                 * @brief Destroy the Section object
+                 */
+                ~Section() = default;
                 /**
                  * @brief Set the tag, id, and classes of the section
                  * @param tag The tag of the section
@@ -1045,10 +1123,19 @@ inline namespace docpp {
                  */
                 Document() = default;
                 /**
+                 * @brief Destroy the Document object
+                 */
+                ~Document() = default;
+                /**
                  * @brief Construct a new Document object
                  * @param document The document to set
                  */
                 Document(const Section& document, const std::string& doctype = "<!DOCTYPE html>") : document(document), doctype(doctype) {};
+                /**
+                 * @brief Construct a new Document object
+                 * @param document The document to set
+                 */
+                Document(const Document& document) : document(document.document), doctype(document.doctype) {};
 
                 Document& operator=(const Document& document);
                 Document& operator=(const Section& section);
@@ -1057,12 +1144,12 @@ inline namespace docpp {
                 bool operator!=(const Document& document) const;
                 bool operator!=(const Section& section) const;
         };
-    } // inline namespace HTML
+    } // namespace HTML
 
     /**
-     * @brief A inline namespace to represent CSS elements and documents
+     * @brief A namespace to represent CSS elements and documents
      */
-    inline namespace CSS {
+    namespace CSS {
         /**
          * @brief Enum for formatting options.
          */
@@ -1097,7 +1184,18 @@ inline namespace docpp {
                  * @param property The property to set
                  */
                 explicit Property(const std::pair<std::string, std::string>& property) : property(property) {};
+                /**
+                 * @brief Construct a new Property object
+                 */
+                Property(const Property& property) : property(property.property) {};
+                /**
+                 * @brief Construct a new Property object
+                 */
                 Property() = default;
+                /**
+                 * @brief Destroy the Property object
+                 */
+                ~Property() = default;
 
                 /**
                  * @brief Get the key of the property
@@ -1238,7 +1336,19 @@ inline namespace docpp {
                  * @param properties The properties of the element
                  */
                 Element(const std::string& tag, const std::vector<Property>& properties) : element(std::make_pair(tag, properties)) {};
+                /**
+                 * @brief Construct a new Element object
+                 * @param element The element to set
+                 */
+                Element(const Element& element) : element(element.element) {};
+                /**
+                 * @brief Construct a new Element object
+                 */
                 Element() = default;
+                /**
+                 * @brief Destroy the Element object
+                 */
+                ~Element() = default;
 
                 /**
                  * @brief Prepend a property to the element
@@ -1326,7 +1436,7 @@ inline namespace docpp {
                  * @param tag The tag of the element
                  * @param properties The properties to set
                  */
-                void set(const Tag tag, const std::vector<Property>& properties);
+                void set(const HTML::Tag tag, const std::vector<Property>& properties);
                 /**
                  * @brief Set the tag of the element
                  * @param tag The tag to set
@@ -1336,7 +1446,7 @@ inline namespace docpp {
                  * @brief Set the tag of the element
                  * @param tag The tag to set
                  */
-                void set_tag(const Tag tag);
+                void set_tag(const HTML::Tag tag);
                 /**
                  * @brief Set the properties of the element
                  * @param properties The properties to set
@@ -1451,7 +1561,19 @@ inline namespace docpp {
                  * @param elements The elements to set
                  */
                 explicit Stylesheet(const std::vector<Element>& elements) : elements(elements) {};
+                /**
+                 * @brief Construct a new Stylesheet object
+                 * @param stylesheet The stylesheet to set
+                 */
+                Stylesheet(const Stylesheet& stylesheet) : elements(stylesheet.elements) {};
+                /**
+                 * @brief Construct a new Stylesheet object
+                 */
                 Stylesheet() = default;
+                /**
+                 * @brief Destroy the Stylesheet object
+                 */
+                ~Stylesheet() = default;
 
                 /**
                  * @brief Prepend an element to the stylesheet
@@ -1560,5 +1682,5 @@ inline namespace docpp {
                 bool operator==(const Stylesheet& stylesheet) const;
                 bool operator!=(const Stylesheet& stylesheet) const;
         };
-    } // inline namespace CSS
-} // inline namespace docpp
+    } // namespace CSS
+} // namespace docpp

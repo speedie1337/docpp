@@ -1023,7 +1023,7 @@ void docpp::CSS::Element::set_tag(const std::string& tag) {
     this->element.first = tag;
 }
 
-void docpp::CSS::Element::set_tag(const Tag tag) {
+void docpp::CSS::Element::set_tag(const HTML::Tag tag) {
     this->element.first = resolve_tag(tag).first;
 }
 
