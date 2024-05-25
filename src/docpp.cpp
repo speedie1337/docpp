@@ -295,7 +295,11 @@ std::string docpp::HTML::Element::get(const Formatting formatting, const int tab
         }
     }
 
-    ret += "<" + this->tag;
+    if (this->type == docpp::HTML::Type::Non_Opened) {
+        ret += "</" + this->tag;
+    } else {
+        ret += "<" + this->tag;
+    }
 
     for (const Property& it : this->properties.get_properties()) {
         if (!it.get_key().compare("")) continue;
@@ -304,7 +308,7 @@ std::string docpp::HTML::Element::get(const Formatting formatting, const int tab
         ret += " " + it.get_key() + "=\"" + it.get_value() + "\"";
     }
 
-    if (this->type != docpp::HTML::Type::Self_Closing) {
+    if (this->type != docpp::HTML::Type::Self_Closing && this->type != docpp::HTML::Type::Non_Opened) {
         ret += ">";
     }
 
@@ -312,6 +316,8 @@ std::string docpp::HTML::Element::get(const Formatting formatting, const int tab
         ret += this->data + "</" + this->tag + ">";
     } else if (this->type == docpp::HTML::Type::Self_Closing) {
         ret += this->data + "/>";
+    } else if (this->type == docpp::HTML::Type::Non_Opened) {
+        ret += ">";
     }
 
     if (formatting == docpp::HTML::Formatting::Pretty || formatting == docpp::HTML::Formatting::Newline) {

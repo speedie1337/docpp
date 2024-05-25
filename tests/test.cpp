@@ -634,6 +634,9 @@ inline namespace HTML {
             REQUIRE(element.get<std::string>(docpp::HTML::Formatting::None) == "<h1>data</h1>");
             REQUIRE(element.get<std::string>(docpp::HTML::Formatting::Pretty) == "<h1>data</h1>\n");
             REQUIRE(element.get<std::string>(docpp::HTML::Formatting::Newline) == "<h1>data</h1>\n");
+
+            element.set_type(docpp::HTML::Type::Non_Opened);
+            REQUIRE(element.get<std::string>() == "</h1>");
         };
 
         test_get_and_set();
