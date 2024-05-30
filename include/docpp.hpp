@@ -13,6 +13,7 @@
 #include <exception>
 #include <utility>
 #include <type_traits>
+#include <tuple>
 
 /**
  * @brief A namespace to represent HTML elements and documents
@@ -1684,4 +1685,10 @@ namespace docpp {
                 bool operator!=(const Stylesheet& stylesheet) const;
         };
     } // namespace CSS
+
+    /**
+     * @brief Get the version of the library
+     * @return std::tuple<int, int, int> The version of the library
+     */
+    std::tuple<int, int, int> version();
 } // namespace docpp

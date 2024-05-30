@@ -2015,6 +2015,14 @@ inline namespace General {
         REQUIRE(docpp::CSS::Element::npos == -1);
         REQUIRE(docpp::CSS::Stylesheet::npos == -1);
     }
+
+    void test_version() {
+        std::tuple<int, int, int> version = docpp::version();
+
+        REQUIRE(std::get<0>(version) >= 0);
+        REQUIRE(std::get<1>(version) >= 0);
+        REQUIRE(std::get<2>(version) >= 0);
+    }
 }
 
 /**
@@ -2023,6 +2031,7 @@ inline namespace General {
 SCENARIO("Test general", "[GENERAL]") {
     General::test_exceptions();
     General::test_npos_values();
+    General::test_version();
 }
 
 /**

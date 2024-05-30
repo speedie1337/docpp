@@ -7,6 +7,12 @@ project(docpp VERSION 0.0.1
     LANGUAGES CXX
 )
 
+option(GENERATE_PKGBUILD "Generate PKGBUILD" OFF)
+option(GENERATE_EBUILD "Generate ebuild" OFF)
+option(BUILD_TARBALL "Build tarball" OFF)
+
+add_compile_definitions(DOCPP_VERSION="${PROJECT_VERSION}")
+
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
 

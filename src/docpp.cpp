@@ -1302,3 +1302,25 @@ std::string docpp::CSS::Stylesheet::get(const Formatting formatting, const int t
 
     return std::move(ret);
 }
+
+std::tuple<int, int, int> docpp::version() {
+#ifdef DOCPP_VERSION
+    std::string version{DOCPP_VERSION};
+
+    if (version.find('.') != std::string::npos) {
+        std::string major = version.substr(0, version.find('.'));
+        version = version.substr(version.find('.') + 1);
+
+        if (version.find('.') != std::string::npos) {
+            std::string minor = version.substr(0, version.find('.'));
+            version = version.substr(version.find('.') + 1);
+
+            if (version.find('.') != std::string::npos) {
+                std::string patch = version.substr(0, version.find('.'));
+                return {std::stoi(major), std::stoi(minor), std::stoi(patch)};
+            }
+        }
+    }
+#endif
+    return {};
+}
