@@ -324,7 +324,7 @@ std::string docpp::HTML::Element::get(const Formatting formatting, const int tab
         ret += "\n";
     }
 
-    return std::move(ret);
+    return ret;
 }
 
 std::string docpp::HTML::Element::get_tag() const {
@@ -792,7 +792,7 @@ std::vector<docpp::HTML::Element> docpp::HTML::Section::get_elements() const {
             ret.push_back(this->elements.at(i));
         }
     }
-    return std::move(ret);
+    return ret;
 }
 
 std::vector<docpp::HTML::Section> docpp::HTML::Section::get_sections() const {
@@ -805,7 +805,7 @@ std::vector<docpp::HTML::Section> docpp::HTML::Section::get_sections() const {
         }
     }
 
-    return std::move(ret);
+    return ret;
 }
 
 std::string docpp::HTML::Section::get(const Formatting formatting, const int tabc) const {
@@ -863,7 +863,7 @@ std::string docpp::HTML::Section::get(const Formatting formatting, const int tab
 
     ret += this->tag.compare("") ? ("</" + this->tag + ">") : "";
 
-    return std::move(ret);
+    return ret;
 }
 
 std::string docpp::HTML::Section::get_tag() const {
@@ -1168,7 +1168,7 @@ std::string docpp::CSS::Element::get(const Formatting formatting, const int tabc
         }
     }
 
-    return std::move(ret);
+    return ret;
 }
 
 std::string docpp::CSS::Element::get_tag() const {
@@ -1300,7 +1300,7 @@ std::string docpp::CSS::Stylesheet::get(const Formatting formatting, const int t
         ret += it.get(formatting, tabc);
     }
 
-    return std::move(ret);
+    return ret;
 }
 
 std::tuple<int, int, int> docpp::version() {
