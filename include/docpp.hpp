@@ -224,11 +224,22 @@ namespace docpp {
         };
 
         /**
+         * @brief Get a map of tags to strings and types.
+         * @return std::unordered_map<docpp::HTML::Tag, std::pair<std::string, docpp::HTML::Type>> The map of tags to strings and types.
+         */
+        std::unordered_map<docpp::HTML::Tag, std::pair<std::string, docpp::HTML::Type>> get_tag_map();
+        /**
          * @brief Resolve a tag to a string and type.
          * @param tag The tag to resolve
          * @return std::pair<std::string, Type> The resolved tag
          */
         std::pair<std::string, Type> resolve_tag(const Tag tag);
+        /**
+         * @brief Resolve a string tag to a Tag enum.
+         * @param tag The tag to resolve
+         * @return Tag The resolved tag
+         */
+        Tag resolve_tag(const std::string& tag);
 
         /**
          * @brief A class to represent an HTML property
@@ -1033,6 +1044,8 @@ namespace docpp {
                 bool operator!=(const Element& element) const;
                 bool operator!=(const Section& section) const;
                 Element operator[](const int& index) const;
+                std::unordered_map<std::string, Element> operator[](const std::string& tag) const;
+                std::unordered_map<std::string, Element> operator[](const Tag tag) const;
             private:
                 size_type index{};
                 std::string tag{};

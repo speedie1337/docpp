@@ -377,6 +377,30 @@ docpp::HTML::Element docpp::HTML::Section::operator[](const int& index) const {
     return this->at(index);
 }
 
+std::unordered_map<std::string, docpp::HTML::Element> docpp::HTML::Section::operator[](const std::string& tag) const {
+    std::unordered_map<std::string, docpp::HTML::Element> ret{};
+
+    for (const Element& it : this->get_elements()) {
+        if (!it.get_tag().compare(tag)) {
+            ret[it.get_data()] = it;
+        }
+    }
+
+    return ret;
+}
+
+std::unordered_map<std::string, docpp::HTML::Element> docpp::HTML::Section::operator[](const Tag tag) const {
+    std::unordered_map<std::string, docpp::HTML::Element> ret{};
+
+    for (const Element& it : this->get_elements()) {
+        if (!it.get_tag().compare(resolve_tag(tag).first)) {
+            ret[it.get_data()] = it;
+        }
+    }
+
+    return ret;
+}
+
 bool docpp::HTML::Section::operator==(const docpp::HTML::Section& section) const {
     return this->tag == section.tag && this->properties == section.properties && this->elements == section.elements && this->sections == section.sections && this->index == section.index;
 }
@@ -423,8 +447,8 @@ void docpp::HTML::Section::set_properties(const Properties& properties) {
     this->properties = properties;
 }
 
-std::pair<std::string, docpp::HTML::Type> docpp::HTML::resolve_tag(const Tag tag) {
-    static const std::unordered_map<docpp::HTML::Tag, std::pair<std::string, docpp::HTML::Type>> tag_map{
+std::unordered_map<docpp::HTML::Tag, std::pair<std::string, docpp::HTML::Type>> docpp::HTML::get_tag_map() {
+    return {
         {Tag::Empty, {"", docpp::HTML::Type::Text}},
         {Tag::Empty_No_Formatting, {"", docpp::HTML::Type::Text_No_Formatting}},
         {Tag::Abbreviation, {"abbr", docpp::HTML::Type::Non_Self_Closing}},
@@ -571,6 +595,10 @@ std::pair<std::string, docpp::HTML::Type> docpp::HTML::resolve_tag(const Tag tag
         {Tag::Wbr, {"wbr", docpp::HTML::Type::Non_Closed}},
         {Tag::Xmp, {"xmp", docpp::HTML::Type::Non_Self_Closing}},
     };
+}
+
+std::pair<std::string, docpp::HTML::Type> docpp::HTML::resolve_tag(const Tag tag) {
+    const std::unordered_map<docpp::HTML::Tag, std::pair<std::string, docpp::HTML::Type>> tag_map{get_tag_map()};
 
     if (tag_map.find(tag) != tag_map.end()) {
         return tag_map.at(tag);
@@ -578,6 +606,18 @@ std::pair<std::string, docpp::HTML::Type> docpp::HTML::resolve_tag(const Tag tag
 
     const std::string throwmsg{"Invalid tag: " + std::to_string(static_cast<int>(tag))};
     throw docpp::invalid_argument{throwmsg.c_str()};
+}
+
+docpp::HTML::Tag docpp::HTML::resolve_tag(const std::string& tag) {
+    const std::unordered_map<docpp::HTML::Tag, std::pair<std::string, docpp::HTML::Type>> tag_map{get_tag_map()};
+
+    for (const std::pair<docpp::HTML::Tag, std::pair<std::string, docpp::HTML::Type>>& it : tag_map) {
+        if (!it.second.first.compare(tag)) {
+            return it.first;
+        }
+    }
+
+    throw docpp::invalid_argument{"Invalid tag"};
 }
 
 void docpp::HTML::Section::set(const Tag tag, const Properties& properties) {
