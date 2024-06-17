@@ -349,7 +349,6 @@ namespace docpp {
                 bool empty() const;
 
                 Property& operator=(const Property& property);
-                Property& operator=(const std::pair<std::string, std::string>& property);
                 bool operator==(const Property& property) const;
                 bool operator!=(const Property& property) const;
 
@@ -1191,11 +1190,6 @@ namespace docpp {
                 Property(const std::string& key, const std::string& value) : property(std::make_pair(key, value)) {};
                 /**
                  * @brief Construct a new Property object
-                 * @param property The property to set
-                 */
-                explicit Property(const std::pair<std::string, std::string>& property) : property(property) {};
-                /**
-                 * @brief Construct a new Property object
                  */
                 Property(const Property& property) : property(property.property) {};
                 /**
@@ -1264,18 +1258,12 @@ namespace docpp {
                 void set_value(const std::string& value);
                 /**
                  * @brief Set the property
-                 * @param property The property.
-                 */
-                void set(const std::pair<std::string, std::string>& property);
-                /**
-                 * @brief Set the property
                  * @param key The key of the property
                  * @param value The value of the property
                  */
                 void set(const std::string& key, const std::string& value);
 
                 Property& operator=(const Property& property);
-                Property& operator=(const std::pair<std::string, std::string>& property);
                 bool operator==(const Property& property) const;
                 bool operator!=(const Property& property) const;
         };

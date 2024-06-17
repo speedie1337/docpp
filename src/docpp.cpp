@@ -39,11 +39,6 @@ docpp::HTML::Property& docpp::HTML::Property::operator=(const docpp::HTML::Prope
     return *this;
 }
 
-docpp::HTML::Property& docpp::HTML::Property::operator=(const std::pair<std::string, std::string>& property) {
-    this->set(property);
-    return *this;
-}
-
 bool docpp::HTML::Property::operator==(const docpp::HTML::Property& property) const {
     return this->property == property.get();
 }
@@ -1012,21 +1007,12 @@ void docpp::CSS::Property::set_value(const std::string& value) {
     this->property.second = value;
 }
 
-void docpp::CSS::Property::set(const std::pair<std::string, std::string>& property) {
-    this->property = property;
-}
-
 void docpp::CSS::Property::set(const std::string& key, const std::string& value) {
     this->property = std::make_pair(key, value);
 }
 
 docpp::CSS::Property& docpp::CSS::Property::operator=(const docpp::CSS::Property& property) {
-    this->set(property.get());
-    return *this;
-}
-
-docpp::CSS::Property& docpp::CSS::Property::operator=(const std::pair<std::string, std::string>& property) {
-    this->set(property);
+    this->set(property.get().first, property.get().second);
     return *this;
 }
 
