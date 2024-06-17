@@ -186,14 +186,14 @@ docpp::HTML::Section getCSS() {
 }
 
 docpp::HTML::Section getNavbar(docpp::HTML::Section& e) {
-    docpp::HTML::Section navbar(docpp::HTML::Tag::Div, {{docpp::HTML::Property{{"class", "navbar"}}}});
+    docpp::HTML::Section navbar(docpp::HTML::Tag::Div, {{docpp::HTML::Property{"class", "navbar"}}});
     docpp::HTML::Section span(docpp::HTML::Tag::Span, {});
 
     span.push_back({docpp::HTML::Tag::Empty, {}, "speedie.site\n"});
 
     const auto append_to_span = [&](const std::string& img, const std::string& url, const std::string& text) {
-        span.push_back({docpp::HTML::Tag::Img, {{docpp::HTML::Property{{"src", img}}, docpp::HTML::Property{{"width", "16"}}, docpp::HTML::Property{{"height", "16"}}}}, ""});
-        span.push_back({docpp::HTML::Tag::A, {{docpp::HTML::Property{{"href", url}}}}, text});
+        span.push_back({docpp::HTML::Tag::Img, {{docpp::HTML::Property{"src", img}, docpp::HTML::Property{"width", "16"}, docpp::HTML::Property{"height", "16"}}}, ""});
+        span.push_back({docpp::HTML::Tag::A, {{docpp::HTML::Property{"href", url}}}, text});
     };
 
     append_to_span("img/home.png", "/", "Home");
@@ -210,11 +210,11 @@ docpp::HTML::Section getNavbar(docpp::HTML::Section& e) {
 docpp::HTML::Section getHead() {
     docpp::HTML::Section e{docpp::HTML::Tag::Head};
 
-    docpp::HTML::Element content_type{docpp::HTML::Tag::Meta, {{docpp::HTML::Property{{"http-equiv", "content-type"}}, docpp::HTML::Property{{"content", "text/html; charset=utf-8"}}}}};
-    docpp::HTML::Element charset{docpp::HTML::Tag::Meta, {{docpp::HTML::Property{{"charset", "UTF-8"}}}}};
-    docpp::HTML::Element favicon(docpp::HTML::Tag::Link, {{docpp::HTML::Property{{"rel", "icon"}}, docpp::HTML::Property{{"type", "image/x-icon"}}, docpp::HTML::Property{{"href", "/img/favicon.svg"}}}});
-    docpp::HTML::Element description(docpp::HTML::Tag::Meta, {{docpp::HTML::Property{{"name", "description"}}, docpp::HTML::Property{{"content", "Welcome to my personal website."}}}});
-    docpp::HTML::Element author(docpp::HTML::Tag::Meta, {{docpp::HTML::Property{{"name", "author"}}, docpp::HTML::Property{{"content", "speedie"}}}});
+    docpp::HTML::Element content_type{docpp::HTML::Tag::Meta, {{docpp::HTML::Property{"http-equiv", "content-type"}, docpp::HTML::Property{"content", "text/html; charset=utf-8"}}}};
+    docpp::HTML::Element charset{docpp::HTML::Tag::Meta, {{docpp::HTML::Property{"charset", "UTF-8"}}}};
+    docpp::HTML::Element favicon(docpp::HTML::Tag::Link, {{docpp::HTML::Property{"rel", "icon"}, docpp::HTML::Property{"type", "image/x-icon"}, docpp::HTML::Property{"href", "/img/favicon.svg"}}});
+    docpp::HTML::Element description(docpp::HTML::Tag::Meta, {{docpp::HTML::Property{"name", "description"}, docpp::HTML::Property{"content", "Welcome to my personal website."}}});
+    docpp::HTML::Element author(docpp::HTML::Tag::Meta, {{docpp::HTML::Property{"name", "author"}, docpp::HTML::Property{"content", "speedie"}}});
     docpp::HTML::Element title(docpp::HTML::Tag::Title, {}, "speedie's site");
     docpp::HTML::Section css{docpp::HTML::Tag::Style};
 
@@ -229,13 +229,13 @@ docpp::HTML::Section getHead() {
 }
 
 docpp::HTML::Section getMain() {
-    docpp::HTML::Section content(docpp::HTML::Tag::Div, {{docpp::HTML::Property{{"class", "content"}}}});
+    docpp::HTML::Section content(docpp::HTML::Tag::Div, {{docpp::HTML::Property{"class", "content"}}});
 
     content.push_back({docpp::HTML::Tag::H2, {}, "Hello world!"});
     content.push_back({docpp::HTML::Tag::P, {}, "Hello there! This is a replica of my old website, using docpp to generate the HTML. With that said. This only provides the index page, so many links are not functional. This is more to show off that docpp can be used to generate a proper website."});
     content.push_back({docpp::HTML::Tag::H3, {}, "Links"});
 
-    docpp::HTML::Section links(docpp::HTML::Tag::Div, {{docpp::HTML::Property{{"class", "links"}}}});
+    docpp::HTML::Section links(docpp::HTML::Tag::Div, {{docpp::HTML::Property{"class", "links"}}});
     docpp::HTML::Section table(docpp::HTML::Tag::Table);
 
     static const auto append_to_table = [&](const std::string& img, const std::string& url, const std::string& short_text, const std::string& long_text) {
@@ -243,8 +243,8 @@ docpp::HTML::Section getMain() {
         docpp::HTML::Section td{docpp::HTML::Tag::Td};
         docpp::HTML::Section td2{docpp::HTML::Tag::Td};
 
-        td.push_back({docpp::HTML::Tag::Img, {{docpp::HTML::Property{{"src", img}}, docpp::HTML::Property{{"width", "16"}}, docpp::HTML::Property{{"height", "16"}}}}, ""});
-        td.push_back({docpp::HTML::Tag::A, {{docpp::HTML::Property{{"href", url}}}}, short_text});
+        td.push_back({docpp::HTML::Tag::Img, {{docpp::HTML::Property{"src", img}, docpp::HTML::Property{"width", "16"}, docpp::HTML::Property{"height", "16"}}}, ""});
+        td.push_back({docpp::HTML::Tag::A, {{docpp::HTML::Property{"href", url}}}, short_text});
         td2.push_back({docpp::HTML::Tag::Empty, {}, long_text + "\n"});
 
         tr.push_back(td);

@@ -266,11 +266,6 @@ namespace docpp {
                  * @brief Construct a new Property object
                  * @param property The property to set
                  */
-                explicit Property(const std::pair<std::string, std::string>& property) : property(property) {};
-                /**
-                 * @brief Construct a new Property object
-                 * @param property The property to set
-                 */
                 Property(const Property& property) : property(property.property) {};
                 /**
                  * @brief Construct a new Property object
