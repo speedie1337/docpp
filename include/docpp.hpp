@@ -884,9 +884,21 @@ namespace docpp {
                  * @brief Construct a new Section object
                  * @param tag The tag of the section
                  * @param properties The properties of the section
+                 */
+                Section(const std::string& tag, const Properties& properties = {}) : tag(tag), properties(properties) {};
+                /**
+                 * @brief Construct a new Section object
+                 * @param tag The tag of the section
+                 * @param properties The properties of the section
+                 */
+                Section(const Tag tag, const Properties& properties = {}) : tag(resolve_tag(tag).first), properties(properties) {};
+                /**
+                 * @brief Construct a new Section object
+                 * @param tag The tag of the section
+                 * @param properties The properties of the section
                  * @param elements The elements of the section
                  */
-                Section(const std::string& tag, const Properties& properties = {}, const std::vector<Element>& elements = {}) : tag(tag), properties(properties) {
+                Section(const std::string& tag, const Properties& properties, const std::vector<Element>& elements) : tag(tag), properties(properties) {
                     for (const auto& element : elements) this->push_back(element);
                 };
                 /**
@@ -895,7 +907,7 @@ namespace docpp {
                  * @param properties The properties of the section
                  * @param elements The elements of the section
                  */
-                Section(const Tag tag, const Properties& properties = {}, const std::vector<Element>& elements = {}) : tag(resolve_tag(tag).first), properties(properties) {
+                Section(const Tag tag, const Properties& properties, const std::vector<Element>& elements) : tag(resolve_tag(tag).first), properties(properties) {
                     for (const auto& element : elements) this->push_back(element);
                 };
                 /**

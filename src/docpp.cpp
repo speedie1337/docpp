@@ -564,7 +564,7 @@ std::unordered_map<docpp::HTML::Tag, std::pair<std::string, docpp::HTML::Type>> 
         {Tag::Span, {"span", Type::Non_Self_Closing}},
         {Tag::Strike, {"strike", Type::Non_Self_Closing}},
         {Tag::Strong, {"strong", Type::Non_Self_Closing}},
-        {Tag::Style, {"style", Type::Non_Closed}},
+        {Tag::Style, {"style", Type::Non_Self_Closing}},
         {Tag::Sub, {"sub", Type::Non_Self_Closing}},
         {Tag::Subscript, {"sub", Type::Non_Self_Closing}},
         {Tag::Sup, {"sup", Type::Non_Self_Closing}},
