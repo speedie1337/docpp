@@ -469,7 +469,7 @@ std::unordered_map<docpp::HTML::Tag, std::pair<std::string, docpp::HTML::Type>> 
         {Tag::Bold, {"b", Type::Non_Self_Closing}},
         {Tag::Br, {"br", Type::Non_Closed}},
         {Tag::Break, {"br", Type::Non_Closed}},
-        {Tag::Button, {"button", Type::Non_Closed}},
+        {Tag::Button, {"button", Type::Non_Self_Closing}},
         {Tag::Caption, {"caption", Type::Non_Self_Closing}},
         {Tag::Canvas, {"canvas", Type::Non_Self_Closing}},
         {Tag::Center, {"center", Type::Non_Self_Closing}},
@@ -711,7 +711,23 @@ docpp::HTML::Element docpp::HTML::Section::at(const size_type index) const {
     throw docpp::out_of_range("Index out of range");
 }
 
+docpp::HTML::Element& docpp::HTML::Section::at(const size_type index) {
+    if (this->elements.find(index) != this->elements.end()) {
+        return this->elements.at(index);
+    }
+
+    throw docpp::out_of_range("Index out of range");
+}
+
 docpp::HTML::Section docpp::HTML::Section::at_section(const size_type index) const {
+    if (this->sections.find(index) != this->sections.end()) {
+        return this->sections.at(index);
+    }
+
+    throw docpp::out_of_range("Index out of range");
+}
+
+docpp::HTML::Section& docpp::HTML::Section::at_section(const size_type index) {
     if (this->sections.find(index) != this->sections.end()) {
         return this->sections.at(index);
     }
@@ -779,7 +795,23 @@ docpp::HTML::Element docpp::HTML::Section::front() const {
     throw docpp::out_of_range("Index out of range");
 }
 
+docpp::HTML::Element& docpp::HTML::Section::front() {
+    if (this->elements.find(0) != this->elements.end()) {
+        return this->elements.at(0);
+    }
+
+    throw docpp::out_of_range("Index out of range");
+}
+
 docpp::HTML::Section docpp::HTML::Section::front_section() const {
+    if (this->sections.find(0) != this->sections.end()) {
+        return this->sections.at(0);
+    }
+
+    throw docpp::out_of_range("Index out of range");
+}
+
+docpp::HTML::Section& docpp::HTML::Section::front_section() {
     if (this->sections.find(0) != this->sections.end()) {
         return this->sections.at(0);
     }
@@ -795,7 +827,23 @@ docpp::HTML::Element docpp::HTML::Section::back() const {
     throw docpp::out_of_range("Index out of range");
 }
 
+docpp::HTML::Element& docpp::HTML::Section::back() {
+    if (this->elements.find(this->index - 1) != this->elements.end()) {
+        return this->elements.at(this->index - 1);
+    }
+
+    throw docpp::out_of_range("Index out of range");
+}
+
 docpp::HTML::Section docpp::HTML::Section::back_section() const {
+    if (this->sections.find(this->index - 1) != this->sections.end()) {
+        return this->sections.at(this->index - 1);
+    }
+
+    throw docpp::out_of_range("Index out of range");
+}
+
+docpp::HTML::Section& docpp::HTML::Section::back_section() {
     if (this->sections.find(this->index - 1) != this->sections.end()) {
         return this->sections.at(this->index - 1);
     }
@@ -929,6 +977,10 @@ void docpp::HTML::Section::swap(const Section& section1, const Section& section2
 
 std::string docpp::HTML::Document::get(const Formatting formatting, const int tabc) const {
     return this->doctype + (formatting == Formatting::Pretty ? "\n" : formatting == Formatting::Newline ? "\n" : "") + this->document.get(formatting, tabc);
+}
+
+docpp::HTML::Section docpp::HTML::Document::get_section() const {
+    return this->document;
 }
 
 docpp::HTML::Section& docpp::HTML::Document::get_section() {
@@ -1095,6 +1147,14 @@ docpp::CSS::Property docpp::CSS::Element::at(const size_type index) const {
     return this->element.second.at(index);
 }
 
+docpp::CSS::Property& docpp::CSS::Element::at(const size_type index) {
+    if (index < 0 || index >= this->element.second.size()) {
+        throw docpp::out_of_range("Index out of range");
+    }
+
+    return this->element.second.at(index);
+}
+
 docpp::CSS::Element::size_type docpp::CSS::Element::find(const Property& property) {
     for (size_type i{0}; i < this->element.second.size(); i++) {
         if (this->element.second.at(i).get() == property.get()) {
@@ -1120,6 +1180,14 @@ docpp::CSS::Property docpp::CSS::Element::front() const {
 }
 
 docpp::CSS::Property docpp::CSS::Element::back() const {
+    return this->element.second.back();
+}
+
+docpp::CSS::Property& docpp::CSS::Element::front() {
+    return this->element.second.front();
+}
+
+docpp::CSS::Property& docpp::CSS::Element::back() {
     return this->element.second.back();
 }
 

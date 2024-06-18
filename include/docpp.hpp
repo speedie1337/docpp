@@ -801,6 +801,18 @@ namespace docpp {
                  */
                 Section at_section(const size_type index) const;
                 /**
+                 * @brief Get the element at an index. To get a section, use at_section()
+                 * @param index The index of the element
+                 * @return Element The element at the index
+                 */
+                Element& at(const size_type index);
+                /**
+                 * @brief Get the section at an index. To get an element, use at()
+                 * @param index The index of the section
+                 * @return Section The section at the index
+                 */
+                Section& at_section(const size_type index);
+                /**
                  * @brief Erase an element from the section. Note that this will NOT change the size/index.
                  * @param index The index of the element to erase
                  */
@@ -851,20 +863,40 @@ namespace docpp {
                  */
                 Element front() const;
                 /**
+                 * @brief Get the first element of the section
+                 * @return Element The first element of the section
+                 */
+                Element& front();
+                /**
                  * @brief Get the last element of the section
                  * @return Element The last element of the section
                  */
                 Element back() const;
+                /**
+                 * @brief Get the last element of the section
+                 * @return Element The last element of the section
+                 */
+                Element& back();
                 /**
                  * @brief Get the first section of the section
                  * @return Section The first section of the section
                  */
                 Section front_section() const;
                 /**
+                 * @brief Get the first section of the section
+                 * @return Section The first section of the section
+                 */
+                Section& front_section();
+                /**
                  * @brief Get the last section of the section
                  * @return Section The last section of the section
                  */
                 Section back_section() const;
+                /**
+                 * @brief Get the last section of the section
+                 * @return Section The last section of the section
+                 */
+                Section& back_section();
                 /**
                  * @brief Get the size of the section
                  * @return size_type The size of the section
@@ -1093,13 +1125,16 @@ namespace docpp {
                     }
                     return T(this->get(formatting, tabc));
                 }
-
+                /**
+                 * @brief Get the section
+                 * @return Section The section
+                 */
+                Section get_section() const;
                 /**
                  * @brief Get the section
                  * @return Section The section
                  */
                 Section& get_section();
-
                 /**
                  * @brief Get the doctype of the document
                  * @return std::string The doctype of the document
@@ -1394,6 +1429,12 @@ namespace docpp {
                  */
                 Property at(const size_type index) const;
                 /**
+                 * @brief Get the property at an index
+                 * @param index The index of the property
+                 * @return Property The property at the index
+                 */
+                Property& at(const size_type index);
+                /**
                  * @brief Find a property in the element
                  * @param str The property to find
                  * @return size_type The index of the property
@@ -1417,10 +1458,20 @@ namespace docpp {
                  */
                 Property front() const;
                 /**
+                 * @brief Get the first property of the element
+                 * @return Property The first property of the element
+                 */
+                Property& front();
+                /**
                  * @brief Get the last property of the element
                  * @return Property The last property of the element
                  */
                 Property back() const;
+                /**
+                 * @brief Get the last property of the element
+                 * @return Property The last property of the element
+                 */
+                Property& back();
                 /**
                  * @brief Get the size of the element
                  * @return size_type The size of the element
