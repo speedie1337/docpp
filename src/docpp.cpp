@@ -9,6 +9,7 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
+#include <algorithm>
 
 std::string docpp::HTML::Property::get_key() const {
     return this->property.first;
