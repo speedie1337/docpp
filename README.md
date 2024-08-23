@@ -2,7 +2,7 @@
 
 ![action](https://github.com/speediegq/docpp/actions/workflows/cmake-multi-platform.yml/badge.svg)
 
-C++11 library for generating HTML, CSS and SGML-like documents.
+C++17 library for generating HTML, CSS and SGML-like documents.
 
 ## Features
 

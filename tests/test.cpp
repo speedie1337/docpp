@@ -3,6 +3,10 @@
 #include <src/docpp.cpp>
 #include <catch2/catch_test_macros.hpp>
 
+// NOLINTBEGIN
+// Disable linting. This is a test program and the code is intentionally bad in some places.
+// As such, I think it's best to turn linting off rather than to try and resolve any such warnings.
+
 inline namespace HTML {
     void test_tag() {
         const auto expected_values = docpp::HTML::get_tag_map();
@@ -17,11 +21,7 @@ inline namespace HTML {
             using namespace docpp::HTML;
 
             Property property;
-
-            REQUIRE(property.get().first == "");
-            REQUIRE(property.get().second == "");
-            REQUIRE(property.get_key() == "");
-            REQUIRE(property.get_value() == "");
+            REQUIRE((property.get().first.empty() && property.get().second.empty() && property.get_key().empty() && property.get_value().empty()));
 
             property.set({"key", "value"});
 
@@ -77,7 +77,7 @@ inline namespace HTML {
 
             Properties properties;
 
-            REQUIRE(properties.size() == 0);
+            REQUIRE(properties.empty());
 
             properties.push_back({"key1", "value1"});
             properties.push_back({"key2", "value2"});
@@ -110,7 +110,7 @@ inline namespace HTML {
 
             // should fail, out of range
             try {
-                properties.at(3);
+                static_cast<void>(properties.at(3));
             } catch (const docpp::out_of_range& e) {
                 REQUIRE(std::string(e.what()) == "Index out of range");
             }
@@ -139,10 +139,10 @@ inline namespace HTML {
         const auto test_iterators = []() {
             using namespace docpp::HTML;
 
-            Properties properties = {{{"key1", "value1"}, {"key2", "value2"}, {"key3", "value3"}}};
+            Properties properties = make_properties(Property{"key1", "value1"}, Property{"key2", "value2"}, Property{"key3", "value3"});
 
             std::size_t index{0};
-            for (Properties::iterator it = properties.begin(); it != properties.end(); ++it) {
+            for (auto it = properties.begin(); it != properties.end(); ++it) {
                 if (index == 0) {
                     REQUIRE(it->get().first == "key1");
                     REQUIRE(it->get().second == "value1");
@@ -158,7 +158,7 @@ inline namespace HTML {
             }
 
             index = 0;
-            for (Properties::const_iterator it = properties.cbegin(); it != properties.cend(); ++it) {
+            for (auto it = properties.cbegin(); it != properties.cend(); ++it) {
                 if (index == 0) {
                     REQUIRE(it->get().first == "key1");
                     REQUIRE(it->get().second == "value1");
@@ -174,7 +174,7 @@ inline namespace HTML {
             }
 
             index = 0;
-            for (Properties::reverse_iterator it = properties.rbegin(); it != properties.rend(); ++it) {
+            for (auto it = properties.rbegin(); it != properties.rend(); ++it) {
                 if (index == 0) {
                     REQUIRE(it->get().first == "key3");
                     REQUIRE(it->get().second == "value3");
@@ -190,7 +190,7 @@ inline namespace HTML {
             }
 
             index = 0;
-            for (Properties::const_reverse_iterator it = properties.crbegin(); it != properties.crend(); ++it) {
+            for (auto it = properties.crbegin(); it != properties.crend(); ++it) {
                 if (index == 0) {
                     REQUIRE(it->get().first == "key3");
                     REQUIRE(it->get().second == "value3");
@@ -225,7 +225,7 @@ inline namespace HTML {
         const auto test_find = []() {
             using namespace docpp::HTML;
 
-            Properties properties = {{{"key1", "value1"}, {"key2", "value2"}, {"key3", "value3"}}};
+            Properties properties = make_properties(Property{"key1", "value1"}, Property{"key2", "value2"}, Property{"key3", "value3"});
 
             REQUIRE(properties.find(Property("key1", "value1")) == 0);
             REQUIRE(properties.find(Property("key2", "value2")) == 1);
@@ -268,7 +268,7 @@ inline namespace HTML {
             REQUIRE(pos == Properties::npos);
 
             try {
-                properties.at(pos);
+                static_cast<void>(properties.at(pos));
             } catch (const docpp::out_of_range& e) {
                 REQUIRE(std::string(e.what()) == "Index out of range");
             }
@@ -277,7 +277,7 @@ inline namespace HTML {
         const auto test_insert = []() {
             using namespace docpp::HTML;
 
-            Properties properties = {{{"key1", "value1"}, {"key2", "value2"}, {"key3", "value3"}}};
+            Properties properties = make_properties(Property{"key1", "value1"}, Property{"key2", "value2"}, Property{"key3", "value3"});
 
             std::size_t pos = properties.find("key1");
             Property found_property = properties[pos];
@@ -293,7 +293,7 @@ inline namespace HTML {
         const auto test_swap = []() {
             using namespace docpp::HTML;
 
-            Properties properties = {{{"key1", "value1"}, {"key2", "value2"}, {"key3", "value3"}}};
+            Properties properties = make_properties(Property{"key1", "value1"}, Property{"key2", "value2"}, Property{"key3", "value3"});
 
             std::size_t pos1 = properties.find("key1");
             Property property1 = properties[pos1];
@@ -315,7 +315,7 @@ inline namespace HTML {
         const auto test_front_and_back = []() {
             using namespace docpp::HTML;
 
-            Properties properties = {{{"key1", "value1"}, {"key2", "value2"}, {"key3", "value3"}}};
+            Properties properties = make_properties(Property{"key1", "value1"}, Property{"key2", "value2"}, Property{"key3", "value3"});
 
             REQUIRE(properties.front().get().first == "key1");
             REQUIRE(properties.front().get().second == "value1");
@@ -327,7 +327,7 @@ inline namespace HTML {
         const auto test_size_empty_and_clear = []() {
             using namespace docpp::HTML;
 
-            Properties properties = {{{"key1", "value1"}, {"key2", "value2"}, {"key3", "value3"}}};
+            Properties properties = make_properties(Property{"key1", "value1"}, Property{"key2", "value2"}, Property{"key3", "value3"});
 
             REQUIRE(properties.size() == 3);
             REQUIRE(properties.empty() == false);
@@ -356,19 +356,17 @@ inline namespace HTML {
         const auto test_constructors = []() {
             using namespace docpp::HTML;
 
-            Properties properties = {{{"key1", "value1"}, {"key2", "value2"}, {"key3", "value3"}}};
-
+            Properties properties = make_properties(Property{"key1", "value1"}, Property{"key2", "value2"}, Property{"key3", "value3"});
             Properties new_properties = properties;
 
             REQUIRE(properties == new_properties);
 
-            Properties new_properties2 = properties.get_properties();
+            Properties new_properties2(properties.get_properties());
 
             REQUIRE(properties == new_properties2);
 
             Property property1{"key1", "value1"};
-
-            Properties new_properties3 = {property1};
+            Properties new_properties3 = make_properties(property1);
 
             REQUIRE(new_properties3.size() == 1);
         };
@@ -514,7 +512,7 @@ inline namespace HTML {
             REQUIRE(section.get_properties().empty());
 
             section.set_tag("new_section");
-            section.set_properties({{Property{"key", "value"}, Property{"key2", "value2"}}});
+            section.set_properties(make_properties(Property("key", "value"), Property("key2", "value2")));
 
             REQUIRE(section.get_tag() == "new_section");
             REQUIRE(section.get_properties().at(0).get().first == "key");
@@ -522,7 +520,7 @@ inline namespace HTML {
             REQUIRE(section.get_properties().at(1).get().first == "key2");
             REQUIRE(section.get_properties().at(1).get().second == "value2");
 
-            section.set("new_section", {{Property{"key", "value"}, Property{"key2", "value2"}}});
+            section.set("new_section", Properties(Property("key", "value"), Property("key2", "value2")));
 
             REQUIRE(section.get_tag() == "new_section");
             REQUIRE(section.get_properties().at(0).get().first == "key");
@@ -530,20 +528,25 @@ inline namespace HTML {
             REQUIRE(section.get_properties().at(1).get().first == "key2");
             REQUIRE(section.get_properties().at(1).get().second == "value2");
 
-            section.set_properties({{Property{"key3", "value3"}, Property{"key4", "value4"}}});
+            section.set_properties(make_properties(Property("key3", "value3"), Property("key4", "value4")));
 
             REQUIRE(section.get_properties().at(0).get().first == "key3");
             REQUIRE(section.get_properties().at(0).get().second == "value3");
             REQUIRE(section.get_properties().at(1).get().first == "key4");
             REQUIRE(section.get_properties().at(1).get().second == "value4");
+
+            Section completely_empty_section;
+
+            static_cast<void>(completely_empty_section.get(docpp::HTML::Formatting::None));
+            static_cast<void>(completely_empty_section.get(docpp::HTML::Formatting::Newline));
+            static_cast<void>(completely_empty_section.get(docpp::HTML::Formatting::Pretty));
         };
 
         const auto test_copy_section = []() {
             using namespace docpp::HTML;
 
             Section section;
-
-            section.set("my_section", {{Property{"key", "value"}, Property{"key2", "value2"}}});
+            section.set("my_section", make_properties(Property("key", "value"), Property("key2", "value2")));
 
             Section new_section = section;
 
@@ -572,12 +575,12 @@ inline namespace HTML {
             Section section1;
             Section section2;
 
-            section1.set("my_section", {{Property{"key", "value"}, Property{"key2", "value2"}}});
-            section2.set("my_section", {{Property{"key", "value"}, Property{"key2", "value2"}}});
+            section1.set("my_section", make_properties(Property("key", "value"), Property("key2", "value2")));
+            section2.set("my_section", make_properties(Property("key", "value"), Property("key2", "value2")));
 
             REQUIRE(section1 == section2);
 
-            section2.set("new_section", {{Property{"key", "value"}, Property{"key2", "value2"}}});
+            section2.set("new_section", make_properties(Property("key", "value"), Property("key2", "value2")));
 
             REQUIRE(section1 != section2);
 
@@ -613,7 +616,7 @@ inline namespace HTML {
             REQUIRE(section.get_elements().empty());
             REQUIRE(section.get_properties().empty());
 
-            Section section2("my_section", {{Property{"key", "value"}, Property{"key2", "value2"}}});
+            Section section2("my_section", make_properties(Property("key", "value"), Property("key2", "value2")));
 
             REQUIRE(section2.get_tag() == "my_section");
             REQUIRE(section2.get_properties().at(0).get().first == "key");
@@ -621,7 +624,7 @@ inline namespace HTML {
             REQUIRE(section2.get_properties().at(1).get().first == "key2");
             REQUIRE(section2.get_properties().at(1).get().second == "value2");
 
-            Section section3(docpp::HTML::Tag::H1, {{Property{"key", "value"}, Property{"key2", "value2"}}});
+            Section section3(docpp::HTML::Tag::H1, make_properties(Property{"key", "value"}, Property{"key2", "value2"}), {Element{}});
 
             REQUIRE(section3.get_tag() == "h1");
             REQUIRE(section3.get_properties().at(0).get().first == "key");
@@ -644,7 +647,7 @@ inline namespace HTML {
             Element element;
 
             std::size_t index{0};
-            for (Section::iterator it = section.begin(); it != section.end(); ++it) {
+            for (auto it = section.begin(); it != section.end(); ++it) {
                 Element element = *it;
 
                 if (index == 0) {
@@ -1594,7 +1597,7 @@ inline namespace CSS {
             REQUIRE(stylesheet.at(0).get_properties().at(1).get().second == "value4");
 
             try {
-                stylesheet.at(1);
+                static_cast<void>(stylesheet.at(1));
             } catch (const docpp::out_of_range& e) {
                 REQUIRE(true);
             }
@@ -1918,3 +1921,5 @@ SCENARIO("Test HTML", "[HTML]") {
 SCENARIO("Test CSS", "[CSS]") {
     CSS::test_css();
 }
+
+// NOLINTEND
