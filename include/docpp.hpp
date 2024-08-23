@@ -17,10 +17,30 @@
  * @brief A namespace to represent HTML elements and documents
  */
 namespace docpp {
+#ifndef DOCPP_STRING_TYPE
+    using string_type = std::string;
+#else
+    using string_type = DOCPP_STRING_TYPE;
+#endif
+#ifndef DOCPP_SIZE_TYPE
+    using size_type = std::size_t;
+#else
+    using size_type = DOCPP_SIZE_TYPE;
+#endif
+#ifndef DOCPP_EXCEPTION_CLASS
+    using exception_type = std::exception;
+#else
+    using exception_type = DOCPP_EXCEPTION_CLASS;
+#endif
+#ifndef DOCPP_INTEGER_TYPE
+    using integer_type = int;
+#else
+    using integer_type = DOCPP_INTEGER_TYPE;
+#endif
     /**
      * @brief A class to represent an exception when an index is out of range
      */
-    class out_of_range : public std::exception {
+    class out_of_range : public exception_type {
         private:
             const char* message{"Out of range"};
         public:
@@ -34,7 +54,7 @@ namespace docpp {
     /**
      * @brief A class to represent an exception when an argument is invalid
      */
-    class invalid_argument : public std::exception {
+    class invalid_argument : public exception_type {
         private:
             const char* message{"Invalid argument"};
         public:
@@ -223,32 +243,30 @@ namespace docpp {
 
         /**
          * @brief Get a map of tags to strings and types.
-         * @return std::unordered_map<docpp::HTML::Tag, std::pair<std::string, docpp::HTML::Type>> The map of tags to strings and types.
+         * @return std::unordered_map<docpp::HTML::Tag, std::pair<string_type, docpp::HTML::Type>> The map of tags to strings and types.
          */
-        std::unordered_map<docpp::HTML::Tag, std::pair<std::string, docpp::HTML::Type>> get_tag_map();
+        std::unordered_map<docpp::HTML::Tag, std::pair<string_type, docpp::HTML::Type>> get_tag_map();
         /**
          * @brief Resolve a tag to a string and type.
          * @param tag The tag to resolve
-         * @return std::pair<std::string, Type> The resolved tag
+         * @return std::pair<string_type, Type> The resolved tag
          */
-        std::pair<std::string, Type> resolve_tag(Tag tag);
+        std::pair<string_type, Type> resolve_tag(Tag tag);
         /**
          * @brief Resolve a string tag to a Tag enum.
          * @param tag The tag to resolve
          * @return Tag The resolved tag
          */
-        Tag resolve_tag(const std::string& tag);
+        Tag resolve_tag(const string_type& tag);
 
         /**
          * @brief A class to represent an HTML property
          */
         class Property {
             private:
-                std::pair<std::string, std::string> property{};
+                std::pair<string_type, string_type> property{};
             protected:
             public:
-                using size_type = std::size_t;
-
                 /**
                  * @brief The npos value
                  */
@@ -259,7 +277,7 @@ namespace docpp {
                  * @param key The key of the property
                  * @param value The value of the property
                  */
-                Property(const std::string& key, const std::string& value) : property(std::make_pair(key, value)) {};
+                Property(const string_type& key, const string_type& value) : property(std::make_pair(key, value)) {};
                 /**
                  * @brief Construct a new Property object
                  * @param property The property to set
@@ -276,15 +294,15 @@ namespace docpp {
 
                 /**
                  * @brief Get the key of the property
-                 * @return std::string The key of the property
+                 * @return string_type The key of the property
                  */
-                [[nodiscard]] std::string get_key() const;
+                [[nodiscard]] string_type get_key() const;
                 /**
                  * @brief Get the key of the property in a specific type
                  * @return T The key of the property
                  */
                 template <typename T> T get_key() const {
-                    if (std::is_same_v<T, std::string>) {
+                    if (std::is_same_v<T, string_type>) {
                      return this->property.first;
                     }
 
@@ -292,30 +310,30 @@ namespace docpp {
                 };
                 /**
                  * @brief Get the value of the property
-                 * @return std::string The value of the property
+                 * @return string_type The value of the property
                  */
-                [[nodiscard]] std::string get_value() const;
+                [[nodiscard]] string_type get_value() const;
                 /**
                  * @brief Get the value of the property in a specific type
                  * @return T The value of the property
                  */
                 template <typename T> T get_value() const {
-                    if (std::is_same_v<T, std::string>) {
+                    if (std::is_same_v<T, string_type>) {
                         return this->property.second;
                     }
                     return T(this->property.second);
                 }
                 /**
                  * @brief Get the property.
-                 * @return std::pair<std::string, std::string> The value of the property
+                 * @return std::pair<string_type, string_type> The value of the property
                  */
-                [[nodiscard]] std::pair<std::string, std::string> get() const;
+                [[nodiscard]] std::pair<string_type, string_type> get() const;
                 /**
                  * @brief Get the property in a specific type.
                  * @return std::pair<T, T> The value of the property
                  */
                 template <typename T> std::pair<T, T> get() const {
-                    if (std::is_same_v<T, std::string>) {
+                    if (std::is_same_v<T, string_type>) {
                         return this->property;
                     }
 
@@ -325,17 +343,17 @@ namespace docpp {
                  * @brief Set the key of the property.
                  * @param key The key.
                  */
-                void set_key(const std::string& key);
+                void set_key(const string_type& key);
                 /**
                  * @brief Set the value of the property.
                  * @param value The value.
                  */
-                void set_value(const std::string& value);
+                void set_value(const string_type& value);
                 /**
                  * @brief Set the property
                  * @param property The property.
                  */
-                void set(const std::pair<std::string, std::string>& property);
+                void set(const std::pair<string_type, string_type>& property);
                 /**
                  * @brief Clear the property
                  */
@@ -360,7 +378,6 @@ namespace docpp {
                 std::vector<Property> properties{};
             protected:
             public:
-                using size_type = std::size_t;
                 using iterator = std::vector<Property>::iterator;
                 using const_iterator = std::vector<Property>::const_iterator;
                 using reverse_iterator = std::vector<Property>::reverse_iterator;
@@ -460,7 +477,7 @@ namespace docpp {
                  * @param str The property to find
                  * @return size_type The index of the property
                  */
-                [[nodiscard]] size_type find(const std::string& str) const;
+                [[nodiscard]] size_type find(const string_type& str) const;
                 /**
                  * @brief Swap two properties in the element
                  * @param index1 The index of the first property
@@ -548,13 +565,12 @@ namespace docpp {
          */
         class Element {
             private:
-                std::string tag{};
+                string_type tag{};
                 Properties properties{};
-                std::string data{};
+                string_type data{};
                 Type type{Type::Non_Self_Closing};
             protected:
             public:
-                using size_type = std::size_t;
                 /**
                  * @brief The npos value
                  */
@@ -567,14 +583,14 @@ namespace docpp {
                  * @param data The data of the element
                  * @param type The close tag type.
                  */
-                explicit Element(std::string tag, const Properties& properties = {}, std::string data = {}, const Type& type = Type::Non_Self_Closing) : tag(std::move(tag)), properties(properties), data(std::move(data)), type(type) {};
+                explicit Element(string_type tag, const Properties& properties = {}, string_type data = {}, const Type& type = Type::Non_Self_Closing) : tag(std::move(tag)), properties(properties), data(std::move(data)), type(type) {};
                 /**
                  * @brief Construct a new Element object
                  * @param tag The tag of the element
                  * @param properties The properties of the element
                  * @param data The data of the element
                  */
-                explicit Element(const Tag tag, const Properties& properties = {}, std::string data = {}) : tag(resolve_tag(tag).first), properties(properties), data(std::move(data)), type(resolve_tag(tag).second) {};
+                explicit Element(const Tag tag, const Properties& properties = {}, string_type data = {}) : tag(resolve_tag(tag).first), properties(properties), data(std::move(data)), type(resolve_tag(tag).second) {};
                 /**
                  * @brief Construct a new Element object
                  * @param element The element to set
@@ -595,19 +611,19 @@ namespace docpp {
                  * @param data The data of the element
                  * @param type The close tag type.
                  */
-                void set(const std::string& tag, const Properties& properties = {}, const std::string& data = {}, Type type = Type::Non_Self_Closing);
+                void set(const string_type& tag, const Properties& properties = {}, const string_type& data = {}, Type type = Type::Non_Self_Closing);
                 /**
                  * @brief Set the tag, properties, and data of the element
                  * @param tag The tag of the element
                  * @param properties The properties of the element
                  * @param data The data of the element
                  */
-                void set(Tag tag, const Properties& properties = {}, const std::string& data = {});
+                void set(Tag tag, const Properties& properties = {}, const string_type& data = {});
                 /**
                  * @brief Set the tag of the element
                  * @param tag The tag of the element
                  */
-                void set_tag(const std::string& tag);
+                void set_tag(const string_type& tag);
                 /**
                  * @brief Set the tag of the element
                  * @param tag The tag of the element
@@ -617,7 +633,7 @@ namespace docpp {
                  * @brief Set the data of the element
                  * @param data The data of the element
                  */
-                void set_data(const std::string& data);
+                void set_data(const string_type& data);
                 /**
                  * @brief Set the properties of the element
                  * @param properties The properties of the element
@@ -631,15 +647,15 @@ namespace docpp {
 
                 /**
                  * @brief Get the element in the form of an HTML tag.
-                 * @return std::string The tag of the element
+                 * @return string_type The tag of the element
                  */
-                [[nodiscard]] std::string get(Formatting formatting = Formatting::None, int tabc = 0) const;
+                [[nodiscard]] string_type get(Formatting formatting = Formatting::None, integer_type tabc = 0) const;
                 /**
                  * @brief Get the element in the form of a specific type.
                  * @return T The element in the form of a specific type
                  */
-                template <typename T> T get(const Formatting formatting = Formatting::None, const int tabc = 0) const {
-                    if (std::is_same_v<T, std::string>) {
+                template <typename T> T get(const Formatting formatting = Formatting::None, const integer_type tabc = 0) const {
+                    if (std::is_same_v<T, string_type>) {
                         return this->get(formatting, tabc);
                     }
                     return T(this->get(formatting, tabc));
@@ -647,15 +663,15 @@ namespace docpp {
 
                 /**
                  * @brief Get the tag of the element
-                 * @return std::string The data of the element
+                 * @return string_type The data of the element
                  */
-                [[nodiscard]] std::string get_tag() const;
+                [[nodiscard]] string_type get_tag() const;
                 /**
                  * @brief Get the tag of the element in a specific type
                  * @return T The tag of the element
                  */
                 template <typename T> T get_tag() const {
-                    if (std::is_same_v<T, std::string>) {
+                    if (std::is_same_v<T, string_type>) {
                         return this->tag;
                     }
                     return T(this->tag);
@@ -663,15 +679,15 @@ namespace docpp {
 
                 /**
                  * @brief Get the data of the element
-                 * @return std::string The data of the element
+                 * @return string_type The data of the element
                  */
-                [[nodiscard]] std::string get_data() const;
+                [[nodiscard]] string_type get_data() const;
                 /**
                  * @brief Get the data of the element in a specific type
                  * @return T The data of the element
                  */
                 template <typename T> T get_data() const {
-                    if (std::is_same_v<T, std::string>) {
+                    if (std::is_same_v<T, string_type>) {
                         return this->data;
                     }
                     return T(this->data);
@@ -697,7 +713,7 @@ namespace docpp {
                 [[nodiscard]] bool empty() const;
 
                 Element& operator=(const Element& element);
-                Element& operator+=(const std::string& data);
+                Element& operator+=(const string_type& data);
                 bool operator==(const Element& element) const;
                 bool operator!=(const Element& element) const;
         };
@@ -708,8 +724,6 @@ namespace docpp {
         class Section {
             protected:
             public:
-                using size_type = std::size_t;
-
                 /**
                  * @brief A class to represent an iterator for the Section class
                  */
@@ -736,7 +750,6 @@ namespace docpp {
                              return element != other.element;
                         }
                 };
-
 
                 using element_map = std::map<size_type, Element>;
                 using iterator = sect_iterator<element_map::iterator>;
@@ -878,7 +891,7 @@ namespace docpp {
                  * @param str The element or section to find
                  * @return size_type The index of the element or section
                  */
-                [[nodiscard]] size_type find(const std::string& str) const;
+                [[nodiscard]] size_type find(const string_type& str) const;
                 /**
                  * @brief Insert an element into the section
                  * @param index The index to insert the element
@@ -950,7 +963,7 @@ namespace docpp {
                  * @param tag The tag of the section
                  * @param properties The properties of the section
                  */
-                explicit Section(std::string tag, const Properties& properties = {}) : tag(std::move(tag)), properties(properties) {};
+                explicit Section(string_type tag, const Properties& properties = {}) : tag(std::move(tag)), properties(properties) {};
                 /**
                  * @brief Construct a new Section object
                  * @param tag The tag of the section
@@ -963,7 +976,7 @@ namespace docpp {
                  * @param properties The properties of the section
                  * @param elements The elements of the section
                  */
-                Section(std::string tag, const Properties& properties, const std::vector<Element>& elements) : tag(std::move(tag)), properties(properties) {
+                Section(string_type tag, const Properties& properties, const std::vector<Element>& elements) : tag(std::move(tag)), properties(properties) {
                     for (const auto& element : elements) this->push_back(element);
                 };
                 /**
@@ -981,7 +994,7 @@ namespace docpp {
                  * @param properties The properties of the section
                  * @param sections The sections of the section
                  */
-                Section(std::string tag, const Properties& properties, const std::vector<Section>& sections) : tag(std::move(tag)), properties(properties) {
+                Section(string_type tag, const Properties& properties, const std::vector<Section>& sections) : tag(std::move(tag)), properties(properties) {
                     for (const auto& section : sections) this->push_back(section);
                 };
                 /**
@@ -1017,7 +1030,7 @@ namespace docpp {
                  * @param tag The tag to assign to the section
                  * @param properties The properties to assign to the section tag
                  */
-                void set(const std::string& tag, const Properties& properties = {});
+                void set(const string_type& tag, const Properties& properties = {});
                 /**
                  * @brief Set the tag, id, and classes of the section
                  * @param tag The tag of the section
@@ -1028,7 +1041,7 @@ namespace docpp {
                  * @brief Set the tag of the section
                  * @param tag The tag of the section
                  */
-                void set_tag(const std::string& tag);
+                void set_tag(const string_type& tag);
                 /**
                  * @brief Set the tag of the section
                  * @param tag The tag of the section
@@ -1070,15 +1083,15 @@ namespace docpp {
 
                 /**
                  * @brief Dump the entire section.
-                 * @return std::string The section
+                 * @return string_type The section
                  */
-                [[nodiscard]] std::string get(Formatting formatting = Formatting::None, int tabc = 0) const;
+                [[nodiscard]] string_type get(Formatting formatting = Formatting::None, integer_type tabc = 0) const;
                 /**
                  * @brief Get the element in the form of a specific type.
                  * @return T The element in the form of a specific type
                  */
-                template <typename T> T get(const Formatting formatting = Formatting::None, const int tabc = 0) const {
-                    if (std::is_same_v<T, std::string>) {
+                template <typename T> T get(const Formatting formatting = Formatting::None, const integer_type tabc = 0) const {
+                    if (std::is_same_v<T, string_type>) {
                         return this->get(formatting, tabc);
                     }
                     return T(this->get(formatting, tabc));
@@ -1086,15 +1099,15 @@ namespace docpp {
 
                 /**
                  * @brief Get the tag of the section
-                 * @return std::string The tag of the section
+                 * @return string_type The tag of the section
                  */
-                [[nodiscard]] std::string get_tag() const;
+                [[nodiscard]] string_type get_tag() const;
                 /**
                  * @brief Get the tag of the section in a specific type
                  * @return T The tag of the section
                  */
                 template <typename T> T get_tag() const {
-                    if (std::is_same_v<T, std::string>) {
+                    if (std::is_same_v<T, string_type>) {
                         return this->tag;
                     }
                     return T(this->tag);
@@ -1113,11 +1126,11 @@ namespace docpp {
                 bool operator!=(const Element& element) const;
                 bool operator!=(const Section& section) const;
                 Element operator[](const int& index) const;
-                std::unordered_map<std::string, Element> operator[](const std::string& tag) const;
-                std::unordered_map<std::string, Element> operator[](Tag tag) const;
+                std::unordered_map<string_type, Element> operator[](const string_type& tag) const;
+                std::unordered_map<string_type, Element> operator[](Tag tag) const;
             private:
                 size_type index{};
-                std::string tag{};
+                string_type tag{};
                 Properties properties{};
 
                 std::map<size_type, Element> elements{};
@@ -1130,11 +1143,9 @@ namespace docpp {
         class Document {
             private:
                 Section document{};
-                std::string doctype{"<!DOCTYPE html>"};
+                string_type doctype{"<!DOCTYPE html>"};
             protected:
             public:
-                using size_type = std::size_t;
-
                 /**
                  * @brief The npos value
                  */
@@ -1144,15 +1155,15 @@ namespace docpp {
                  * @brief Get the document
                  * @param formatting The formatting type to use
                  * @param tabc Number of tab indents to start with, when using Formatting::Pretty
-                 * @return std::string The document
+                 * @return string_type The document
                  */
-                [[nodiscard]] std::string get(Formatting formatting = Formatting::None, int tabc = 0) const;
+                [[nodiscard]] string_type get(Formatting formatting = Formatting::None, integer_type tabc = 0) const;
                 /**
                  * @brief Get the document in the form of a specific type.
                  * @return T The document in the form of a specific type
                  */
-                template <typename T> T get(const Formatting formatting = Formatting::None, int tabc = 0) const {
-                    if (std::is_same_v<T, std::string>) {
+                template <typename T> T get(const Formatting formatting = Formatting::None, integer_type tabc = 0) const {
+                    if (std::is_same_v<T, string_type>) {
                         return this->get(formatting, tabc);
                     }
                     return T(this->get(formatting, tabc));
@@ -1169,15 +1180,15 @@ namespace docpp {
                 Section& get_section();
                 /**
                  * @brief Get the doctype of the document
-                 * @return std::string The doctype of the document
+                 * @return string_type The doctype of the document
                  */
-                [[nodiscard]] std::string get_doctype() const;
+                [[nodiscard]] string_type get_doctype() const;
                 /**
                  * @brief Get the doctype of the document in a specific type
                  * @return T The doctype of the document
                  */
                 template <typename T> T get_doctype() const {
-                    if (std::is_same_v<T, std::string>) {
+                    if (std::is_same_v<T, string_type>) {
                         return this->doctype;
                     }
                     return T(this->doctype);
@@ -1192,7 +1203,7 @@ namespace docpp {
                  * @brief Set the doctype of the document
                  * @param doctype The doctype to set
                  */
-                void set_doctype(const std::string& doctype);
+                void set_doctype(const string_type& doctype);
                 /**
                  * @brief Get the size of the document
                  * @return size_type The size of the document
@@ -1219,7 +1230,7 @@ namespace docpp {
                  * @param document The section to be assigned to the document
                  * @param doctype The doctype to prepend at the top, before the section
                  */
-                explicit Document(const Section& document, std::string doctype = "<!DOCTYPE html>") : document(document), doctype(std::move(doctype)) {};
+                explicit Document(const Section& document, string_type doctype = "<!DOCTYPE html>") : document(document), doctype(std::move(doctype)) {};
                 /**
                  * @brief Construct a new Document object
                  * @param document The document to set
@@ -1255,10 +1266,9 @@ namespace docpp {
          */
         class Property {
             private:
-                std::pair<std::string, std::string> property{};
+                std::pair<string_type, string_type> property{};
             protected:
             public:
-                using size_type = std::size_t;
                 /**
                  * @brief The npos value
                  */
@@ -1269,7 +1279,7 @@ namespace docpp {
                  * @param key The key of the property
                  * @param value The value of the property
                  */
-                Property(const std::string& key, const std::string& value) : property(std::make_pair(key, value)) {};
+                Property(const string_type& key, const string_type& value) : property(std::make_pair(key, value)) {};
                 /**
                  * @brief Construct a new Property object
                  */
@@ -1285,45 +1295,45 @@ namespace docpp {
 
                 /**
                  * @brief Get the key of the property
-                 * @return std::string The key of the property
+                 * @return string_type The key of the property
                  */
-                [[nodiscard]] std::string get_key() const;
+                [[nodiscard]] string_type get_key() const;
                 /**
                  * @brief Get the key of the property in a specific type
                  * @return T The key of the property
                  */
                 template <typename T> T get_key() const {
-                    if (std::is_same_v<T, std::string>) {
+                    if (std::is_same_v<T, string_type>) {
                         return this->property.first;
                     }
                     return T(this->property.first);
                 }
                 /**
                  * @brief Get the value of the property
-                 * @return std::string The value of the property
+                 * @return string_type The value of the property
                  */
-                [[nodiscard]] std::string get_value() const;
+                [[nodiscard]] string_type get_value() const;
                 /**
                  * @brief Get the value of the property in a specific type
                  * @return T The value of the property
                  */
                 template <typename T> T get_value() const {
-                    if (std::is_same_v<T, std::string>) {
+                    if (std::is_same_v<T, string_type>) {
                         return this->property.second;
                     }
                     return T(this->property.second);
                 }
                 /**
                  * @brief Get the property.
-                 * @return std::pair<std::string, std::string> The value of the property
+                 * @return std::pair<string_type, string_type> The value of the property
                  */
-                [[nodiscard]] std::pair<std::string, std::string> get() const;
+                [[nodiscard]] std::pair<string_type, string_type> get() const;
                 /**
                  * @brief Get the property in a specific type.
                  * @return std::pair<T, T> The value of the property
                  */
                 template <typename T> std::pair<T, T> get() const {
-                    if (std::is_same_v<T, std::string>) {
+                    if (std::is_same_v<T, string_type>) {
                         return std::make_pair(this->property.first, this->property.second);
                     }
                     return std::pair<T, T>(this->property.first, this->property.second);
@@ -1332,18 +1342,18 @@ namespace docpp {
                  * @brief Set the key of the property.
                  * @param key The key.
                  */
-                void set_key(const std::string& key);
+                void set_key(const string_type& key);
                 /**
                  * @brief Set the value of the property.
                  * @param value The value.
                  */
-                void set_value(const std::string& value);
+                void set_value(const string_type& value);
                 /**
                  * @brief Set the property
                  * @param key The key of the property
                  * @param value The value of the property
                  */
-                void set(const std::string& key, const std::string& value);
+                void set(const string_type& key, const string_type& value);
 
                 Property& operator=(const Property& property);
                 bool operator==(const Property& property) const;
@@ -1355,10 +1365,9 @@ namespace docpp {
          */
         class Element {
             private:
-                std::pair<std::string, std::vector<Property>> element{};
+                std::pair<string_type, std::vector<Property>> element{};
             protected:
             public:
-                using size_type = std::size_t;
                 using iterator = std::vector<Property>::iterator;
                 using const_iterator = std::vector<Property>::const_iterator;
                 using reverse_iterator = std::vector<Property>::reverse_iterator;
@@ -1425,7 +1434,7 @@ namespace docpp {
                  * @param tag The tag of the element
                  * @param properties The properties of the element
                  */
-                Element(const std::string& tag, const std::vector<Property>& properties) : element(std::make_pair(tag, properties)) {};
+                Element(const string_type& tag, const std::vector<Property>& properties) : element(std::make_pair(tag, properties)) {};
                 /**
                  * @brief Construct a new Element object
                  * @param element The element to set
@@ -1484,7 +1493,7 @@ namespace docpp {
                  * @param str The property to find
                  * @return size_type The index of the property
                  */
-                [[nodiscard]] size_type find(const std::string& str) const;
+                [[nodiscard]] size_type find(const string_type& str) const;
                 /**
                  * @brief Swap two properties in the element
                  * @param index1 The index of the first property
@@ -1536,7 +1545,7 @@ namespace docpp {
                  * @param tag The tag of the element
                  * @param properties The properties to set
                  */
-                void set(const std::string& tag, const std::vector<Property>& properties);
+                void set(const string_type& tag, const std::vector<Property>& properties);
                 /**
                  * @brief Set the properties of the element
                  * @param tag The tag of the element
@@ -1547,7 +1556,7 @@ namespace docpp {
                  * @brief Set the tag of the element
                  * @param tag The tag to set
                  */
-                void set_tag(const std::string& tag);
+                void set_tag(const string_type& tag);
                 /**
                  * @brief Set the tag of the element
                  * @param tag The tag to set
@@ -1560,30 +1569,30 @@ namespace docpp {
                 void set_properties(const std::vector<Property>& properties);
                 /**
                  * @brief Get the element
-                 * @return std::pair<std::string, std::vector<Property>> The element
+                 * @return std::pair<string_type, std::vector<Property>> The element
                  */
-                [[nodiscard]] std::string get(Formatting formatting = Formatting::None, int tabc = 0) const;
+                [[nodiscard]] string_type get(Formatting formatting = Formatting::None, integer_type tabc = 0) const;
                 /**
                  * @brief Get the element in the form of a specific type.
                  * @return T The element in the form of a specific type
                  */
-                template <typename T> T get(const Formatting formatting = Formatting::None, const int tabc = 0) const {
-                    if (std::is_same_v<T, std::string>) {
+                template <typename T> T get(const Formatting formatting = Formatting::None, const integer_type tabc = 0) const {
+                    if (std::is_same_v<T, string_type>) {
                         return this->get(formatting, tabc);
                     }
                     return T(this->get(formatting, tabc));
                 }
                 /**
                  * @brief Get the tag of the element
-                 * @return std::string The tag of the element
+                 * @return string_type The tag of the element
                  */
-                [[nodiscard]] std::string get_tag() const;
+                [[nodiscard]] string_type get_tag() const;
                 /**
                  * @brief Get the tag of the element in a specific type
                  * @return T The tag of the element
                  */
                 template <typename T> T get_tag() const {
-                    if (std::is_same_v<T, std::string>) {
+                    if (std::is_same_v<T, string_type>) {
                         return this->element.first;
                     }
                     return T(this->element.first);
@@ -1595,7 +1604,7 @@ namespace docpp {
                 [[nodiscard]] std::vector<Property> get_properties() const;
 
                 Element& operator=(const Element& element);
-                Element& operator=(const std::pair<std::string, std::vector<Property>>& element);
+                Element& operator=(const std::pair<string_type, std::vector<Property>>& element);
                 Element& operator+=(const Property& property);
                 Property operator[](const size_type& index) const;
                 bool operator==(const Element& element) const;
@@ -1610,7 +1619,6 @@ namespace docpp {
                 std::vector<Element> elements{};
             protected:
             public:
-                using size_type = std::size_t;
                 using iterator = std::vector<Element>::iterator;
                 using const_iterator = std::vector<Element>::const_iterator;
                 using reverse_iterator = std::vector<Element>::reverse_iterator;
@@ -1723,7 +1731,7 @@ namespace docpp {
                  * @param str The element to find, either the tag or the stylesheet itself
                  * @return size_type The index of the element
                  */
-                [[nodiscard]] size_type find(const std::string& str) const;
+                [[nodiscard]] size_type find(const string_type& str) const;
                 /**
                  * @brief Get the element at an index
                  * @param index The index of the element
@@ -1778,15 +1786,15 @@ namespace docpp {
                 [[nodiscard]] std::vector<Element> get_elements() const;
                 /**
                  * @brief Get the stylesheet
-                 * @return std::string The stylesheet
+                 * @return string_type The stylesheet
                  */
-                [[nodiscard]] std::string get(Formatting formatting = Formatting::None, int tabc = 0) const;
+                [[nodiscard]] string_type get(Formatting formatting = Formatting::None, integer_type tabc = 0) const;
                 /**
                  * @brief Get the stylesheet in the form of a specific type.
                  * @return T The stylesheet in the form of a specific type
                  */
-                template <typename T> T get(const Formatting formatting = Formatting::None, const int tabc = 0) const {
-                    if (std::is_same_v<T, std::string>) {
+                template <typename T> T get(const Formatting formatting = Formatting::None, const integer_type tabc = 0) const {
+                    if (std::is_same_v<T, string_type>) {
                         return this->get(formatting, tabc);
                     }
                     return T(this->get(formatting, tabc));
@@ -1806,5 +1814,5 @@ namespace docpp {
      * @brief Get the version of the library
      * @return std::tuple<int, int, int> The version of the library
      */
-    std::tuple<int, int, int> version();
+    std::tuple<integer_type, integer_type, integer_type> version();
 } // namespace docpp

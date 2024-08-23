@@ -11,27 +11,27 @@
 #include <vector>
 #include <algorithm>
 
-std::string docpp::HTML::Property::get_key() const {
+docpp::string_type docpp::HTML::Property::get_key() const {
     return this->property.first;
 }
 
-std::string docpp::HTML::Property::get_value() const {
+docpp::string_type docpp::HTML::Property::get_value() const {
     return this->property.second;
 }
 
-std::pair<std::string, std::string> docpp::HTML::Property::get() const {
+std::pair<docpp::string_type, docpp::string_type> docpp::HTML::Property::get() const {
     return this->property;
 }
 
-void docpp::HTML::Property::set_key(const std::string& key) {
+void docpp::HTML::Property::set_key(const docpp::string_type& key) {
     this->property.first = key;
 }
 
-void docpp::HTML::Property::set_value(const std::string& value) {
+void docpp::HTML::Property::set_value(const docpp::string_type& value) {
     this->property.second = value;
 }
 
-void docpp::HTML::Property::set(const std::pair<std::string, std::string>& property) {
+void docpp::HTML::Property::set(const std::pair<docpp::string_type, docpp::string_type>& property) {
     this->property = property;
 }
 
@@ -149,10 +149,10 @@ void docpp::HTML::Properties::push_back(const docpp::HTML::Property& property) {
     this->properties.push_back(property);
 }
 
-docpp::HTML::Properties::size_type docpp::HTML::Properties::find(const docpp::HTML::Property& property) const {
+docpp::size_type docpp::HTML::Properties::find(const docpp::HTML::Property& property) const {
     for (size_type i{0}; i < this->properties.size(); i++) {
-        if (this->properties.at(i).get_value().find(property.get_value()) != std::string::npos
-            || this->properties.at(i).get_key().find(property.get_key()) != std::string::npos) {
+        if (this->properties.at(i).get_value().find(property.get_value()) != docpp::string_type::npos
+            || this->properties.at(i).get_key().find(property.get_key()) != docpp::string_type::npos) {
             return i;
         }
     }
@@ -160,10 +160,10 @@ docpp::HTML::Properties::size_type docpp::HTML::Properties::find(const docpp::HT
     return docpp::HTML::Properties::npos;
 }
 
-docpp::HTML::Properties::size_type docpp::HTML::Properties::find(const std::string& str) const {
+docpp::size_type docpp::HTML::Properties::find(const docpp::string_type& str) const {
     for (size_type i{0}; i < this->properties.size(); i++) {
-        if (this->properties.at(i).get_key().find(str) != std::string::npos ||
-            this->properties.at(i).get_value().find(str) != std::string::npos) {
+        if (this->properties.at(i).get_key().find(str) != docpp::string_type::npos ||
+            this->properties.at(i).get_value().find(str) != docpp::string_type::npos) {
             return i;
         }
     }
@@ -179,7 +179,7 @@ docpp::HTML::Property docpp::HTML::Properties::back() const {
     return this->properties.back();
 }
 
-docpp::HTML::Properties::size_type docpp::HTML::Properties::size() const {
+docpp::size_type docpp::HTML::Properties::size() const {
     return this->properties.size();
 }
 
@@ -209,7 +209,7 @@ docpp::HTML::Element& docpp::HTML::Element::operator=(const docpp::HTML::Element
     return *this;
 }
 
-docpp::HTML::Element& docpp::HTML::Element::operator+=(const std::string& data) {
+docpp::HTML::Element& docpp::HTML::Element::operator+=(const docpp::string_type& data) {
     this->data += data;
     return *this;
 }
@@ -222,30 +222,30 @@ bool docpp::HTML::Element::operator!=(const docpp::HTML::Element& element) const
     return this->tag != element.get_tag() || this->properties != element.properties || this->data != element.get_data() || this->type != element.type;
 }
 
-void docpp::HTML::Element::set(const std::string& tag, const Properties& properties, const std::string& data, const Type type) {
+void docpp::HTML::Element::set(const docpp::string_type& tag, const Properties& properties, const docpp::string_type& data, const Type type) {
     this->set_tag(tag);
     this->set_properties(properties);
     this->set_data(data);
     this->set_type(type);
 }
 
-void docpp::HTML::Element::set(const Tag tag, const Properties& properties, const std::string& data) {
+void docpp::HTML::Element::set(const Tag tag, const Properties& properties, const docpp::string_type& data) {
     this->set_tag(tag);
     this->set_properties(properties);
     this->set_data(data);
 }
 
-void docpp::HTML::Element::set_tag(const std::string& tag) {
+void docpp::HTML::Element::set_tag(const docpp::string_type& tag) {
     this->tag = tag;
 }
 
 void docpp::HTML::Element::set_tag(const Tag tag) {
-    std::pair<std::string, docpp::HTML::Type> resolved{resolve_tag(tag)};
+    std::pair<docpp::string_type, docpp::HTML::Type> resolved{resolve_tag(tag)};
     this->tag = resolved.first;
     this->type = resolved.second;
 }
 
-void docpp::HTML::Element::set_data(const std::string& data) {
+void docpp::HTML::Element::set_data(const docpp::string_type& data) {
     this->data = data;
 }
 
@@ -257,8 +257,8 @@ void docpp::HTML::Element::set_properties(const Properties& properties) {
     this->properties = properties;
 }
 
-std::string docpp::HTML::Element::get(const Formatting formatting, const int tabc) const {
-    std::string ret{};
+docpp::string_type docpp::HTML::Element::get(const Formatting formatting, const docpp::integer_type tabc) const {
+    docpp::string_type ret{};
 
     if (this->type == docpp::HTML::Type::Text_No_Formatting) {
         return this->data;
@@ -309,11 +309,11 @@ std::string docpp::HTML::Element::get(const Formatting formatting, const int tab
     return ret;
 }
 
-std::string docpp::HTML::Element::get_tag() const {
+docpp::string_type docpp::HTML::Element::get_tag() const {
     return this->tag;
 }
 
-std::string docpp::HTML::Element::get_data() const {
+docpp::string_type docpp::HTML::Element::get_data() const {
     return this->data;
 }
 
@@ -347,12 +347,12 @@ docpp::HTML::Section& docpp::HTML::Section::operator+=(const docpp::HTML::Sectio
     return *this;
 }
 
-docpp::HTML::Element docpp::HTML::Section::operator[](const int& index) const {
+docpp::HTML::Element docpp::HTML::Section::operator[](const docpp::integer_type& index) const {
     return this->at(index);
 }
 
-std::unordered_map<std::string, docpp::HTML::Element> docpp::HTML::Section::operator[](const std::string& tag) const {
-    std::unordered_map<std::string, docpp::HTML::Element> ret{};
+std::unordered_map<docpp::string_type, docpp::HTML::Element> docpp::HTML::Section::operator[](const docpp::string_type& tag) const {
+    std::unordered_map<docpp::string_type, docpp::HTML::Element> ret{};
 
     for (const Element& it : this->get_elements()) {
         if (it.get_tag() == tag) {
@@ -363,8 +363,8 @@ std::unordered_map<std::string, docpp::HTML::Element> docpp::HTML::Section::oper
     return ret;
 }
 
-std::unordered_map<std::string, docpp::HTML::Element> docpp::HTML::Section::operator[](const Tag tag) const {
-    std::unordered_map<std::string, docpp::HTML::Element> ret{};
+std::unordered_map<docpp::string_type, docpp::HTML::Element> docpp::HTML::Section::operator[](const Tag tag) const {
+    std::unordered_map<docpp::string_type, docpp::HTML::Element> ret{};
 
     for (const Element& it : this->get_elements()) {
         if (it.get_tag() == resolve_tag(tag).first) {
@@ -396,17 +396,17 @@ bool docpp::HTML::Section::operator!=(const docpp::HTML::Element& element) const
     });
 }
 
-void docpp::HTML::Section::set(const std::string& tag, const Properties& properties) {
+void docpp::HTML::Section::set(const docpp::string_type& tag, const Properties& properties) {
     this->tag = tag;
     this->properties = properties;
 }
 
-void docpp::HTML::Section::set_tag(const std::string& tag) {
+void docpp::HTML::Section::set_tag(const docpp::string_type& tag) {
     this->tag = tag;
 }
 
 void docpp::HTML::Section::set_tag(const Tag tag) {
-    std::pair<std::string, docpp::HTML::Type> resolved{resolve_tag(tag)};
+    std::pair<docpp::string_type, docpp::HTML::Type> resolved{resolve_tag(tag)};
     this->tag = resolved.first;
 }
 
@@ -414,7 +414,7 @@ void docpp::HTML::Section::set_properties(const Properties& properties) {
     this->properties = properties;
 }
 
-std::unordered_map<docpp::HTML::Tag, std::pair<std::string, docpp::HTML::Type>> docpp::HTML::get_tag_map() {
+std::unordered_map<docpp::HTML::Tag, std::pair<docpp::string_type, docpp::HTML::Type>> docpp::HTML::get_tag_map() {
     return {
         {Tag::Empty, {"", Type::Text}},
         {Tag::Empty_No_Formatting, {"", Type::Text_No_Formatting}},
@@ -564,19 +564,19 @@ std::unordered_map<docpp::HTML::Tag, std::pair<std::string, docpp::HTML::Type>> 
     };
 }
 
-std::pair<std::string, docpp::HTML::Type> docpp::HTML::resolve_tag(const Tag tag) {
-    const std::unordered_map<docpp::HTML::Tag, std::pair<std::string, docpp::HTML::Type>> tag_map{get_tag_map()};
+std::pair<docpp::string_type, docpp::HTML::Type> docpp::HTML::resolve_tag(const Tag tag) {
+    const std::unordered_map<docpp::HTML::Tag, std::pair<docpp::string_type, docpp::HTML::Type>> tag_map{get_tag_map()};
 
     if (tag_map.find(tag) != tag_map.end()) {
         return tag_map.at(tag);
     }
 
-    const std::string throwmsg{"Invalid tag: " + std::to_string(static_cast<int>(tag))};
+    const docpp::string_type throwmsg{"Invalid tag: " + std::to_string(static_cast<docpp::integer_type>(tag))};
     throw docpp::invalid_argument{throwmsg.c_str()};
 }
 
-docpp::HTML::Tag docpp::HTML::resolve_tag(const std::string& tag) {
-    const std::unordered_map<docpp::HTML::Tag, std::pair<std::string, docpp::HTML::Type>> tag_map{get_tag_map()};
+docpp::HTML::Tag docpp::HTML::resolve_tag(const docpp::string_type& tag) {
+    const std::unordered_map<docpp::HTML::Tag, std::pair<docpp::string_type, docpp::HTML::Type>> tag_map{get_tag_map()};
 
     for (const auto& it : tag_map) {
         if (it.second.first == tag) {
@@ -707,7 +707,7 @@ docpp::HTML::Section& docpp::HTML::Section::at_section(const size_type index) {
     throw docpp::out_of_range("Index out of range");
 }
 
-docpp::HTML::Section::size_type docpp::HTML::Section::find(const Element& element) const {
+docpp::size_type docpp::HTML::Section::find(const Element& element) const {
     for (size_type i{0}; i < this->size(); i++) {
         const Element it = this->get_elements().at(i);
 
@@ -719,7 +719,7 @@ docpp::HTML::Section::size_type docpp::HTML::Section::find(const Element& elemen
     return docpp::HTML::Section::npos;
 }
 
-docpp::HTML::Section::size_type docpp::HTML::Section::find(const Section& section) const {
+docpp::size_type docpp::HTML::Section::find(const Section& section) const {
     for (size_type i{0}; i < this->size(); i++) {
         const Section it = this->get_sections().at(i);
 
@@ -731,7 +731,7 @@ docpp::HTML::Section::size_type docpp::HTML::Section::find(const Section& sectio
     return docpp::HTML::Section::npos;
 }
 
-docpp::HTML::Section::size_type docpp::HTML::Section::find(const std::string& str) const {
+docpp::size_type docpp::HTML::Section::find(const docpp::string_type& str) const {
     const std::vector<docpp::HTML::Element> elements{this->get_elements()};
 
     for (size_type i{0}; i < this->size(); i++) {
@@ -823,7 +823,7 @@ docpp::HTML::Section& docpp::HTML::Section::back_section() {
     throw docpp::out_of_range("Index out of range");
 }
 
-docpp::HTML::Section::size_type docpp::HTML::Section::size() const {
+docpp::size_type docpp::HTML::Section::size() const {
     return this->index;
 }
 
@@ -863,9 +863,9 @@ std::vector<docpp::HTML::Section> docpp::HTML::Section::get_sections() const {
     return ret;
 }
 
-std::string docpp::HTML::Section::get(const Formatting formatting, const int tabc) const { // NOLINT
-    std::string ret{};
-    int tabcount{tabc};
+docpp::string_type docpp::HTML::Section::get(const Formatting formatting, const docpp::integer_type tabc) const { // NOLINT
+    docpp::string_type ret{};
+    docpp::integer_type tabcount{tabc};
 
     if (this->tag.empty() && this->properties.empty() && this->sections.empty() && this->elements.empty()) {
         return {};
@@ -923,7 +923,7 @@ std::string docpp::HTML::Section::get(const Formatting formatting, const int tab
     return ret;
 }
 
-std::string docpp::HTML::Section::get_tag() const {
+docpp::string_type docpp::HTML::Section::get_tag() const {
     return this->tag;
 }
 
@@ -949,7 +949,7 @@ void docpp::HTML::Section::swap(const Section& section1, const Section& section2
     this->swap(this->find(section1), this->find(section2));
 }
 
-std::string docpp::HTML::Document::get(const Formatting formatting, const int tabc) const {
+docpp::string_type docpp::HTML::Document::get(const Formatting formatting, const docpp::integer_type tabc) const {
     return this->doctype + (formatting == Formatting::Pretty ? "\n" : formatting == Formatting::Newline ? "\n" : "") + this->document.get(formatting, tabc);
 }
 
@@ -965,11 +965,11 @@ void docpp::HTML::Document::set(const docpp::HTML::Section& document) {
     this->document = document;
 }
 
-docpp::HTML::Document::size_type docpp::HTML::Document::size() const {
+docpp::size_type docpp::HTML::Document::size() const {
     return this->document.size();
 }
 
-void docpp::HTML::Document::set_doctype(const std::string& doctype) {
+void docpp::HTML::Document::set_doctype(const docpp::string_type& doctype) {
     this->doctype = doctype;
 }
 
@@ -1009,31 +1009,31 @@ bool docpp::HTML::Document::operator!=(const docpp::HTML::Section& section) cons
     return this->document != section;
 }
 
-std::string docpp::HTML::Document::get_doctype() const {
+docpp::string_type docpp::HTML::Document::get_doctype() const {
     return this->doctype;
 }
 
-std::string docpp::CSS::Property::get_key() const {
+docpp::string_type docpp::CSS::Property::get_key() const {
     return this->property.first;
 }
 
-std::string docpp::CSS::Property::get_value() const {
+docpp::string_type docpp::CSS::Property::get_value() const {
     return this->property.second;
 }
 
-std::pair<std::string, std::string> docpp::CSS::Property::get() const {
+std::pair<docpp::string_type, docpp::string_type> docpp::CSS::Property::get() const {
     return this->property;
 }
 
-void docpp::CSS::Property::set_key(const std::string& key) {
+void docpp::CSS::Property::set_key(const docpp::string_type& key) {
     this->property.first = key;
 }
 
-void docpp::CSS::Property::set_value(const std::string& value) {
+void docpp::CSS::Property::set_value(const docpp::string_type& value) {
     this->property.second = value;
 }
 
-void docpp::CSS::Property::set(const std::string& key, const std::string& value) {
+void docpp::CSS::Property::set(const docpp::string_type& key, const docpp::string_type& value) {
     this->property = std::make_pair(key, value);
 }
 
@@ -1072,12 +1072,12 @@ bool docpp::CSS::Element::operator!=(const docpp::CSS::Element& element) const {
     return this->get() != element.get();
 }
 
-void docpp::CSS::Element::set(const std::string& tag, const std::vector<Property>& properties) {
+void docpp::CSS::Element::set(const docpp::string_type& tag, const std::vector<Property>& properties) {
     this->element.first = tag;
     this->element.second = properties;
 }
 
-void docpp::CSS::Element::set_tag(const std::string& tag) {
+void docpp::CSS::Element::set_tag(const docpp::string_type& tag) {
     this->element.first = tag;
 }
 
@@ -1129,7 +1129,7 @@ docpp::CSS::Property& docpp::CSS::Element::at(const size_type index) {
     return this->element.second.at(index);
 }
 
-docpp::CSS::Element::size_type docpp::CSS::Element::find(const Property& property) const {
+docpp::size_type docpp::CSS::Element::find(const Property& property) const {
     for (size_type i{0}; i < this->element.second.size(); i++) {
         if (this->element.second.at(i).get() == property.get()) {
             return i;
@@ -1139,7 +1139,7 @@ docpp::CSS::Element::size_type docpp::CSS::Element::find(const Property& propert
     return docpp::CSS::Element::npos;
 }
 
-docpp::CSS::Element::size_type docpp::CSS::Element::find(const std::string& str) const {
+docpp::size_type docpp::CSS::Element::find(const docpp::string_type& str) const {
     for (size_type i{0}; i < this->element.second.size(); i++) {
         if (this->element.second.at(i).get_key() == str || this->element.second.at(i).get_value() == str) {
             return i;
@@ -1165,7 +1165,7 @@ docpp::CSS::Property& docpp::CSS::Element::back() {
     return this->element.second.back();
 }
 
-docpp::CSS::Element::size_type docpp::CSS::Element::size() const {
+docpp::size_type docpp::CSS::Element::size() const {
     return this->element.second.size();
 }
 
@@ -1190,8 +1190,8 @@ void docpp::CSS::Element::swap(const Property& property1, const Property& proper
     this->swap(this->find(property1), this->find(property2));
 }
 
-std::string docpp::CSS::Element::get(const Formatting formatting, const int tabc) const {
-    std::string ret{};
+docpp::string_type docpp::CSS::Element::get(const Formatting formatting, const docpp::integer_type tabc) const {
+    docpp::string_type ret{};
 
     if (!this->element.first.empty()) {
         if (formatting == docpp::CSS::Formatting::Pretty) {
@@ -1240,7 +1240,7 @@ std::string docpp::CSS::Element::get(const Formatting formatting, const int tabc
     return ret;
 }
 
-std::string docpp::CSS::Element::get_tag() const {
+docpp::string_type docpp::CSS::Element::get_tag() const {
     return this->element.first;
 }
 
@@ -1286,7 +1286,7 @@ docpp::CSS::Stylesheet& docpp::CSS::Stylesheet::operator+=(const Element& elemen
     return *this;
 }
 
-docpp::CSS::Element docpp::CSS::Stylesheet::operator[](const int& index) const {
+docpp::CSS::Element docpp::CSS::Stylesheet::operator[](const docpp::integer_type& index) const {
     return this->at(index);
 }
 
@@ -1306,7 +1306,7 @@ docpp::CSS::Element docpp::CSS::Stylesheet::at(const size_type index) const {
     return this->elements.at(index);
 }
 
-docpp::CSS::Stylesheet::size_type docpp::CSS::Stylesheet::find(const Element& element) const {
+docpp::size_type docpp::CSS::Stylesheet::find(const Element& element) const {
     for (size_type i{0}; i < this->elements.size(); i++) {
         if (this->elements.at(i).get() == element.get()) {
             return i;
@@ -1316,7 +1316,7 @@ docpp::CSS::Stylesheet::size_type docpp::CSS::Stylesheet::find(const Element& el
     return docpp::CSS::Stylesheet::npos;
 }
 
-docpp::CSS::Stylesheet::size_type docpp::CSS::Stylesheet::find(const std::string& str) const {
+docpp::size_type docpp::CSS::Stylesheet::find(const docpp::string_type& str) const {
     for (size_type i{0}; i < this->elements.size(); i++) {
         if (this->elements.at(i).get() == str || this->elements.at(i).get_tag() == str) {
             return i;
@@ -1326,7 +1326,7 @@ docpp::CSS::Stylesheet::size_type docpp::CSS::Stylesheet::find(const std::string
     return docpp::CSS::Stylesheet::npos;
 }
 
-docpp::CSS::Stylesheet::size_type docpp::CSS::Stylesheet::size() const {
+docpp::size_type docpp::CSS::Stylesheet::size() const {
     return this->elements.size();
 }
 
@@ -1362,8 +1362,8 @@ std::vector<docpp::CSS::Element> docpp::CSS::Stylesheet::get_elements() const {
     return this->elements;
 }
 
-std::string docpp::CSS::Stylesheet::get(const Formatting formatting, const int tabc) const {
-    std::string ret{};
+docpp::string_type docpp::CSS::Stylesheet::get(const Formatting formatting, const docpp::integer_type tabc) const {
+    docpp::string_type ret{};
 
     for (const Element& it : this->elements) {
         ret += it.get(formatting, tabc);
@@ -1372,20 +1372,20 @@ std::string docpp::CSS::Stylesheet::get(const Formatting formatting, const int t
     return ret;
 }
 
-std::tuple<int, int, int> docpp::version() {
+std::tuple<docpp::integer_type, docpp::integer_type, docpp::integer_type> docpp::version() {
 #ifdef DOCPP_VERSION
-    std::string version{DOCPP_VERSION};
+    docpp::string_type version{DOCPP_VERSION};
 
-    if (version.find('.') != std::string::npos) {
-        std::string major = version.substr(0, version.find('.'));
+    if (version.find('.') != docpp::string_type::npos) {
+        docpp::string_type major = version.substr(0, version.find('.'));
         version = version.substr(version.find('.') + 1);
 
-        if (version.find('.') != std::string::npos) {
-            std::string minor = version.substr(0, version.find('.'));
+        if (version.find('.') != docpp::string_type::npos) {
+            docpp::string_type minor = version.substr(0, version.find('.'));
             version = version.substr(version.find('.') + 1);
 
-            if (version.find('.') != std::string::npos) {
-                std::string patch = version.substr(0, version.find('.'));
+            if (version.find('.') != docpp::string_type::npos) {
+                docpp::string_type patch = version.substr(0, version.find('.'));
                 return {std::stoi(major), std::stoi(minor), std::stoi(patch)};
             }
         }
