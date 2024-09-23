@@ -1,0 +1,14 @@
+[
+{
+  "directory": "/Users/jacob/CLionProjects/DocppWebsite/cmake-build-debug",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ -I/Users/jacob/CLionProjects/DocppWebsite/include -isystem /usr/local/include -g -std=c++17 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.0.sdk -fcolor-diagnostics -o CMakeFiles/DocppWebsite.dir/src/main.cpp.o -c /Users/jacob/CLionProjects/DocppWebsite/src/main.cpp",
+  "file": "/Users/jacob/CLionProjects/DocppWebsite/src/main.cpp",
+  "output": "CMakeFiles/DocppWebsite.dir/src/main.cpp.o"
+},
+{
+  "directory": "/Users/jacob/CLionProjects/DocppWebsite/cmake-build-debug",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ -I/Users/jacob/CLionProjects/DocppWebsite/include -isystem /usr/local/include -g -std=c++17 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.0.sdk -fcolor-diagnostics -o CMakeFiles/DocppWebsite.dir/src/Sites.cpp.o -c /Users/jacob/CLionProjects/DocppWebsite/src/Sites.cpp",
+  "file": "/Users/jacob/CLionProjects/DocppWebsite/src/Sites.cpp",
+  "output": "CMakeFiles/DocppWebsite.dir/src/Sites.cpp.o"
+}
+]

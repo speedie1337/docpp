@@ -40,7 +40,7 @@ int main() {
     /* This is an HTML element. Unlike a section, an element cannot hold any other elements or sections, rather it holds text and/or attributes.
      * The first argument is the type of element, and this should simply be the tag name (e.g., "p", "h1", "a", etc.).
      *
-     * The second argument is an HTMLProperties object, which is a collection of Property objects. Each property is a std::pair of an
+     * The second argument is a Properties object, which is a collection of Property objects. Each property is a std::pair of an
      * attribute name and an attribute value. If you don't want to specify any attributes, you can pass an empty ElementAttributes object.
      * If you need to change the element's tag, attributes, type or text later, you can use the set() method.
      *
@@ -61,7 +61,7 @@ int main() {
 
     /* Add the title and meta elements to the head section. */
     headSection.push_back(titleElement);
-    headSection.push_back(docpp::HTML::Element("meta", {{docpp::HTML::Property("name", "description"), docpp::HTML::Property("content", "Hello world document description!")}}, "", docpp::HTML::Type::Non_Closed));
+    headSection.push_back(docpp::HTML::Element("meta", docpp::HTML::make_properties(docpp::HTML::Property("name", "description"), docpp::HTML::Property("content", "Hello world document description!")), "", docpp::HTML::Type::Non_Closed));
 
     /* This is a CSS document. It is essentially the CSS equivalent of an HTML section.
      * It is essentially a collection of Element objects, which is a collection of Property objects.
@@ -91,7 +91,7 @@ int main() {
     /* Add a paragraph element to the footer section. */
     footerSection.push_back(docpp::HTML::Element("p", {}, "This is the footer.")); // <p>This is the footer.</p>
 
-    docpp::HTML::Section divSection(docpp::HTML::Tag::Div, {{docpp::HTML::Property("id", "main")}}); // <div id="main"></div>
+    docpp::HTML::Section divSection(docpp::HTML::Tag::Div, docpp::HTML::make_properties(docpp::HTML::Property("id", "main"))); // <div id="main"></div>
 
     /* Add a header element and a paragraph element to the div section. */
     divSection.push_back(docpp::HTML::Element("h1", {}, "Hello world!")); // <h1>Hello world!</h1>
