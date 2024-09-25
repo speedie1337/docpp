@@ -1,3 +1,5 @@
 .cache
 build
 docs/html
+.idea
+cmake-*

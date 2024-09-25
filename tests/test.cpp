@@ -1,3 +1,4 @@
+#include <iostream>
 #include <string>
 #include <unordered_map>
 #include <src/docpp.cpp>
@@ -1660,6 +1661,19 @@ inline namespace CSS {
             Stylesheet stylesheet2{{Element{"my_element", {{Property{"key", "value"}, Property{"key2", "value2"}}}}}};
 
             REQUIRE(stylesheet2.size() == 1);
+
+            Stylesheet stylesheet3 = docpp::CSS::make_stylesheet(
+                docpp::CSS::make_element(
+                    "my_element", docpp::CSS::make_properties(Property{"property1", "data1"}, Property{"property2", "data2"})
+                ),
+                docpp::CSS::make_element(
+                    "my_element_2", docpp::CSS::make_properties(Property{"property3", "data3"}, Property{"property4", "data4"})
+                )
+            );
+
+            REQUIRE(stylesheet3.size() == 2);
+            REQUIRE(stylesheet3.get<std::string>() == "my_element {property1: data1;property2: data2;}my_element_2 {property3: data3;property4: data4;}");
+            REQUIRE(stylesheet3.at(1).at(1).get().first == "property4");
         };
 
         const auto test_push_front_and_back = []() {

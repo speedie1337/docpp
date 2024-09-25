@@ -1807,7 +1807,9 @@ namespace docpp {
                 bool operator!=(const Stylesheet& stylesheet) const;
         };
 
-    template <typename... Args> Stylesheet make_stylesheet(Args&&... args) { return Stylesheet(std::forward<Args>(args)...); }
+        template <typename... Args> Stylesheet make_stylesheet(Args&&... args) { return Stylesheet(std::forward<Args>(args)...); }
+        template <typename... Args> Element make_element(Args&&... args) { return Element(std::forward<Args>(args)...); }
+        template <typename... Args> std::vector<Property> make_properties(Args&&... args) { return {std::forward<Args>(args)...}; }
     } // namespace CSS
 
     /**
