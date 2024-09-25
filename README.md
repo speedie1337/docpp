@@ -30,15 +30,13 @@ cmake --install . --prefix /usr
 ```
 
 This will install the library to /usr/lib and the headers to /usr/include/docpp.
-If you use Arch Linux, you can specify -DGENERATE_PKGBUILD=ON to generate a PKGBUILD file in the build directory. You can then use makepkg to build a package.
+For macOS, you should use `/usr/local` as your prefix instead.
 
 ```sh
 cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -DGENERATE_PKGBUILD=ON
 cmake --build .
 makepkg -si
 ```
-
-If you use Gentoo Linux, you can specify -DGENERATE_EBUILD=ON to generate an ebuild file in the build directory, along with the manifest.
 
 ## Usage
 

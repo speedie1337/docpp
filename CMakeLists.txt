@@ -7,10 +7,6 @@ project(docpp VERSION 0.1.0
     LANGUAGES CXX
 )
 
-option(GENERATE_PKGBUILD "Generate PKGBUILD" OFF)
-option(GENERATE_EBUILD "Generate ebuild" OFF)
-option(BUILD_TARBALL "Build tarball" OFF)
-
 add_compile_definitions(DOCPP_VERSION="${PROJECT_VERSION}")
 
 include(GNUInstallDirs)
@@ -101,42 +97,4 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
          WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
          COMMAND ${PROJECT_NAME}_test
     )
-endif()
-
-if (NOT WIN32)
-    if (EXISTS "${PROJECT_SOURCE_DIR}/cmake/${PROJECT_NAME}.PKGBUILD.in" AND
-            GENERATE_PKGBUILD)
-        configure_file(${PROJECT_SOURCE_DIR}/cmake/${PROJECT_NAME}.PKGBUILD.in
-            ${CMAKE_CURRENT_BINARY_DIR}/PKGBUILD @ONLY
-        )
-    endif()
-
-    if (BUILD_TARBALL OR GENERATE_EBUILD)
-        add_custom_command(
-            TARGET ${PROJECT_NAME}
-            COMMENT "Create tarball"
-            POST_BUILD
-            WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-            COMMAND scripts/${PROJECT_NAME}_make dist && mv ${PROJECT_SOURCE_DIR}/${PROJECT_NAME}-${PROJECT_VERSION}.tar.gz* ${CMAKE_BINARY_DIR}
-        )
-    endif()
-
-    if (EXISTS "${PROJECT_SOURCE_DIR}/cmake/${PROJECT_NAME}.ebuild.in" AND
-            GENERATE_EBUILD )
-        configure_file(${PROJECT_SOURCE_DIR}/cmake/${PROJECT_NAME}.ebuild.in
-            ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-${PROJECT_VERSION}.ebuild @ONLY
-        )
-        add_custom_command(
-            TARGET ${PROJECT_NAME}
-            COMMENT "Copy ebuild and generate manifest"
-            POST_BUILD
-            WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-            COMMAND cp
-            ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-${PROJECT_VERSION}.ebuild
-            ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-9999.ebuild &&
-            ${PROJECT_SOURCE_DIR}/scripts/generate_manifest
-            ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-${PROJECT_VERSION}.tar.gz
-            > ${CMAKE_CURRENT_BINARY_DIR}/Manifest
-        )
-    endif()
 endif()
