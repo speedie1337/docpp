@@ -5,6 +5,8 @@
  * Copyright (c) 2024 speedie <speedie@speedie.site>
  */
 
+#include <algorithm>
+#include <docpp/except.hpp>
 #include <docpp/HTML/properties.hpp>
 
 docpp::HTML::Properties& docpp::HTML::Properties::operator=(const docpp::HTML::Property& property) {
