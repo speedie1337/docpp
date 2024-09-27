@@ -6,12 +6,6 @@
  */
 #pragma once
 
-#include <string>
-#include <vector>
-#include <unordered_map>
-#include <map>
-#include <exception>
-#include <tuple>
 #include <docpp/types.hpp>
 
 /**

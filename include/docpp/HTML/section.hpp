@@ -10,8 +10,6 @@
 #include <vector>
 #include <unordered_map>
 #include <map>
-#include <exception>
-#include <tuple>
 #include <docpp/types.hpp>
 #include <docpp/HTML/properties.hpp>
 #include <docpp/HTML/element.hpp>

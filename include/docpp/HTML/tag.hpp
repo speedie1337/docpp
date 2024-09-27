@@ -7,16 +7,10 @@
 #pragma once
 
 #include <string>
-#include <vector>
 #include <unordered_map>
-#include <map>
-#include <exception>
-#include <tuple>
 #include <docpp/types.hpp>
-#include <docpp/except.hpp>
 #include <docpp/HTML/tag.hpp>
 #include <docpp/HTML/type_enum.hpp>
-#include <docpp/HTML/formatting_enum.hpp>
 
 /**
  * @brief A namespace to represent HTML elements and documents

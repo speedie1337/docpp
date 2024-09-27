@@ -46,10 +46,19 @@ add_library(${PROJECT_NAME} SHARED
         include/docpp/HTML/property.hpp
         include/docpp/HTML/section.hpp
         include/docpp/HTML/tag.hpp
-        include/docpp/HTML/type_enum.hpp)
+        include/docpp/HTML/type_enum.hpp
+        src/CSS/element.cpp
+        src/CSS/property.cpp
+        src/CSS/stylesheet.cpp
+        src/HTML/document.cpp
+        src/HTML/element.cpp
+        src/HTML/properties.cpp
+        src/HTML/property.cpp
+        src/HTML/section.cpp
+        src/HTML/tag.cpp)
 
 target_sources(${PROJECT_NAME} PRIVATE
-    "src/docpp.cpp"
+    "src/version.cpp"
 )
 
 target_include_directories(${PROJECT_NAME} PRIVATE "${PROJECT_SOURCE_DIR}")

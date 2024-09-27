@@ -11,7 +11,6 @@
 #include <unordered_map>
 #include <map>
 #include <exception>
-#include <tuple>
 
 /**
  * @brief A namespace to represent HTML elements and documents

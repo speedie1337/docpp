@@ -8,7 +8,6 @@
 
 #include <tuple>
 #include <docpp/types.hpp>
-#include <docpp/except.hpp>
 
 /**
  * @brief A namespace to represent HTML elements and documents

@@ -6,15 +6,6 @@
  */
 #pragma once
 
-#include <string>
-#include <vector>
-#include <unordered_map>
-#include <map>
-#include <exception>
-#include <tuple>
-#include <docpp/types.hpp>
-#include <docpp/except.hpp>
-
 /**
  * @brief A namespace to represent HTML elements and documents
  */
