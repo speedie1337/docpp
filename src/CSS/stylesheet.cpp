@@ -5,6 +5,7 @@
  * Copyright (c) 2024 speedie <speedie@speedie.site>
  */
 
+#include <docpp/except.hpp>
 #include <docpp/CSS/stylesheet.hpp>
 
 void docpp::CSS::Stylesheet::set(const std::vector<Element>& elements) {
