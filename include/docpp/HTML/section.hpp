@@ -11,6 +11,7 @@
 #include <unordered_map>
 #include <map>
 #include <docpp/types.hpp>
+#include <docpp/HTML/tag.hpp>
 #include <docpp/HTML/properties.hpp>
 #include <docpp/HTML/element.hpp>
 

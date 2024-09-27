@@ -9,6 +9,8 @@
 #include <string>
 #include <docpp/types.hpp>
 #include <docpp/HTML/formatting_enum.hpp>
+#include <docpp/HTML/type_enum.hpp>
+#include <docpp/HTML/tag.hpp>
 #include <docpp/HTML/properties.hpp>
 
 /**
