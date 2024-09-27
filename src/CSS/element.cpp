@@ -5,6 +5,7 @@
  * Copyright (c) 2024 speedie <speedie@speedie.site>
  */
 
+#include <docpp/except.hpp>
 #include <docpp/CSS/element.hpp>
 
 docpp::CSS::Element& docpp::CSS::Element::operator=(const docpp::CSS::Element& element) {
