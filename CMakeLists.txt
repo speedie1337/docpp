@@ -29,18 +29,57 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-add_library(${PROJECT_NAME} SHARED)
+add_library(${PROJECT_NAME} SHARED
+        include/docpp/except.hpp
+        include/docpp/types.hpp
+        include/docpp/version.hpp
+        include/docpp/CSS/CSS.hpp
+        include/docpp/CSS/element.hpp
+        include/docpp/CSS/formatting_enum.hpp
+        include/docpp/CSS/property.hpp
+        include/docpp/CSS/stylesheet.hpp
+        include/docpp/HTML/document.hpp
+        include/docpp/HTML/element.hpp
+        include/docpp/HTML/formatting_enum.hpp
+        include/docpp/HTML/HTML.hpp
+        include/docpp/HTML/properties.hpp
+        include/docpp/HTML/property.hpp
+        include/docpp/HTML/section.hpp
+        include/docpp/HTML/tag.hpp
+        include/docpp/HTML/type_enum.hpp)
 
 target_sources(${PROJECT_NAME} PRIVATE
     "src/docpp.cpp"
 )
 
 target_include_directories(${PROJECT_NAME} PRIVATE "${PROJECT_SOURCE_DIR}")
+include_directories(include)
+
+set(PUBLIC_HEADERS
+        include/docpp/CSS/CSS.hpp
+        include/docpp/CSS/element.hpp
+        include/docpp/CSS/formatting_enum.hpp
+        include/docpp/CSS/property.hpp
+        include/docpp/CSS/stylesheet.hpp
+        include/docpp/HTML/document.hpp
+        include/docpp/HTML/element.hpp
+        include/docpp/HTML/formatting_enum.hpp
+        include/docpp/HTML/HTML.hpp
+        include/docpp/HTML/properties.hpp
+        include/docpp/HTML/property.hpp
+        include/docpp/HTML/section.hpp
+        include/docpp/HTML/tag.hpp
+        include/docpp/HTML/type_enum.hpp
+        include/docpp/docpp.hpp
+        include/docpp/except.hpp
+        include/docpp/types.hpp
+        include/docpp/version.hpp
+)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
-    VERSION ${PROJECT_VERSION}
-    SOVERSION ${PROJECT_VERSION}
-    PUBLIC_HEADER "include/docpp.hpp"
+        VERSION ${PROJECT_VERSION}
+        SOVERSION ${PROJECT_VERSION}
+        PUBLIC_HEADER "${PUBLIC_HEADERS}"
 )
 
 install(TARGETS ${PROJECT_NAME}
