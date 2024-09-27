@@ -30,19 +30,18 @@ cmake --install . --prefix /usr
 ```
 
 This will install the library to /usr/lib and the headers to /usr/include/docpp.
-If you use Arch Linux, you can specify -DGENERATE_PKGBUILD=ON to generate a PKGBUILD file in the build directory. You can then use makepkg to build a package.
 
 ```sh
-cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -DGENERATE_PKGBUILD=ON
+cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr
 cmake --build .
 makepkg -si
 ```
 
-If you use Gentoo Linux, you can specify -DGENERATE_EBUILD=ON to generate an ebuild file in the build directory, along with the manifest.
-
 ## Usage
 
-Just include docpp.hpp in your project and link against the library. Examples can be found in the examples directory.
+Just include the appropriate headers in your project and link against the library. 
+If you are not sure which header(s) are appropriate, you can include all of them by 
+including docpp.hpp. Examples can be found in the examples directory.
 
 ## Contributing
 
