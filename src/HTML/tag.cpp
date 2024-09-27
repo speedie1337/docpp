@@ -5,6 +5,7 @@
  * Copyright (c) 2024 speedie <speedie@speedie.site>
  */
 
+#include <docpp/except.hpp>
 #include <docpp/HTML/tag.hpp>
 
 std::unordered_map<docpp::HTML::Tag, std::pair<docpp::string_type, docpp::HTML::Type>> docpp::HTML::get_tag_map() {
