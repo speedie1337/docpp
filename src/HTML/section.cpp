@@ -5,6 +5,8 @@
  * Copyright (c) 2024 speedie <speedie@speedie.site>
  */
 
+#include <algorithm>
+#include <docpp/except.hpp>
 #include <docpp/HTML/tag.hpp>
 #include <docpp/HTML/section.hpp>
 
