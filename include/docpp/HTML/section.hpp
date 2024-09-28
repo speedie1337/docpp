@@ -17,7 +17,7 @@
 
 /**
  * @brief A namespace to represent HTML elements and documents
- *s/
+ */
 namespace docpp {
     /**
      * @brief A namespace to represent HTML elements and documents
