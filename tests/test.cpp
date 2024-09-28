@@ -400,7 +400,7 @@ inline namespace HTML {
             element.set_tag("new_element");
             element.set_data("new_data");
             element.set_properties(Properties(std::vector<Property>{{"key", "value"}, {"key2", "value2"}}));
-            element.set_type(docpp::HTML::Type::Non_Closed);
+            element.set_type(docpp::HTML::Type::Self_Closing);
 
             REQUIRE(element.get_tag() == "new_element");
             REQUIRE(element.get_data() == "new_data");
@@ -408,7 +408,7 @@ inline namespace HTML {
             REQUIRE(element.get_properties().at(0).get().second == "value");
             REQUIRE(element.get_properties().at(1).get().first == "key2");
             REQUIRE(element.get_properties().at(1).get().second == "value2");
-            REQUIRE(element.get_type() == docpp::HTML::Type::Non_Closed);
+            REQUIRE(element.get_type() == docpp::HTML::Type::Self_Closing);
         };
 
         const auto test_copy_element = []() {
@@ -462,12 +462,12 @@ inline namespace HTML {
             REQUIRE(elem.get_properties() == Properties{});
             REQUIRE(elem.get_type() == docpp::HTML::Type::Non_Self_Closing);
 
-            Element elem2("my_element", {}, "data", docpp::HTML::Type::Non_Closed);
+            Element elem2("my_element", {}, "data", docpp::HTML::Type::Self_Closing);
 
             REQUIRE(elem2.get_tag() == "my_element");
             REQUIRE(elem2.get_data() == "data");
             REQUIRE(elem2.get_properties() == Properties{});
-            REQUIRE(elem2.get_type() == docpp::HTML::Type::Non_Closed);
+            REQUIRE(elem2.get_type() == docpp::HTML::Type::Self_Closing);
 
             Element elem3(docpp::HTML::Tag::H1, {}, "data");
 
