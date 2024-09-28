@@ -27,7 +27,6 @@ namespace docpp {
          * @brief A class to represent an HTML section (head, body, etc.)
          */
         class Section {
-            protected:
             public:
                 /**
                  * @brief A class to represent an iterator for the Section class
@@ -441,5 +440,7 @@ namespace docpp {
                 std::map<size_type, Element> elements{};
                 std::unordered_map<size_type, Section> sections{};
         };
+
+        template <typename... Args> Section make_section_container(Args&&... args) { return Section(docpp::HTML::Tag::Empty, {}, {std::forward<Args>(args)...}); }
     } // namespace HTML
 } // namespace docpp

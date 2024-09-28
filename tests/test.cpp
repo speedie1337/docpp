@@ -1014,6 +1014,13 @@ inline namespace HTML {
             }};
 
             REQUIRE(new_section.get<std::string>() == "<h1>Hello world!</h1><p>Hello world paragraph!</p>");
+
+            Section section_container = docpp::HTML::make_section_container(
+                docpp::HTML::Element{docpp::HTML::Tag::H1, {}, "Hello world!"},
+                docpp::HTML::Element{docpp::HTML::Tag::P, {}, "Hello world paragraph!"}
+            );
+
+            REQUIRE(section_container.get<std::string>() == "<h1>Hello world!</h1><p>Hello world paragraph!</p>");
         };
 
         test_get_and_set();
