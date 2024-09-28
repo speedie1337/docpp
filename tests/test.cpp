@@ -1007,6 +1007,13 @@ inline namespace HTML {
 
                 REQUIRE(section_plus_plus.size() == (i + 1) * 2);
             }
+
+            Section new_section{docpp::HTML::Tag::Empty, {}, std::vector<docpp::HTML::Element> {
+                docpp::HTML::Element{docpp::HTML::Tag::H1, {}, "Hello world!"},
+                docpp::HTML::Element{docpp::HTML::Tag::P, {}, "Hello world paragraph!"}
+            }};
+
+            REQUIRE(new_section.get<std::string>() == "<h1>Hello world!</h1><p>Hello world paragraph!</p>");
         };
 
         test_get_and_set();
