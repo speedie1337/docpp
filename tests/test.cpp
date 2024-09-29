@@ -1021,6 +1021,9 @@ inline namespace HTML {
             );
 
             REQUIRE(section_container.get<std::string>() == "<h1>Hello world!</h1><p>Hello world paragraph!</p>");
+            REQUIRE(section_container.get<std::string>(docpp::HTML::Formatting::Newline) == "<h1>Hello world!</h1>\n<p>Hello world paragraph!</p>\n");
+            REQUIRE(section_container.get<std::string>(docpp::HTML::Formatting::Pretty) == "<h1>Hello world!</h1>\n<p>Hello world paragraph!</p>\n");
+            REQUIRE(Section().get<std::string>() == "");
         };
 
         test_get_and_set();

@@ -6,6 +6,8 @@
  */
 
 #include <algorithm>
+#include <sstream>
+#include <stack>
 #include <docpp/except.hpp>
 #include <docpp/HTML/tag.hpp>
 #include <docpp/HTML/section.hpp>
@@ -365,8 +367,9 @@ std::vector<docpp::HTML::Section> docpp::HTML::Section::get_sections() const {
     return ret;
 }
 
+/*
 docpp::string_type docpp::HTML::Section::get(const Formatting formatting, const docpp::integer_type tabc) const { // NOLINT
-    docpp::string_type ret{};
+    std::ostringstream ret{};
     docpp::integer_type tabcount{tabc};
 
     if (this->tag.empty() && this->properties.empty() && this->sections.empty() && this->elements.empty()) {
@@ -378,51 +381,130 @@ docpp::string_type docpp::HTML::Section::get(const Formatting formatting, const 
     }
 
     if (formatting == docpp::HTML::Formatting::Pretty) {
-        for (size_type i{0}; i < tabcount; i++) ret += "\t";
+        for (size_type i{0}; i < tabcount; i++) ret << "\t";
     }
-
     if (!this->tag.empty()) {
-        ret += "<" + this->tag;
+        ret << "<" + this->tag;
 
         for (const Property& it : this->properties.get_properties()) {
             if (it.get_key().empty() || it.get_value().empty()) {
                 continue;
             }
-            ret += " " + it.get_key() + "=\"" + it.get_value() + "\"";
+            ret << " " + it.get_key() + "=\"" + it.get_value() + "\"";
         }
 
-        ret += ">";
+        ret << ">";
 
         if (formatting == docpp::HTML::Formatting::Pretty || formatting == docpp::HTML::Formatting::Newline) {
-            ret += "\n";
+            ret << "\n";
         }
     }
 
     for (size_type i{0}; i < this->index; i++) {
         if (this->elements.find(i) != this->elements.end()) {
-            ret += this->elements.at(i).get(formatting, tabcount + 1);
+            ret << this->elements.at(i).get(formatting, tabcount + 1);
         } else if (this->sections.find(i) != this->sections.end()) {
             const Section* sect_ptr = &this->sections.at(i);
+
             if (this == sect_ptr) {
                 throw docpp::invalid_argument{"get() cannot be called on this"};
             }
-            ret += sect_ptr->get(formatting, tabcount + 1);
+
+            ret << sect_ptr->get(formatting, tabcount + 1);
 
             if (formatting == docpp::HTML::Formatting::Pretty || formatting == docpp::HTML::Formatting::Newline) {
-                ret += "\n";
+                ret << "\n";
             }
         }
     }
 
     if (formatting == docpp::HTML::Formatting::Pretty) {
         for (size_type i{0}; i < tabcount; i++) {
-            ret += "\t";
+            ret << "\t";
         }
     }
 
-    ret += !this->tag.empty() ? ("</" + this->tag + ">") : "";
+    if (this->tag.empty() == false) {
+        ret << "</" << this->tag << ">";
+    }
 
-    return ret;
+    return ret.str();
+}
+*/
+
+docpp::string_type docpp::HTML::Section::get(const Formatting formatting, const docpp::integer_type tabc) const {
+    std::ostringstream ret{};
+
+    struct Entry {
+        const Section* section{nullptr};
+        docpp::integer_type tabc{tabc};
+        bool processing{false};
+    };
+
+    std::stack<Entry> s_stack{};
+    s_stack.push({this, tabc, false});
+
+    while (!s_stack.empty()) {
+        Entry& c_entry{s_stack.top()};
+        const Section* c_sect{c_entry.section};
+        docpp::integer_type c_tabc{c_entry.tabc};
+
+        if (!c_entry.processing) {
+            if (c_sect->tag.empty() && c_sect->properties.empty() && c_sect->sections.empty() && c_sect->elements.empty()) {
+                s_stack.pop();
+                continue;
+            }
+
+            if (formatting == docpp::HTML::Formatting::Pretty) {
+                for (size_type i{0}; i < c_tabc; i++) {
+                    ret << "\t";
+                }
+            }
+
+            if (!c_sect->tag.empty()) {
+                ret << "<" + c_sect->tag;
+
+                for (const Property& it : c_sect->properties.get_properties()) {
+                    if (it.get_key().empty() || it.get_value().empty()) {
+                        continue;
+                    }
+
+                    ret << " " + it.get_key() + "=\"" + it.get_value() + "\"";
+                }
+
+                ret << ">";
+
+                if (formatting == docpp::HTML::Formatting::Pretty || formatting == docpp::HTML::Formatting::Newline) {
+                    ret << "\n";
+                }
+            } else { // if Section is just a container, we don't need to indent
+                --c_tabc;
+            }
+
+            c_entry.processing = true;
+
+            for (size_type i = 0; i < c_sect->index; i++) {
+                if (c_sect->sections.find(i) != c_sect->sections.end()) {
+                    s_stack.push({&c_sect->sections.at(i), c_tabc + 1, false});
+                } else if (c_sect->elements.find(i) != c_sect->elements.end()) {
+                    ret << c_sect->elements.at(i).get(formatting, c_tabc + 1);
+                }
+            }
+        } else {
+            if (!c_sect->tag.empty()) {
+                if (formatting == docpp::HTML::Formatting::Pretty) {
+                    for (size_type i{0}; i < c_tabc; i++) {
+                        ret << "\t";
+                    }
+                }
+                ret << "</" + c_sect->tag + ">";
+            }
+
+            s_stack.pop();
+        }
+    }
+
+    return ret.str();
 }
 
 docpp::string_type docpp::HTML::Section::get_tag() const {
