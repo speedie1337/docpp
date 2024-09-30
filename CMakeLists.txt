@@ -38,6 +38,9 @@ add_library(${PROJECT_NAME} SHARED
         include/docpp/CSS/formatting_enum.hpp
         include/docpp/CSS/property.hpp
         include/docpp/CSS/stylesheet.hpp
+        include/docpp/CSS/color_type_enum.hpp
+        include/docpp/CSS/color_struct.hpp
+        include/docpp/CSS/color.hpp
         include/docpp/HTML/document.hpp
         include/docpp/HTML/element.hpp
         include/docpp/HTML/formatting_enum.hpp
@@ -50,12 +53,15 @@ add_library(${PROJECT_NAME} SHARED
         src/CSS/element.cpp
         src/CSS/property.cpp
         src/CSS/stylesheet.cpp
+        src/CSS/color.cpp
         src/HTML/document.cpp
         src/HTML/element.cpp
         src/HTML/properties.cpp
         src/HTML/property.cpp
         src/HTML/section.cpp
-        src/HTML/tag.cpp)
+        src/HTML/tag.cpp
+        include/docpp/CSS/impl/color_conversions.hpp
+        src/CSS/impl/color_conversions.cpp)
 
 target_sources(${PROJECT_NAME} PRIVATE
     "src/version.cpp"
@@ -70,6 +76,9 @@ set(PUBLIC_HEADERS
         include/docpp/CSS/formatting_enum.hpp
         include/docpp/CSS/property.hpp
         include/docpp/CSS/stylesheet.hpp
+        include/docpp/CSS/color.hpp
+        include/docpp/CSS/color_type_enum.hpp
+        include/docpp/CSS/color_struct.hpp
         include/docpp/HTML/document.hpp
         include/docpp/HTML/element.hpp
         include/docpp/HTML/formatting_enum.hpp

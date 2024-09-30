@@ -12,3 +12,6 @@
 #include <docpp/CSS/property.hpp>
 #include <docpp/CSS/element.hpp>
 #include <docpp/CSS/stylesheet.hpp>
+#include <docpp/CSS/color_type_enum.hpp>
+#include <docpp/CSS/color_struct.hpp>
+#include <docpp/CSS/color.hpp>

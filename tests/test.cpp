@@ -1875,10 +1875,56 @@ inline namespace CSS {
         test_iterators();
     }
 
+    void test_color_conversions() {
+        docpp::CSS::ColorStruct cstr = docpp::CSS::from_rgba(255, 0, 0, 255); // Should be #FF0000FF
+
+        const auto check_cstr = [&cstr]() {
+            REQUIRE(cstr.r == 1.0);
+            REQUIRE(cstr.g == 0.0);
+            REQUIRE(cstr.b == 0.0);
+            REQUIRE(cstr.a == 1.0);
+        };
+
+        check_cstr();
+
+        cstr = docpp::CSS::from_hex("#FF0000FF"); // Should be #FF0000FF
+        check_cstr();
+
+        cstr = docpp::CSS::from_hex("#FF0000"); // Should still be #FF0000FF
+        check_cstr();
+
+        cstr = docpp::CSS::from_float(1.0f, 0.0f, 0.0f, 1.0f); // Should still be #FF0000FF
+        check_cstr();
+
+        cstr = docpp::CSS::from_double(1, 0, 0, 1); // Should still be #FF0000FF
+        check_cstr();
+    }
+
+    void test_color_formatter() {
+        docpp::CSS::ColorFormatter formatter{};
+
+        REQUIRE(formatter.get<std::string>() == "#000000");
+
+        formatter.set_color_struct(docpp::CSS::from_hex("#FFFF00"));
+
+        REQUIRE(formatter.get<std::string>() == "#ffff00");
+        REQUIRE(formatter.get<std::string>(docpp::CSS::ColorFormatting::Hex) == "#ffff00");
+        REQUIRE(formatter.get<std::string>(docpp::CSS::ColorFormatting::Hex_A) == "#ffff00ff");
+        REQUIRE(formatter.get<std::string>(docpp::CSS::ColorFormatting::Rgb) == "rgb(255, 255, 0)");
+        REQUIRE(formatter.get<std::string>(docpp::CSS::ColorFormatting::Rgb_A) == "rgba(255, 255, 0, 255)");
+
+        formatter.set_formatting(docpp::CSS::ColorFormatting::Hex_A);
+        formatter.set_color_struct(docpp::CSS::from_rgba(0, 0, 0, 255));
+
+        REQUIRE(formatter.get<std::string>() == "#000000ff");
+    }
+
     void test_css() {
         test_property();
         test_element();
         test_stylesheet();
+        test_color_conversions();
+        test_color_formatter();
     }
 
 } // namespace CSS
